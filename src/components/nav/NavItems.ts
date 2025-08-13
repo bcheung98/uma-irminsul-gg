@@ -1,0 +1,37 @@
+export interface NavItem {
+    icon: string;
+    text: string;
+    link: string;
+    tag?: string;
+}
+
+export const navItems: NavItem[] = [
+    {
+        icon: "icons/Home",
+        text: "Home",
+        link: "/",
+    },
+    {
+        icon: "icons/Horse",
+        text: "Characters",
+        link: "/characters/",
+    },
+    {
+        icon: "icons/Card",
+        text: "Support Cards",
+        link: "/supports/",
+    },
+];
+
+export const otherItems: NavItem[] = [
+    {
+        text: "Calendar",
+        link: "https://irminsul.gg/calendar",
+        icon: "",
+    },
+    {
+        text: "Blog",
+        link: "https://irminsul.gg/blog",
+        icon: "",
+    },
+];
