@@ -58,7 +58,7 @@ export function createDateObject({
     const year = dateArr[2];
     dateString = `${month} ${day}, ${year}`;
 
-    const timeArr = arr[1].trim().split(" ");
+    const timeArr = arr[1] ? arr[1].trim().split(" ") : ["12:00:00", "AM"];
     timestamp = `${timeArr[0].split(":").splice(0, 2).join(":")} ${timeArr[1]}`;
 
     return {
