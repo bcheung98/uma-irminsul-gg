@@ -15,24 +15,22 @@ import { getRarityColor } from "helpers/rarityColors";
 import { zoomImageOnHover } from "helpers/utils";
 
 // Type imports
-import { Rarity } from "types/_common";
+import { Rarity, Specialty } from "types/_common";
 
 interface InfoCardProps {
     id: number;
     name: string;
     title: string;
     cardID?: string;
-    type: "character";
+    type: "character" | "support";
     rarity?: Rarity;
     variant?: "icon" | "avatar" | "material-card";
     size?: string;
     showName?: boolean;
     info?: {
-        element?: any;
-        weapon?: any;
-        subStat?: any;
+        specialty?: Specialty;
     };
-    materials: string[];
+    materials?: string[];
     backgroundColor?: string;
     disableTooltip?: boolean;
     disableLink?: boolean;
@@ -68,12 +66,10 @@ function InfoCard({
         rarity += 2;
     }
 
-    const borderWidth = variant !== "icon" ? theme.displayCard.borderWidth : 2;
+    const borderWidth = variant !== "icon" ? theme.displayCard.borderWidth : 0;
     const borderRadius = variant === "icon" ? "4px" : "16px";
     const borderColor =
-        variant === "icon"
-            ? getRarityColor(rarity)
-            : theme.border.color.primary;
+        variant === "icon" ? "transparent" : theme.border.color.primary;
 
     size = variant === "icon" ? "64px" : variant === "avatar" ? size : "96px";
     const imgSize =
@@ -86,6 +82,10 @@ function InfoCard({
         case "character":
             imgSrc = `characters/avatars/${id}`;
             route = `characters`;
+            break;
+        case "support":
+            imgSrc = `supports/${variant === "icon" ? "icons" : "card"}/${id}`;
+            route = `supports`;
             break;
     }
     const href = !disableLink
@@ -145,9 +145,9 @@ function InfoCard({
     const infoIconStyle: CSSProperties = {
         width: `calc(${imgSize} / 8 + 12px)`,
         height: `calc(${imgSize} / 8 + 12px)`,
-        minWidth: "28px",
-        minHeight: "28px",
-        padding: "4px",
+        minWidth: "32px",
+        minHeight: "32px",
+        padding: "2px",
     };
 
     return (
@@ -156,7 +156,7 @@ function InfoCard({
                 <>
                     <Card elevation={0} sx={cardStyle}>
                         <StyledTooltip
-                            title={!disableTooltip ? title : ""}
+                            title={!disableTooltip ? `${name} [${title}]` : ""}
                             arrow
                             placement="top"
                         >
@@ -235,7 +235,7 @@ function InfoCard({
                                         }}
                                         variant={"subtitle2-styled"}
                                     >
-                                        {showName && `(${title})`}
+                                        {showName && `[${title}]`}
                                     </TextStyled>
                                 </RouterLink>
                             </Box>
@@ -246,26 +246,18 @@ function InfoCard({
                             sx={{
                                 position: "absolute",
                                 zIndex: 5,
-                                top: "-4px",
+                                top: "-2px",
                                 left: "-12px",
                                 backgroundColor: theme.appbar.backgroundColor,
-                                borderRadius: "16px",
+                                borderRadius: "8px",
                             }}
                         >
-                            {info.element !== undefined && (
+                            {info.specialty !== undefined && (
                                 <Image
-                                    src={`elements/${info.element}`}
-                                    alt={info.element}
+                                    src={`stat_icons/${info.specialty}`}
+                                    alt={info.specialty}
                                     style={infoIconStyle}
-                                    tooltip={info.element}
-                                />
-                            )}
-                            {info.weapon !== undefined && (
-                                <Image
-                                    src={`weapons/icons/${info.weapon}`}
-                                    alt={info.weapon}
-                                    style={infoIconStyle}
-                                    tooltip={info.weapon}
+                                    tooltip={info.specialty}
                                 />
                             )}
                         </Stack>

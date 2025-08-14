@@ -6,6 +6,8 @@ import settingsReducer from "reducers/settings";
 import browserReducer from "reducers/browser";
 import characterReducer from "reducers/character";
 import characterFilterReducer from "reducers/characterFilters";
+import supportReducer from "reducers/support";
+import supportFilterReducer from "reducers/supportFilters";
 
 const store = configureStore({
     reducer: {
@@ -14,6 +16,8 @@ const store = configureStore({
         browser: browserReducer,
         characters: characterReducer,
         characterFilters: characterFilterReducer,
+        support: supportReducer,
+        supportFilters: supportFilterReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().prepend(listenerMiddleware.middleware),

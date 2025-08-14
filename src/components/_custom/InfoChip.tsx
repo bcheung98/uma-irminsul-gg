@@ -8,7 +8,10 @@ import { Variant } from "@mui/material/styles/createTypography";
 
 interface InfoChipProps extends ChipProps {
     src?: string;
-    imgSize?: string;
+    imgSize?: {
+        width?: string;
+        height?: string;
+    };
     textVariant?: Variant;
     padding?: string;
 }
@@ -31,8 +34,8 @@ function InfoChip({
                         src={src}
                         alt={src}
                         style={{
-                            width: imgSize || "32px",
-                            height: imgSize || "32px",
+                            width: imgSize?.width || "32px",
+                            height: imgSize?.height || "32px",
                             padding: "4px",
                         }}
                     />

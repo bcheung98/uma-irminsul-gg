@@ -34,8 +34,9 @@ import StarIcon from "@mui/icons-material/Star";
 // Helper imports
 import { useAppSelector } from "helpers/hooks";
 import { selectCharacters } from "reducers/character";
+import { selectSupports } from "reducers/support";
 
-type Category = "Characters";
+type Category = "Characters" | "Supports";
 
 interface Data {
     id: number;
@@ -53,6 +54,9 @@ function Search() {
     const characters = [...useAppSelector(selectCharacters)].sort((a, b) =>
         a.name.localeCompare(b.name)
     );
+    const supports = [...useAppSelector(selectSupports)].sort((a, b) =>
+        a.name.localeCompare(b.name)
+    );
 
     const data: Data[] = [
         ...characters.map((char) => ({
@@ -60,6 +64,12 @@ function Search() {
             name: char.name,
             title: char.title,
             category: "Characters" as Category,
+        })),
+        ...supports.map((support) => ({
+            id: support.id,
+            name: support.name,
+            title: support.title,
+            category: "Supports" as Category,
         })),
     ];
 
@@ -299,7 +309,10 @@ function Search() {
                                         width: matches_up_sm ? "48px" : "40px",
                                         height: "auto",
                                         borderRadius: "4px",
-                                        border: `2px solid ${theme.border.color.primary}`,
+                                        border:
+                                            option.category !== "Supports"
+                                                ? `2px solid ${theme.border.color.primary}`
+                                                : 0,
                                         backgroundColor: theme.background(2),
                                     }}
                                 />
@@ -627,6 +640,8 @@ function getImageIcon(category: Category, id: number) {
     switch (category) {
         case "Characters":
             return `characters/avatars/${id}`;
+        case "Supports":
+            return `supports/icons/${id}`;
     }
 }
 
@@ -634,5 +649,5 @@ function getURL(option: Data) {
     return `${option.category.toLowerCase()}/${option.name
         .toLowerCase()
         .split(" ")
-        .join("_")}`;
+        .join("-")}-${option.id}`;
 }

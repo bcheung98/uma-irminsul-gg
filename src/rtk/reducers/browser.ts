@@ -13,7 +13,7 @@ export interface BrowserSettings {
 
 export interface BrowserState {
     characters: BrowserSettings;
-    weapons: BrowserSettings;
+    supports: BrowserSettings;
 }
 
 export type SortType = keyof BrowserState;
@@ -25,12 +25,12 @@ const defaultSettings: BrowserSettings = {
 };
 
 const storedSettings = localStorage.getItem("browser") || "{}";
-const { characters = defaultSettings, weapons = defaultSettings } =
+const { characters = defaultSettings, supports = defaultSettings } =
     JSON.parse(storedSettings);
 
 const initialState: BrowserState = {
     characters: characters,
-    weapons: weapons,
+    supports: supports,
 };
 
 export const browserSlice = createSlice({
