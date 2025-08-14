@@ -1,4 +1,4 @@
-import { ranks, rarities } from "../data/common";
+import { ranks, rarities, specialties } from "../data/common";
 
 // Taken from:
 // https://medium.com/xgeeks/typescript-utility-keyof-nested-object-fa3e457ef2b2
@@ -10,3 +10,5 @@ export type NestedKeyOf<T extends object> = {
 
 export type Rarity = (typeof rarities)[number];
 export type Rank = (typeof ranks)[number];
+export type Stat = Exclude<Specialty, "Pal" | "Group">;
+export type Specialty = (typeof specialties)[number];
