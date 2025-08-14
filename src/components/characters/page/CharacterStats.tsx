@@ -1,13 +1,13 @@
 // Component imports
 import MainContentBox from "custom/MainContentBox";
 import StatsTable from "custom/StatsTable";
+import Image from "custom/Image";
 
 // MUI imports
 import { useTheme, useMediaQuery } from "@mui/material";
 
 // Type imports
 import { CharacterProps } from "types/character";
-import Image from "custom/Image";
 
 function CharacterStats({ character }: CharacterProps) {
     const theme = useTheme();
@@ -26,20 +26,20 @@ function CharacterStats({ character }: CharacterProps) {
 
     const data = [
         ["", ...levels],
-        ["Speed", ...levels.map((_, index) => stats.spd[index])],
-        ["Stamina", ...levels.map((_, index) => stats.sta[index])],
-        ["Power", ...levels.map((_, index) => stats.pwr[index])],
-        ["Gut", ...levels.map((_, index) => stats.gut[index])],
-        ["Wits", ...levels.map((_, index) => stats.wit[index])],
+        ["Speed", ...levels.map((_, index) => stats.speed[index])],
+        ["Stamina", ...levels.map((_, index) => stats.stamina[index])],
+        ["Power", ...levels.map((_, index) => stats.power[index])],
+        ["Guts", ...levels.map((_, index) => stats.guts[index])],
+        ["Wit", ...levels.map((_, index) => stats.wit[index])],
     ];
 
     const headColumns = [
         "",
-        <Image src="stat_icons/spd" style={iconStyle} tooltip="Speed" />,
-        <Image src="stat_icons/sta" style={iconStyle} tooltip="Stamina" />,
-        <Image src="stat_icons/pwr" style={iconStyle} tooltip="Power" />,
-        <Image src="stat_icons/gut" style={iconStyle} tooltip="Gut" />,
-        <Image src="stat_icons/wit" style={iconStyle} tooltip="Wits" />,
+        <Image src="stat_icons/Speed" style={iconStyle} tooltip="Speed" />,
+        <Image src="stat_icons/Stamina" style={iconStyle} tooltip="Stamina" />,
+        <Image src="stat_icons/Power" style={iconStyle} tooltip="Power" />,
+        <Image src="stat_icons/Guts" style={iconStyle} tooltip="Guts" />,
+        <Image src="stat_icons/Wit" style={iconStyle} tooltip="Wit" />,
     ];
 
     return (
