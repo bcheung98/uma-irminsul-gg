@@ -5,6 +5,7 @@ import Image from "custom/Image";
 
 // MUI imports
 import { useTheme, useMediaQuery } from "@mui/material";
+import { range } from "helpers/utils";
 
 // Type imports
 import { CharacterProps } from "types/character";
@@ -19,10 +20,8 @@ function CharacterStats({ character }: CharacterProps) {
         width: matches_md_up ? "28px" : "20px",
     };
 
-    const levels =
-        rarity === 1
-            ? ["1★", "2★", "3★", "4★", "5★", "Bonus"]
-            : ["3★", "4★", "5★", "Bonus"];
+    const levels = range(rarity, 5).map((i) => `${i}★`);
+    levels.push("Bonus");
 
     const data = [
         ["", ...levels],
