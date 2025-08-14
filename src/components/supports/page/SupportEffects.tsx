@@ -8,40 +8,42 @@ import { Box, Stack } from "@mui/material";
 
 // Type imports
 import { SupportProps } from "types/support";
+import { sortBy } from "helpers/utils";
 
 function SupportEffects({ support }: SupportProps) {
-    const { perks, supportEffects } = support;
+    const { rarity, perks, supportEffects } = support;
 
-    const levels = ["30", "35", "40", "45", "50"];
+    let levels = [20, 25, 30, 35, 40];
+    if (rarity === 4) {
+        levels = levels.map((i) => i + 5);
+    }
+    if (rarity === 5) {
+        levels = levels.map((i) => i + 10);
+    }
+
+    const data: (string | number)[][] = [["Level", ...levels]];
+    const effects = [...supportEffects].sort(
+        (a, b) =>
+            sortBy(b.unlock || 1, a.unlock || 1) ||
+            a.effect.localeCompare(b.effect)
+    );
+    effects.map((effect) =>
+        data.push([
+            `${effect.effect}`,
+            ...effect.values.map((value) =>
+                value === "-" ? `[Unlocks at Lv ${effect.unlock}]` : value
+            ),
+        ])
+    );
 
     const uniqueEffects = perks.effects.map((effect) => [
         effect.effect,
         ...effect.values,
     ]);
 
-    const data: (string | number)[][] = [["Level", ...levels]];
-    supportEffects.map((effect) =>
-        data.push([effect.effect, ...effect.values])
-    );
-
     return (
         <MainContentBox title="Support Effects">
             <Stack spacing={2}>
-                <Box>
-                    <TextStyled sx={{ mb: "8px" }}>
-                        {`Unique Effect (Lv ${perks.unlock}+)`}
-                    </TextStyled>
-                    <StatsTable
-                        levels={[""]}
-                        data={uniqueEffects}
-                        orientation="column"
-                        tableProps={{
-                            sx: {
-                                width: { xs: "100%", lg: "50%" },
-                            },
-                        }}
-                    />
-                </Box>
                 <StatsTable
                     levels={levels}
                     data={data}
@@ -50,7 +52,7 @@ function SupportEffects({ support }: SupportProps) {
                         initialValue: 1,
                         sx: {
                             minWidth: "100px",
-                            maxWidth: "50%",
+                            maxWidth: "25%",
                             ml: "8px",
                         },
                     }}
@@ -60,6 +62,23 @@ function SupportEffects({ support }: SupportProps) {
                         },
                     }}
                 />
+                {uniqueEffects.length > 0 && (
+                    <Box>
+                        <TextStyled sx={{ mb: "8px" }}>
+                            {`Unique Effect [Lv ${perks.unlock}+]`}
+                        </TextStyled>
+                        <StatsTable
+                            levels={[""]}
+                            data={uniqueEffects}
+                            orientation="column"
+                            tableProps={{
+                                sx: {
+                                    width: { xs: "100%", lg: "50%" },
+                                },
+                            }}
+                        />
+                    </Box>
+                )}
             </Stack>
         </MainContentBox>
     );
