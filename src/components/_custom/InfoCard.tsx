@@ -64,7 +64,7 @@ function InfoCard({
 
     cardID = `${cardID.split(" ").join("")}-${variant}-infoCard`;
 
-    if (rarity < 3) {
+    if (type === "character" && rarity <= 3) {
         rarity += 2;
     }
 
