@@ -152,7 +152,10 @@ function SupportBrowser() {
                             title={support.title}
                             type="support"
                             rarity={support.rarity}
-                            info={{ specialty: support.specialty }}
+                            info={{
+                                rank: support.rarity,
+                                specialty: support.specialty,
+                            }}
                             backgroundColor={theme.background(1)}
                         />
                     ))}

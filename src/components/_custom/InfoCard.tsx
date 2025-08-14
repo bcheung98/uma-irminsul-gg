@@ -13,6 +13,7 @@ import Grid from "@mui/material/Grid2";
 // Helper imports
 import { getRarityColor } from "helpers/rarityColors";
 import { zoomImageOnHover } from "helpers/utils";
+import { getSupportCardRarity } from "helpers/supportCardRarity";
 
 // Type imports
 import { Rarity, Specialty } from "types/_common";
@@ -28,6 +29,7 @@ interface InfoCardProps {
     size?: string;
     showName?: boolean;
     info?: {
+        rank?: Rarity;
         specialty?: Specialty;
     };
     materials?: string[];
@@ -62,8 +64,13 @@ function InfoCard({
 
     cardID = `${cardID.split(" ").join("")}-${variant}-infoCard`;
 
-    if (rarity <= 3) {
+    if (rarity < 3) {
         rarity += 2;
+    }
+
+    let rank = "R";
+    if (info?.rank) {
+        rank = getSupportCardRarity(info.rank);
     }
 
     const borderWidth = variant !== "icon" ? theme.displayCard.borderWidth : 0;
@@ -148,6 +155,8 @@ function InfoCard({
         minWidth: "32px",
         minHeight: "32px",
         padding: "2px",
+        borderRadius: "4px",
+        backgroundColor: theme.appbar.backgroundColor,
     };
 
     return (
@@ -243,15 +252,24 @@ function InfoCard({
                     </Card>
                     {info && (
                         <Stack
+                            spacing={0.5}
                             sx={{
                                 position: "absolute",
                                 zIndex: 5,
                                 top: "-2px",
                                 left: "-12px",
-                                backgroundColor: theme.appbar.backgroundColor,
                                 borderRadius: "8px",
                             }}
                         >
+                            {info.rank !== undefined && type === "support" && (
+                                <Image
+                                    src={`ranks/${rank}`}
+                                    alt={rank}
+                                    style={{
+                                        height: `calc(${imgSize} / 8 + 8px)`,
+                                    }}
+                                />
+                            )}
                             {info.specialty !== undefined && (
                                 <Image
                                     src={`stat_icons/${info.specialty}`}
