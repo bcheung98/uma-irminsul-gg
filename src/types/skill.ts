@@ -1,23 +1,29 @@
 import { Rarity } from "./_common";
+import { Version } from "./version";
 
 export interface Skill {
     id: number;
     icon: number;
-    name: string;
-    description: {
-        global: SkillDescription;
-        jp: SkillDescription;
-    };
+    name: Version;
+    description: Version;
     unique?: number;
     rarity: Rarity;
     unlock?: Rarity;
     activation: string;
     cost: number;
-    conditions: string;
-    duration: string;
+    conditions: SkillCondition[];
+    tags: string[];
+    versions?: (number | string)[];
+    geneVersion: SkillInherited;
 }
 
-interface SkillDescription {
-    short: string;
-    detailed: string;
+export interface SkillInherited
+    extends Omit<Skill, "unique" | "versions" | "geneVersion"> {
+    inherited: boolean;
+}
+
+export interface SkillCondition {
+    duration: string;
+    precondition: string;
+    condition: string;
 }
