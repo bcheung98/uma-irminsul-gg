@@ -6,9 +6,11 @@ import { TextStyled } from "styled/StyledTypography";
 // MUI imports
 import { Box, Stack } from "@mui/material";
 
+// Helper imports
+import { sortBy } from "helpers/utils";
+
 // Type imports
 import { SupportProps } from "types/support";
-import { sortBy } from "helpers/utils";
 
 function SupportEffects({ support }: SupportProps) {
     const { rarity, perks, supportEffects } = support;
@@ -52,15 +54,11 @@ function SupportEffects({ support }: SupportProps) {
                         initialValue: 1,
                         sx: {
                             minWidth: "100px",
-                            maxWidth: "25%",
+                            maxWidth: "50%",
                             ml: "8px",
                         },
                     }}
-                    tableProps={{
-                        sx: {
-                            width: { xs: "100%", lg: "50%" },
-                        },
-                    }}
+                    tableProps={{ sx: { width: "100%" } }}
                 />
                 {uniqueEffects.length > 0 && (
                     <Box>
@@ -71,11 +69,7 @@ function SupportEffects({ support }: SupportProps) {
                             levels={[""]}
                             data={uniqueEffects}
                             orientation="column"
-                            tableProps={{
-                                sx: {
-                                    width: { xs: "100%", lg: "50%" },
-                                },
-                            }}
+                            tableProps={{ sx: { width: "100%" } }}
                         />
                     </Box>
                 )}

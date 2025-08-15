@@ -1,5 +1,4 @@
 import { Rarity, Specialty } from "./_common";
-import { Skill } from "./skill";
 import { Version } from "./version";
 
 export interface SupportProps {
@@ -17,8 +16,8 @@ export interface Support {
         unlock: number;
     };
     supportEffects: SupportEffect[];
-    hints: Skill[];
-    skillEvents: Skill[];
+    hints: (string | number)[];
+    skillEvents: (string | number)[];
     trainingEvents: {
         chain: string[];
         random: string[];

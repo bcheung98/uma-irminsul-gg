@@ -1,12 +1,14 @@
 import { Rarity } from "./_common";
 
 export interface Skill {
-    id: string;
+    id: number;
+    icon: number;
     name: string;
     description: {
         global: SkillDescription;
         jp: SkillDescription;
     };
+    unique?: number;
     rarity: Rarity;
     unlock?: Rarity;
     activation: string;

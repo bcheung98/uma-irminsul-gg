@@ -8,6 +8,7 @@ import characterReducer from "reducers/character";
 import characterFilterReducer from "reducers/characterFilters";
 import supportReducer from "reducers/support";
 import supportFilterReducer from "reducers/supportFilters";
+import skillReducer from "reducers/skill";
 
 const store = configureStore({
     reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
         characterFilters: characterFilterReducer,
         support: supportReducer,
         supportFilters: supportFilterReducer,
+        skills: skillReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().prepend(listenerMiddleware.middleware),

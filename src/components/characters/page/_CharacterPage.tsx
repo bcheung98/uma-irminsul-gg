@@ -5,6 +5,7 @@ import CharacterImage from "./CharacterImage";
 import CharacterInfoMain from "./CharacterInfoMain";
 import CharacterStats from "./CharacterStats";
 import CharacterAptitude from "./CharacterAptitude";
+import CharacterSkills from "./CharacterSkills";
 import BetaTag from "custom/BetaTag";
 import PageNotFound from "components/PageNotFound";
 
@@ -49,6 +50,7 @@ function CharacterPage() {
         const infoMain = <CharacterInfoMain character={character} />;
         const stats = <CharacterStats character={character} />;
         const aptitude = <CharacterAptitude character={character} />;
+        const skills = <CharacterSkills character={character} />;
 
         return (
             <Stack spacing={2}>
@@ -81,6 +83,7 @@ function CharacterPage() {
                         {aptitude}
                     </>
                 )}
+                {skills}
             </Stack>
         );
     } else {

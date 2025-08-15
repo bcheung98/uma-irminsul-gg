@@ -4,11 +4,12 @@ import { useParams } from "react-router";
 import SupportImage from "./SupportImage";
 import SupportInfo from "./SupportInfo";
 import SupportEffects from "./SupportEffects";
+import SupportHints from "./SupportHints";
 import BetaTag from "custom/BetaTag";
 import PageNotFound from "components/PageNotFound";
 
 // MUI imports
-import { useTheme, useMediaQuery, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 
 // Helper imports
@@ -16,9 +17,6 @@ import { useAppSelector } from "helpers/hooks";
 import { selectSupports } from "reducers/support";
 
 function SupportPage() {
-    const theme = useTheme();
-    const matches_md_up = useMediaQuery(theme.breakpoints.up("md"));
-
     const params = useParams<{ id: string }>();
     const support = useAppSelector(selectSupports).find(
         (char) =>
@@ -47,6 +45,7 @@ function SupportPage() {
         const supportImage = <SupportImage support={support} />;
         const supportInfo = <SupportInfo support={support} />;
         const supportEffects = <SupportEffects support={support} />;
+        const supportHints = <SupportHints support={support} />;
 
         return (
             <Stack spacing={2}>
@@ -59,11 +58,15 @@ function SupportPage() {
                             <Stack spacing={2}>
                                 {betaTag}
                                 {supportInfo}
-                                {matches_md_up && supportEffects}
                             </Stack>
                         </Grid>
                     </Grid>
-                    {!matches_md_up && supportEffects}
+                    <Grid container spacing={2}>
+                        <Grid size={{ xs: 12, lg: "grow" }}>
+                            {supportEffects}
+                        </Grid>
+                        <Grid size={{ xs: 12, lg: 6 }}>{supportHints}</Grid>
+                    </Grid>
                 </>
             </Stack>
         );

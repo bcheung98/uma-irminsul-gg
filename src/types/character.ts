@@ -50,8 +50,8 @@ export interface CharacterAptitudeStrategy {
 }
 
 export interface CharacterSkills {
-    unique: string[];
-    innate: string[];
-    awakening: string[];
-    event: string[];
+    unique: (string | number)[];
+    innate: (string | number)[];
+    awakening: (string | number)[];
+    event: (string | number)[];
 }
