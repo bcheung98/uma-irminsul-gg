@@ -16,7 +16,7 @@ export interface Support {
         unlock: number;
     };
     supportEffects: SupportEffect[];
-    hints: (string | number)[];
+    hints: SupportHints;
     skillEvents: (string | number)[];
     trainingEvents: {
         chain: string[];
@@ -33,4 +33,14 @@ export interface SupportEffect {
     effect: string;
     values: string[];
     unlock?: number;
+}
+
+export interface SupportHints {
+    stats: StatHint[];
+    skills: (number | string)[];
+}
+
+export interface StatHint {
+    type: string;
+    value: number;
 }
