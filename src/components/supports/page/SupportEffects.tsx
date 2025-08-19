@@ -38,10 +38,8 @@ function SupportEffects({ support }: SupportProps) {
         setSliderValue(newValue as number);
     };
 
-    const effects = [...supportEffects].sort(
-        (a, b) =>
-            sortBy(b.unlock || 1, a.unlock || 1) ||
-            a.effect.localeCompare(b.effect)
+    const effects = [...supportEffects].sort((a, b) =>
+        sortBy(b.unlock || 1, a.unlock || 1)
     );
 
     const getEffect = (tag: string | number) => {
