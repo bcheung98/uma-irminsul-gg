@@ -60,10 +60,7 @@ function SupportSplashText({
                             maxHeight: "600px",
                         }}
                     >
-                        <TextStyled
-                            component="span"
-                            sx={{ fontStyle: "italic" }}
-                        >
+                        <TextStyled component="span">
                             {parse(splash.en)}
                         </TextStyled>
                     </Box>
