@@ -4,12 +4,12 @@ import { useParams } from "react-router";
 import SupportImage from "./SupportImage";
 import SupportInfo from "./SupportInfo";
 import SupportEffects from "./SupportEffects";
-import SupportHints from "./SupportHints";
+import SupportSkills from "./SupportSkills";
 import BetaTag from "custom/BetaTag";
 import PageNotFound from "components/PageNotFound";
 
 // MUI imports
-import { Stack } from "@mui/material";
+import { useTheme, useMediaQuery, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 
 // Helper imports
@@ -17,6 +17,9 @@ import { useAppSelector } from "helpers/hooks";
 import { selectSupports } from "reducers/support";
 
 function SupportPage() {
+    const theme = useTheme();
+    const matches_sm_up = useMediaQuery(theme.breakpoints.up("sm"));
+
     const params = useParams<{ id: string }>();
     const support = useAppSelector(selectSupports).find(
         (char) =>
@@ -45,29 +48,28 @@ function SupportPage() {
         const supportImage = <SupportImage support={support} />;
         const supportInfo = <SupportInfo support={support} />;
         const supportEffects = <SupportEffects support={support} />;
-        const supportHints = <SupportHints support={support} />;
+        const supportSkills = <SupportSkills support={support} />;
+
+        const supportDetails = (
+            <Grid container spacing={2}>
+                <Grid size={{ xs: 12, lg: "grow" }}>{supportEffects}</Grid>
+                <Grid size={{ xs: 12, lg: 6 }}>{supportSkills}</Grid>
+            </Grid>
+        );
 
         return (
             <Stack spacing={2}>
-                <>
-                    <Grid container spacing={3}>
-                        <Grid size={{ xs: 12, sm: "auto" }}>
-                            {supportImage}
-                        </Grid>
-                        <Grid size={{ xs: 12, sm: "grow" }}>
-                            <Stack spacing={2}>
-                                {betaTag}
-                                {supportInfo}
-                            </Stack>
-                        </Grid>
+                <Grid container spacing={{ xs: 2, sm: 3 }}>
+                    <Grid size={{ xs: 5, sm: "auto" }}>{supportImage}</Grid>
+                    <Grid size={{ xs: "grow", sm: "grow" }}>
+                        <Stack spacing={2}>
+                            {betaTag}
+                            {supportInfo}
+                            {matches_sm_up && supportDetails}
+                        </Stack>
                     </Grid>
-                    <Grid container spacing={2}>
-                        <Grid size={{ xs: 12, lg: "grow" }}>
-                            {supportEffects}
-                        </Grid>
-                        <Grid size={{ xs: 12, lg: 6 }}>{supportHints}</Grid>
-                    </Grid>
-                </>
+                </Grid>
+                {!matches_sm_up && supportDetails}
             </Stack>
         );
     } else {

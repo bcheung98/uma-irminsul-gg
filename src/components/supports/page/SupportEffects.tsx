@@ -1,19 +1,29 @@
+import { useState } from "react";
+
 // Component imports
 import MainContentBox from "custom/MainContentBox";
-import StatsTable from "custom/StatsTable";
+import { FlexBox } from "styled/StyledBox";
 import { TextStyled } from "styled/StyledTypography";
+import { StyledSlider } from "styled/StyledSlider";
 
 // MUI imports
-import { Box, Stack } from "@mui/material";
+import { useTheme, useMediaQuery, Box, Stack, Icon } from "@mui/material";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import LockIcon from "@mui/icons-material/Lock";
 
 // Helper imports
 import { sortBy } from "helpers/utils";
+import { supportEffects as effectList } from "data/supportEffects";
 
 // Type imports
-import { SupportProps } from "types/support";
+import { SupportEffect, SupportProps } from "types/support";
 
 function SupportEffects({ support }: SupportProps) {
-    const { rarity, perks, supportEffects } = support;
+    const theme = useTheme();
+    const matches_sm_up = useMediaQuery(theme.breakpoints.up("sm"));
+    const matches_md_up = useMediaQuery(theme.breakpoints.up("md"));
+
+    const { rarity, supportEffects } = support;
 
     let levels = [20, 25, 30, 35, 40];
     if (rarity === 4) {
@@ -23,56 +33,156 @@ function SupportEffects({ support }: SupportProps) {
         levels = levels.map((i) => i + 10);
     }
 
-    const data: (string | number)[][] = [["Level", ...levels]];
+    const [sliderValue, setSliderValue] = useState(1);
+    const handleSliderChange = (_: Event, newValue: number | number[]) => {
+        setSliderValue(newValue as number);
+    };
+
     const effects = [...supportEffects].sort(
         (a, b) =>
             sortBy(b.unlock || 1, a.unlock || 1) ||
             a.effect.localeCompare(b.effect)
     );
-    effects.map((effect) =>
-        data.push([
-            `${effect.effect}`,
-            ...effect.values.map((value) =>
-                value === "-" ? `[Unlocks at Lv ${effect.unlock}]` : value
-            ),
-        ])
-    );
 
-    const uniqueEffects = perks.effects.map((effect) => [
-        effect.effect,
-        ...effect.values,
-    ]);
+    const getEffect = (tag: string | number) => {
+        return effectList.find(
+            (effect) => effect.id === tag || effect.name === tag
+        );
+    };
+
+    const marks = levels.map((level, index) => ({
+        value: index + 1,
+        label: (
+            <TextStyled
+                variant={
+                    sliderValue === index + 1 ? "body1-styled" : "body2-styled"
+                }
+                sx={{
+                    userSelect: "none",
+                    opacity: sliderValue === index + 1 ? 1 : 0.25,
+                }}
+            >
+                {level}
+            </TextStyled>
+        ),
+    }));
+    const iconStyles = {
+        width: { xs: "20px", sm: "24px" },
+        height: { xs: "20px", sm: "24px" },
+        lineHeight: { xs: "20px", sm: "24px" },
+    };
+
+    const cardStyles = (effect: SupportEffect) => {
+        return {
+            p: 1,
+            backgroundColor:
+                levels[sliderValue - 1] < (effect.unlock || 1)
+                    ? theme.background(1, "light")
+                    : theme.background(0, "main"),
+            border: theme.mainContentBox.border,
+            borderRadius: theme.mainContentBox.borderRadius,
+        };
+    };
+
+    const getEffectValue = (effect: SupportEffect) => {
+        const value = effect.values[sliderValue - 1];
+        return value === "-" ? (
+            <Stack spacing={1} direction="row" alignItems="center">
+                <Icon
+                    sx={{
+                        ...iconStyles,
+                        color: theme.text.primary,
+                    }}
+                >
+                    <LockIcon fontSize={matches_sm_up ? "medium" : "small"} />
+                </Icon>
+                <TextStyled variant="body2-styled">{`Lvl ${
+                    effect.unlock || 1
+                }`}</TextStyled>
+            </Stack>
+        ) : (
+            <TextStyled variant="body2-styled">{value}</TextStyled>
+        );
+    };
 
     return (
-        <MainContentBox title="Support Effects">
-            <Stack spacing={2}>
-                <StatsTable
-                    levels={levels}
-                    data={data}
-                    orientation="column"
-                    sliderProps={{
-                        initialValue: 1,
-                        sx: {
-                            minWidth: "100px",
-                            maxWidth: "50%",
-                            ml: "8px",
-                        },
+        <MainContentBox
+            title="Support Effects"
+            contentProps={{ padding: "16px" }}
+        >
+            <Box
+                sx={{
+                    width: { xs: "75%", md: "30vw" },
+                    mb: { xs: "0px", sm: "8px" },
+                }}
+            >
+                <StyledSlider
+                    value={sliderValue}
+                    marks={marks}
+                    step={1}
+                    min={1}
+                    max={5}
+                    onChange={handleSliderChange}
+                    size={matches_md_up ? "medium" : "small"}
+                    sx={{
+                        minWidth: "100px",
+                        maxWidth: "200px",
+                        ml: 2,
                     }}
-                    tableProps={{ sx: { width: "100%" } }}
                 />
-                {uniqueEffects.length > 0 && (
-                    <Box>
-                        <TextStyled sx={{ mb: "8px" }}>
-                            {`Unique Effect [Lv ${perks.unlock}+]`}
-                        </TextStyled>
-                        <StatsTable
-                            levels={[""]}
-                            data={uniqueEffects}
-                            orientation="column"
-                            tableProps={{ sx: { width: "100%" } }}
-                        />
-                    </Box>
-                )}
+            </Box>
+            <Stack spacing={1}>
+                {effects.map((e) => {
+                    let effect = getEffect(e.effect);
+                    if (effect) {
+                        return (
+                            <Stack
+                                key={effect.id}
+                                spacing={0.5}
+                                sx={cardStyles(e)}
+                            >
+                                <FlexBox
+                                    sx={{
+                                        flexWrap: "wrap",
+                                        gap: "8px",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
+                                    <Stack
+                                        spacing={1}
+                                        direction="row"
+                                        alignItems="center"
+                                    >
+                                        <Icon
+                                            sx={{
+                                                ...iconStyles,
+                                                color: theme.text.star,
+                                            }}
+                                        >
+                                            <AutoAwesomeIcon
+                                                fontSize={
+                                                    matches_sm_up
+                                                        ? "medium"
+                                                        : "small"
+                                                }
+                                            />
+                                        </Icon>
+                                        <TextStyled variant="body2-styled">
+                                            {effect.displayName}
+                                        </TextStyled>
+                                    </Stack>
+                                    {getEffectValue(e)}
+                                </FlexBox>
+                                {/* <TextStyled variant="body2-styled">
+                                    {effect.description}
+                                </TextStyled> */}
+                            </Stack>
+                        );
+                    } else {
+                        return <></>;
+                    }
+                })}
             </Stack>
         </MainContentBox>
     );

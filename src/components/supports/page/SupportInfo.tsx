@@ -1,26 +1,12 @@
-import { useState } from "react";
-import parse from "html-react-parser";
-
 // Component imports
+import MainContentBox from "custom/MainContentBox";
 import Image from "custom/Image";
 import InfoChip from "custom/InfoChip";
-import MainContentBox from "custom/MainContentBox";
 import { TextStyled } from "styled/StyledTypography";
 import { FlexBox } from "styled/StyledBox";
 
 // MUI imports
-import {
-    useTheme,
-    Box,
-    Divider,
-    Card,
-    Stack,
-    IconButton,
-    Dialog,
-    ButtonBase,
-} from "@mui/material";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import CloseIcon from "@mui/icons-material/Close";
+import { useTheme, useMediaQuery, Box, Stack, Card } from "@mui/material";
 
 // Helper imports
 import { getSupportCardRarity } from "helpers/supportCardRarity";
@@ -30,45 +16,44 @@ import { SupportProps } from "types/support";
 
 function SupportInfo({ support }: SupportProps) {
     const theme = useTheme();
+    const matches_sm_up = useMediaQuery(theme.breakpoints.up("sm"));
 
-    const { name, title, rarity, specialty, splash } = support;
+    const { name, title, rarity, specialty, perks } = support;
 
-    const [open, setOpen] = useState(false);
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const uniqueEffects = perks.effects
+        .map((effect) => effect.effect)
+        .join(" and ");
+
+    const chipIconSize = matches_sm_up ? "32px" : "28px";
 
     return (
-        <>
-            <Card
-                sx={{
-                    p: "16px",
-                    backgroundColor: theme.background(2),
-                }}
-            >
-                <Stack spacing={2} divider={<Divider />}>
-                    <FlexBox
-                        sx={{
-                            flexWrap: "wrap",
-                            columnGap: "16px",
-                            rowGap: "8px",
-                        }}
-                    >
+        <MainContentBox
+            title={
+                <Box
+                    sx={{
+                        p: { xs: "12px", sm: "16px" },
+                        backgroundColor: theme.background(2),
+                        width: "100%",
+                    }}
+                >
+                    <Stack spacing={1}>
                         <Box>
-                            <Box sx={{ mb: "8px" }}>
-                                <TextStyled
-                                    variant="h6-styled"
-                                    sx={{ mb: "4px", fontStyle: "italic" }}
-                                >
-                                    {title}
-                                </TextStyled>
-                                <TextStyled variant="h4-styled">
-                                    {name}
-                                </TextStyled>
-                            </Box>
+                            <TextStyled
+                                variant={
+                                    matches_sm_up ? "h6-styled" : "body1-styled"
+                                }
+                            >
+                                {`[${title}]`}
+                            </TextStyled>
+                            <TextStyled
+                                variant={
+                                    matches_sm_up ? "h4-styled" : "h6-styled"
+                                }
+                            >
+                                {name}
+                            </TextStyled>
+                        </Box>
+                        {matches_sm_up && (
                             <FlexBox sx={{ flexWrap: "wrap", gap: "8px" }}>
                                 <Image
                                     src={`ranks/${getSupportCardRarity(
@@ -81,50 +66,53 @@ function SupportInfo({ support }: SupportProps) {
                                     src={`stat_icons/${specialty}`}
                                     label={specialty}
                                     color="tertiary"
+                                    imgSize={{
+                                        width: chipIconSize,
+                                        height: chipIconSize,
+                                    }}
                                 />
                             </FlexBox>
-                        </Box>
-                    </FlexBox>
-                    <FlexBox sx={{ alignItems: "center" }}>
-                        <IconButton disableRipple onClick={handleClickOpen}>
-                            <InfoOutlinedIcon />
-                        </IconButton>
-                        <ButtonBase disableRipple onClick={handleClickOpen}>
-                            <TextStyled
-                                variant="subtitle1-styled"
-                                sx={{ fontStyle: "italic" }}
-                            >
-                                View Description
-                            </TextStyled>
-                        </ButtonBase>
-                    </FlexBox>
-                </Stack>
-            </Card>
-            <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-                <Box sx={{ overflowY: "auto", scrollbarWidth: "thin" }}>
-                    <MainContentBox
-                        title=""
-                        actions={
-                            <IconButton
-                                disableRipple
-                                onClick={handleClose}
-                                sx={{ color: theme.appbar.color }}
-                            >
-                                <CloseIcon />
-                            </IconButton>
-                        }
-                    >
-                        <TextStyled
-                            component="span"
-                            variant="subtitle1-styled"
-                            sx={{ fontStyle: "italic" }}
-                        >
-                            {parse(splash.en)}
-                        </TextStyled>
-                    </MainContentBox>
+                        )}
+                    </Stack>
                 </Box>
-            </Dialog>
-        </>
+            }
+            headerProps={{ padding: "0px" }}
+            contentProps={{
+                padding:
+                    uniqueEffects.length > 0
+                        ? matches_sm_up
+                            ? "16px"
+                            : "12px"
+                        : "0px",
+            }}
+        >
+            {uniqueEffects.length > 0 && (
+                <Stack spacing={1} sx={{ width: "100%", maxWidth: "300px" }}>
+                    <FlexBox
+                        columnGap="8px"
+                        flexWrap="wrap"
+                        justifyContent="space-between"
+                    >
+                        <TextStyled>{`Unique Perk`}</TextStyled>
+                        <TextStyled>{`(Lv ${perks.unlock})`}</TextStyled>
+                    </FlexBox>
+                    <Card
+                        elevation={0}
+                        sx={{
+                            p: { xs: 0, sm: 1 },
+                            backgroundColor: {
+                                xs: "transparent",
+                                sm: theme.background(0, "main"),
+                            },
+                        }}
+                    >
+                        <TextStyled variant="body2-styled">
+                            {uniqueEffects}
+                        </TextStyled>
+                    </Card>
+                </Stack>
+            )}
+        </MainContentBox>
     );
 }
 
