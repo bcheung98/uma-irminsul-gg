@@ -19,7 +19,10 @@ import {
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 // Helper imports
-import { getSupportCardRarity } from "helpers/supportCardRarity";
+import {
+    getSupportCardRarity,
+    getSupportCardRarityColor,
+} from "helpers/supportCardRarity";
 
 // Type imports
 import { SupportProps } from "types/support";
@@ -69,6 +72,16 @@ function SupportImage({ support }: SupportProps) {
                             style={{
                                 width: "100%",
                                 height: matches_sm_up ? "300px" : "auto",
+                                border: "4px solid transparent",
+                                backgroundImage: `linear-gradient(${
+                                    theme.appbar.backgroundColor
+                                }, ${
+                                    theme.appbar.backgroundColor
+                                }), ${getSupportCardRarityColor(
+                                    support.rarity
+                                )}`,
+                                backgroundOrigin: "border-box",
+                                backgroundClip: "padding-box, border-box",
                             }}
                         />
                     </Box>

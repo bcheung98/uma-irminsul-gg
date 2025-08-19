@@ -13,7 +13,10 @@ import Grid from "@mui/material/Grid2";
 // Helper imports
 import { getRarityColor } from "helpers/rarityColors";
 import { zoomImageOnHover } from "helpers/utils";
-import { getSupportCardRarity } from "helpers/supportCardRarity";
+import {
+    getSupportCardRarity,
+    getSupportCardRarityColor,
+} from "helpers/supportCardRarity";
 
 // Type imports
 import { Rarity, Specialty } from "types/_common";
@@ -30,6 +33,8 @@ interface InfoCardProps {
     showName?: boolean;
     info?: {
         rank?: Rarity;
+    };
+    infoSecondary?: {
         specialty?: Specialty;
     };
     materials?: string[];
@@ -52,6 +57,7 @@ function InfoCard({
     size = "128px",
     showName = variant !== "icon",
     info,
+    infoSecondary,
     materials,
     backgroundColor,
     disableTooltip = showName,
@@ -135,12 +141,21 @@ function InfoCard({
             variant === "avatar" && type === "character"
                 ? backgroundColor
                 : "transparent",
+        border:
+            variant === "avatar" && type === "support"
+                ? "4px solid transparent"
+                : "none",
         backgroundImage:
-            variant === "avatar" && type === "character"
-                ? null
-                : `url(https://assets.irminsul.gg/wuwa/backgrounds/Background_${rarity}_Star.png)`,
-        backgroundSize: "contain",
-        backgroundRepeat: "repeat",
+            variant === "avatar" && type === "support"
+                ? `linear-gradient(${theme.appbar.backgroundColor}, ${
+                      theme.appbar.backgroundColor
+                  }), ${getSupportCardRarityColor(rarity)}`
+                : "none",
+        backgroundOrigin:
+            variant === "avatar" && type === "support"
+                ? "border-box"
+                : "padding-box",
+        backgroundClip: "padding-box, border-box",
     };
 
     const imageStyle: CSSProperties = {
@@ -152,11 +167,8 @@ function InfoCard({
     const infoIconStyle: CSSProperties = {
         width: `calc(${imgSize} / 8 + 12px)`,
         height: `calc(${imgSize} / 8 + 12px)`,
-        minWidth: "32px",
-        minHeight: "32px",
-        padding: "2px",
-        borderRadius: "4px",
-        backgroundColor: theme.appbar.backgroundColor,
+        minWidth: "16px",
+        minHeight: "16px",
     };
 
     return (
@@ -196,13 +208,33 @@ function InfoCard({
                                 sx={{
                                     p: "8px",
                                     borderTop:
-                                        variant === "icon"
+                                        type === "support" || variant === "icon"
                                             ? "none"
                                             : `calc(${imgSize} / 20) solid ${getRarityColor(
                                                   rarity
                                               )}`,
                                 }}
                             >
+                                <RouterLink
+                                    to={href}
+                                    sx={{ display: "flex", mx: "auto" }}
+                                >
+                                    <TextStyled
+                                        onMouseEnter={() =>
+                                            handleHover("enter")
+                                        }
+                                        onMouseLeave={() =>
+                                            handleHover("leave")
+                                        }
+                                        sx={{
+                                            color: theme.appbar.color,
+                                            textAlign: "center",
+                                        }}
+                                        variant={"subtitle2-styled"}
+                                    >
+                                        {showName && `[${title}]`}
+                                    </TextStyled>
+                                </RouterLink>
                                 <RouterLink
                                     to={href}
                                     sx={{ display: "flex", mx: "auto" }}
@@ -227,26 +259,6 @@ function InfoCard({
                                         {showName && name}
                                     </TextStyled>
                                 </RouterLink>
-                                <RouterLink
-                                    to={href}
-                                    sx={{ display: "flex", mx: "auto" }}
-                                >
-                                    <TextStyled
-                                        onMouseEnter={() =>
-                                            handleHover("enter")
-                                        }
-                                        onMouseLeave={() =>
-                                            handleHover("leave")
-                                        }
-                                        sx={{
-                                            color: theme.appbar.color,
-                                            textAlign: "center",
-                                        }}
-                                        variant={"subtitle2-styled"}
-                                    >
-                                        {showName && `[${title}]`}
-                                    </TextStyled>
-                                </RouterLink>
                             </Box>
                         )}
                     </Card>
@@ -256,8 +268,8 @@ function InfoCard({
                             sx={{
                                 position: "absolute",
                                 zIndex: 5,
-                                top: "-2px",
-                                left: "-12px",
+                                top: 0,
+                                left: -4,
                                 borderRadius: "8px",
                             }}
                         >
@@ -270,12 +282,25 @@ function InfoCard({
                                     }}
                                 />
                             )}
-                            {info.specialty !== undefined && (
+                        </Stack>
+                    )}
+                    {infoSecondary && (
+                        <Stack
+                            spacing={0.5}
+                            sx={{
+                                position: "absolute",
+                                zIndex: 5,
+                                top: -2,
+                                right: -2,
+                                borderRadius: "8px",
+                            }}
+                        >
+                            {infoSecondary.specialty !== undefined && (
                                 <Image
-                                    src={`stat_icons/${info.specialty}`}
-                                    alt={info.specialty}
+                                    src={`stat_icons/${infoSecondary.specialty}`}
+                                    alt={infoSecondary.specialty}
                                     style={infoIconStyle}
-                                    tooltip={info.specialty}
+                                    tooltip={infoSecondary.specialty}
                                 />
                             )}
                         </Stack>

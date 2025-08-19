@@ -154,6 +154,8 @@ function SupportBrowser() {
                             rarity={support.rarity}
                             info={{
                                 rank: support.rarity,
+                            }}
+                            infoSecondary={{
                                 specialty: support.specialty,
                             }}
                             backgroundColor={theme.background(1)}
