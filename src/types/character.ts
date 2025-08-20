@@ -19,11 +19,11 @@ export interface Character {
 }
 
 export interface CharacterStats {
-    speed: string[];
-    stamina: string[];
-    power: string[];
-    guts: string[];
-    wit: string[];
+    speed: number[];
+    stamina: number[];
+    power: number[];
+    guts: number[];
+    wit: number[];
 }
 
 export interface CharacterAptitude {
