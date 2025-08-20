@@ -13,7 +13,13 @@ import { useTheme, useMediaQuery, Stack, Box } from "@mui/material";
 import { useAppSelector } from "helpers/hooks";
 import { selectSkills } from "reducers/skill";
 
-function SkillInfo({ tag }: { tag: string | number }) {
+function SkillInfo({
+    tag,
+    variant = "normal",
+}: {
+    tag: string | number;
+    variant?: "normal" | "mini";
+}) {
     const theme = useTheme();
     const matches_md_up = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -24,9 +30,9 @@ function SkillInfo({ tag }: { tag: string | number }) {
     if (skill !== undefined) {
         const skillUnlock = skill.rarity === 4 && (
             <FlexBox>
-                <TextStyled variant="h6-styled">(</TextStyled>
-                <RarityStars rarity={3} variant="h6-styled" />
-                <TextStyled variant="h6-styled">+)</TextStyled>
+                <TextStyled>(</TextStyled>
+                <RarityStars rarity={3} />
+                <TextStyled>+)</TextStyled>
             </FlexBox>
         );
         const skillDesc = (
@@ -40,33 +46,46 @@ function SkillInfo({ tag }: { tag: string | number }) {
         );
 
         return (
-            <Box>
-                <Stack
-                    spacing={2}
-                    direction="row"
-                    alignItems={{ xs: "center", md: "flex-start" }}
-                    sx={{ mb: "8px" }}
-                >
-                    <Image
-                        src={`skills/${skill.icon}`}
-                        alt={skill.icon.toString()}
-                        style={{
-                            width: matches_md_up ? "48px" : "40px",
-                            marginTop: matches_md_up ? "8px" : "0px",
-                        }}
-                    />
+            <>
+                {variant === "normal" ? (
                     <Box>
-                        <FlexBox flexWrap="wrap" gap="8px">
-                            <TextStyled variant="h6-styled">
-                                {skill.name.global}
-                            </TextStyled>
-                            {matches_md_up && skillUnlock}
-                        </FlexBox>
-                        {matches_md_up ? skillDesc : skillUnlock}
+                        <Stack
+                            spacing={2}
+                            direction="row"
+                            alignItems={{ xs: "center", md: "flex-start" }}
+                            sx={{ mb: "8px" }}
+                        >
+                            <Image
+                                src={`skills/${skill.icon}`}
+                                alt={skill.icon.toString()}
+                                style={{
+                                    width: matches_md_up ? "48px" : "40px",
+                                    marginTop: matches_md_up ? "8px" : "0px",
+                                }}
+                            />
+                            <Box>
+                                <FlexBox flexWrap="wrap" gap="8px">
+                                    <TextStyled>{skill.name.global}</TextStyled>
+                                    {matches_md_up && skillUnlock}
+                                </FlexBox>
+                                {matches_md_up ? skillDesc : skillUnlock}
+                            </Box>
+                        </Stack>
+                        {!matches_md_up && skillDesc}
                     </Box>
-                </Stack>
-                {!matches_md_up && skillDesc}
-            </Box>
+                ) : (
+                    <Stack spacing={1.5} direction="row" alignItems="center">
+                        <Image
+                            src={`skills/${skill.icon}`}
+                            alt={skill.icon.toString()}
+                            style={{ width: matches_md_up ? "28px" : "24px" }}
+                        />
+                        <TextStyled variant="body2-styled">
+                            {skill.name.global}
+                        </TextStyled>
+                    </Stack>
+                )}
+            </>
         );
     } else {
         return <></>;
