@@ -1,11 +1,11 @@
 // Component imports
-import MainContentBox from "custom/MainContentBox";
 import Image from "custom/Image";
 import { FlexBox } from "styled/StyledBox";
 import { TextStyled } from "styled/StyledTypography";
 
 // MUI imports
-import { useTheme, Box } from "@mui/material";
+import { useTheme, useMediaQuery, Card, Stack } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 
 // Helper imports
 import { toTitleCase } from "helpers/utils";
@@ -15,47 +15,85 @@ import { CharacterProps } from "types/character";
 
 function CharacterAptitude({ character }: CharacterProps) {
     const theme = useTheme();
+    const matches_sm_up = useMediaQuery(theme.breakpoints.up("sm"));
 
     const { aptitude } = character;
 
     return (
-        <MainContentBox title="Aptitude" contentProps={{ padding: 2 }}>
-            <FlexBox flexWrap="wrap" columnGap="24px" rowGap="16px">
-                {Object.entries(aptitude).map(([category, values]) => (
-                    <Box
-                        key={category}
-                        sx={{
-                            px: 2,
-                            py: 1,
-                            backgroundColor: theme.background(1, "light"),
-                            border: theme.mainContentBox.border,
-                            borderRadius: theme.mainContentBox.borderRadius,
-                            width: "100%",
-                        }}
-                    >
-                        <TextStyled variant="h6-styled" sx={{ mb: "4px" }}>
-                            {toTitleCase(category)}
+        <Stack spacing={1} sx={{ px: { xs: "16px", md: "8px" } }}>
+            {Object.entries(aptitude).map(([category, values]) => (
+                <Grid key={category} container spacing={1}>
+                    <Grid size={{ xs: 12, md: "grow" }}>
+                        <TextStyled
+                            sx={{
+                                textAlign: {
+                                    xs: "left",
+                                    md: "center",
+                                },
+                            }}
+                        >
+                            {getAptitudeName(category)}
                         </TextStyled>
-                        <FlexBox flexWrap="wrap" columnGap="24px" rowGap="4px">
+                    </Grid>
+                    <Grid size={{ xs: 12, md: 10, xl: 10.5 }}>
+                        <FlexBox flexWrap="wrap" gap="8px">
                             {Object.entries(values).map(([apt, rank]) => (
-                                <FlexBox
+                                <Card
                                     key={apt}
-                                    gap="8px"
-                                    alignItems="center"
+                                    sx={{
+                                        p: "2px 8px",
+                                        backgroundColor: theme.background(0),
+                                        width: "96px",
+                                    }}
                                 >
-                                    <TextStyled>{toTitleCase(apt)}:</TextStyled>
-                                    <Image
-                                        src={`ranks/${rank}`}
-                                        style={{ width: "28px" }}
-                                    />
-                                </FlexBox>
+                                    <Stack
+                                        spacing={1}
+                                        direction="row"
+                                        alignItems="center"
+                                        justifyContent="space-around"
+                                    >
+                                        <TextStyled
+                                            sx={{
+                                                xs: "14px",
+                                                sm: "16px",
+                                            }}
+                                        >
+                                            {getAptitudeName(apt)}
+                                        </TextStyled>
+                                        <Image
+                                            src={`ranks/${rank}`}
+                                            alt={`${rank}`}
+                                            style={{
+                                                marginTop: "2px",
+                                                height: matches_sm_up
+                                                    ? "20px"
+                                                    : "16px",
+                                            }}
+                                        />
+                                    </Stack>
+                                </Card>
                             ))}
                         </FlexBox>
-                    </Box>
-                ))}
-            </FlexBox>
-        </MainContentBox>
+                    </Grid>
+                </Grid>
+            ))}
+        </Stack>
     );
 }
 
 export default CharacterAptitude;
+
+function getAptitudeName(apt: string) {
+    switch (apt) {
+        case "short":
+            return "Sprint";
+        case "surface":
+            return "Track";
+        case "distance":
+            return "Distance";
+        case "strategy":
+            return "Style";
+        default:
+            return toTitleCase(apt);
+    }
+}

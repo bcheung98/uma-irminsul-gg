@@ -11,16 +11,17 @@ function CharacterImage({ character }: CharacterProps) {
     const theme = useTheme();
 
     return (
-        <>
-            <Image
-                src={`characters/avatars/${character.id}`}
-                alt={character.name}
-                style={{
-                    borderRadius: "4px",
-                    backgroundColor: theme.background(2),
-                }}
-            />
-        </>
+        <Image
+            src={`characters/avatars/${character.id}`}
+            alt={character.name}
+            style={{
+                width: "100%",
+                height: "100%",
+                maxWidth: "512px",
+                borderRadius: "4px",
+                backgroundColor: theme.background(2),
+            }}
+        />
     );
 }
 
