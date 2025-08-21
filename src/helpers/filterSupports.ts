@@ -34,16 +34,34 @@ export function filterSupports(
             supps = supps.sort(
                 (a, b) =>
                     a.name.localeCompare(b.name) ||
-                    a.title.localeCompare(b.title)
+                    sortBy(
+                        Specialty[b.specialty],
+                        Specialty[a.specialty],
+                        reverse
+                    )
             );
             if (reverse) {
                 supps = supps.reverse();
             }
             break;
+        case "specialty":
+            supps = supps.sort(
+                (a, b) =>
+                    sortBy(
+                        Specialty[b.specialty],
+                        Specialty[a.specialty],
+                        reverse
+                    ) ||
+                    sortBy(a.rarity, b.rarity) ||
+                    a.name.localeCompare(b.name) ||
+                    a.title.localeCompare(b.title)
+            );
+            break;
         case "rarity":
             supps = supps.sort(
                 (a, b) =>
                     sortBy(a.rarity, b.rarity, reverse) ||
+                    sortBy(Specialty[b.specialty], Specialty[a.specialty]) ||
                     a.name.localeCompare(b.name) ||
                     a.title.localeCompare(b.title)
             );
@@ -67,4 +85,14 @@ export function filterSupports(
     }
 
     return supps;
+}
+
+enum Specialty {
+    "Speed",
+    "Stamina",
+    "Power",
+    "Guts",
+    "Wit",
+    "Pal",
+    "Group",
 }

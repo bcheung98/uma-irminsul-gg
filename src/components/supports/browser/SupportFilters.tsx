@@ -117,7 +117,7 @@ function SupportFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
             </List>
             <BrowserSort
                 type="supports"
-                options={["release", "name", "rarity"]}
+                options={["release", "name", "specialty", "rarity"]}
             />
         </>
     );
