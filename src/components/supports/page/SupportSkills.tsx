@@ -19,12 +19,6 @@ function SupportSkills({ support }: SupportProps) {
 
     const gridParams = {
         size: { xs: 12, md: 6 },
-        sx: {
-            p: 1,
-            backgroundColor: theme.background(0, "main"),
-            border: theme.mainContentBox.border,
-            borderRadius: theme.mainContentBox.borderRadius,
-        },
     };
 
     return (
@@ -58,7 +52,19 @@ function SupportSkills({ support }: SupportProps) {
                     <Box>
                         <TextStyled sx={{ mb: "8px" }}>Stat Hints</TextStyled>
                         <Grid container>
-                            <Grid {...gridParams}>
+                            <Grid
+                                {...gridParams}
+                                sx={{
+                                    p: 1,
+                                    backgroundColor: theme.background(
+                                        0,
+                                        "main"
+                                    ),
+                                    border: theme.mainContentBox.border,
+                                    borderRadius:
+                                        theme.mainContentBox.borderRadius,
+                                }}
+                            >
                                 <Stack spacing={1.5} direction="row">
                                     <Icon
                                         sx={{

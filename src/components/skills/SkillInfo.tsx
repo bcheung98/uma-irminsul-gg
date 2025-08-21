@@ -3,7 +3,6 @@ import parse from "html-react-parser";
 // Component imports
 import Image from "custom/Image";
 import { FlexBox } from "styled/StyledBox";
-import RarityStars from "custom/RarityStars";
 import { Text, TextStyled } from "styled/StyledTypography";
 
 // MUI imports
@@ -12,6 +11,7 @@ import { useTheme, useMediaQuery, Stack, Box } from "@mui/material";
 // Helper imports
 import { useAppSelector } from "helpers/hooks";
 import { selectSkills } from "reducers/skill";
+import { getSkillRarityColor } from "helpers/skillRarity";
 
 function SkillInfo({
     tag,
@@ -28,22 +28,36 @@ function SkillInfo({
     );
 
     if (skill !== undefined) {
-        const skillUnlock = skill.rarity === 4 && (
-            <FlexBox>
-                <TextStyled>(</TextStyled>
-                <RarityStars rarity={3} />
-                <TextStyled>+)</TextStyled>
-            </FlexBox>
-        );
+        const skillUnlock = skill.rarity === 4 && <TextStyled>(3★)</TextStyled>;
+        const skillName = skill.name.global || skill.name.jp;
         const skillDesc = (
             <Text
                 component="span"
                 variant={matches_md_up ? "body2-styled" : "body1-styled"}
                 sx={{ color: theme.text.description }}
             >
-                {parse(skill.description.global)}
+                {parse(skill.description.global || skill.description.jp)}
             </Text>
         );
+
+        const textContainerStyle = {
+            p: skill.rarity >= 2 ? "2px 8px" : "0px",
+            borderRadius:
+                skill.rarity >= 2 ? theme.mainContentBox.borderRadius : 0,
+            backgroundImage: getSkillRarityColor(skill.rarity),
+        };
+
+        const textContainerStyleMini = {
+            p: "4px 8px",
+            borderRadius: theme.mainContentBox.borderRadius,
+            backgroundImage: getSkillRarityColor(skill.rarity),
+            backgroundColor: theme.background(0, "main"),
+        };
+
+        const textStyle = {
+            color:
+                skill.rarity >= 2 ? "rgba(58, 39, 11, 1)" : theme.text.primary,
+        };
 
         return (
             <>
@@ -53,35 +67,54 @@ function SkillInfo({
                             spacing={2}
                             direction="row"
                             alignItems={{ xs: "center", md: "flex-start" }}
-                            sx={{ mb: "8px" }}
+                            sx={{ mb: { xs: "8px", lg: 0 } }}
                         >
-                            <Image
-                                src={`skills/${skill.icon}`}
-                                alt={skill.icon.toString()}
-                                style={{
-                                    width: matches_md_up ? "48px" : "40px",
-                                    marginTop: matches_md_up ? "8px" : "0px",
-                                }}
-                            />
-                            <Box>
-                                <FlexBox flexWrap="wrap" gap="8px">
-                                    <TextStyled>{skill.name.global}</TextStyled>
-                                    {matches_md_up && skillUnlock}
+                            <Stack
+                                spacing={0.5}
+                                alignItems="center"
+                                justifyContent="center"
+                            >
+                                <Image
+                                    src={`skills/${skill.icon}`}
+                                    alt={skill.icon.toString()}
+                                    style={{
+                                        width: matches_md_up ? "48px" : "40px",
+                                    }}
+                                />
+                                {matches_md_up && skillUnlock}
+                            </Stack>
+                            <Box sx={{ width: { xs: "75%", sm: "50%" } }}>
+                                <FlexBox
+                                    flexWrap="wrap"
+                                    gap="8px"
+                                    alignItems="center"
+                                    sx={textContainerStyle}
+                                >
+                                    <TextStyled sx={textStyle}>
+                                        {skillName}
+                                    </TextStyled>
                                 </FlexBox>
-                                {matches_md_up ? skillDesc : skillUnlock}
+                                <Box sx={{ width: "150%", mt: "4px" }}>
+                                    {matches_md_up ? skillDesc : skillUnlock}
+                                </Box>
                             </Box>
                         </Stack>
                         {!matches_md_up && skillDesc}
                     </Box>
                 ) : (
-                    <Stack spacing={1.5} direction="row" alignItems="center">
+                    <Stack
+                        spacing={1.5}
+                        direction="row"
+                        alignItems="center"
+                        sx={textContainerStyleMini}
+                    >
                         <Image
                             src={`skills/${skill.icon}`}
                             alt={skill.icon.toString()}
                             style={{ width: matches_md_up ? "28px" : "24px" }}
                         />
-                        <TextStyled variant="body2-styled">
-                            {skill.name.global}
+                        <TextStyled variant="body2-styled" sx={textStyle}>
+                            {skillName}
                         </TextStyled>
                     </Stack>
                 )}
