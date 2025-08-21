@@ -159,6 +159,8 @@ function SupportBrowser() {
                                 specialty: support.specialty,
                             }}
                             backgroundColor={theme.background(1)}
+                            size="144px"
+                            imgLoad="lazy"
                         />
                     ))}
                 </Grid>
