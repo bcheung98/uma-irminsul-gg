@@ -38,16 +38,20 @@ function SupportSkills({ support }: SupportProps) {
                         </Grid>
                     </Box>
                 )}
-                <Box>
-                    <TextStyled sx={{ mb: "8px" }}>Support Hints</TextStyled>
-                    <Grid container spacing={1}>
-                        {skills.map((skill, index) => (
-                            <Grid key={index} {...gridParams}>
-                                <SkillInfo tag={skill} variant="mini" />
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>
+                {skills.length > 0 && (
+                    <Box>
+                        <TextStyled sx={{ mb: "8px" }}>
+                            Support Hints
+                        </TextStyled>
+                        <Grid container spacing={1}>
+                            {skills.map((skill, index) => (
+                                <Grid key={index} {...gridParams}>
+                                    <SkillInfo tag={skill} variant="mini" />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+                )}
                 {stats.length > 0 && (
                     <Box>
                         <TextStyled sx={{ mb: "8px" }}>Stat Hints</TextStyled>

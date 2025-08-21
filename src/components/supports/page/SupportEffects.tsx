@@ -38,9 +38,9 @@ function SupportEffects({ support }: SupportProps) {
         setSliderValue(newValue as number);
     };
 
-    const effects = [...supportEffects].sort((a, b) =>
-        sortBy(b.unlock || 1, a.unlock || 1)
-    );
+    const effects = [
+        ...supportEffects.filter((effect) => effect.unlock !== 0),
+    ].sort((a, b) => sortBy(b.unlock || 1, a.unlock || 1));
 
     const getEffect = (tag: string | number) => {
         return effectList.find(
@@ -84,7 +84,28 @@ function SupportEffects({ support }: SupportProps) {
 
     const getEffectValue = (effect: SupportEffect) => {
         const value = effect.values[sliderValue - 1];
-        return value === "-" ? (
+        let valueText = value.toString();
+        if (
+            [
+                "Friendship Bonus",
+                "Mood Effect",
+                "Training Effectiveness",
+                "Race Bonus",
+                "Fan Bonus",
+                "Hint Frequency",
+                "Event Recovery",
+                "Event Effectiveness",
+                "Failure Protection",
+                "Energy Cost Reduction",
+                "All Stats Bonus",
+            ].includes(effect.effect)
+        ) {
+            valueText += "%";
+        }
+        if (effect.effect === "Hint Levels") {
+            valueText = `Lv ${value}`;
+        }
+        return value === -1 ? (
             <Stack spacing={1} direction="row" alignItems="center">
                 <Icon
                     sx={{
@@ -94,12 +115,10 @@ function SupportEffects({ support }: SupportProps) {
                 >
                     <LockIcon fontSize={matches_sm_up ? "medium" : "small"} />
                 </Icon>
-                <TextStyled variant="body2-styled">{`Lvl ${
-                    effect.unlock || 1
-                }`}</TextStyled>
+                <TextStyled variant="body2-styled">{`Lvl ${effect.unlock}`}</TextStyled>
             </Stack>
         ) : (
-            <TextStyled variant="body2-styled">{value}</TextStyled>
+            <TextStyled variant="body2-styled">{valueText}</TextStyled>
         );
     };
 

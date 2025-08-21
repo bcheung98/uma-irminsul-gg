@@ -31,7 +31,7 @@ export interface Support {
 
 export interface SupportEffect {
     effect: string;
-    values: string[];
+    values: number[];
     unlock?: number;
 }
 
