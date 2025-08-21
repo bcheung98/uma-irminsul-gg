@@ -11,6 +11,9 @@ export function filterCharacters(
     sortSettings: BrowserSettings
 ) {
     let chars = [...characters];
+    if (filters.rarity.length > 0) {
+        chars = chars.filter((char) => filters.rarity.includes(char.rarity));
+    }
     if (searchValue !== "") {
         chars = chars.filter(
             (char) =>
@@ -51,7 +54,9 @@ export function filterCharacters(
                             date: b.release.global,
                         }).obj.getTime(),
                         reverse
-                    ) || sortBy(b.name, a.name, !reverse)
+                    ) ||
+                    sortBy(b.rarity, a.rarity, !reverse) ||
+                    sortBy(b.name, a.name, !reverse)
             );
             break;
     }

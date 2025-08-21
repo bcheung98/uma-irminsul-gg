@@ -17,7 +17,6 @@ export const characterFilterSlice = createSlice({
         setRarity: (state, action: PayloadAction<Rarity[]>) => {
             state.rarity = action.payload;
         },
-
         clearFilters: (
             state,
             action: PayloadAction<keyof CharacterFilterState | undefined>

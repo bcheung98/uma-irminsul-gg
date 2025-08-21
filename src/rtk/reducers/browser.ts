@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { startAppListening } from "helpers/hooks";
 
-export type SortBy = "name" | "rarity" | "element" | "weapon" | "release";
+export type SortBy = "name" | "rarity" | "release";
 export type SortDirection = "asc" | "desc";
 export type View = "icon" | "card" | "table";
 

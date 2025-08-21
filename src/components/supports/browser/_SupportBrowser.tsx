@@ -1,6 +1,7 @@
 import { BaseSyntheticEvent, useEffect, useMemo, useState } from "react";
 
 // Component imports
+import SupportFilters from "./SupportFilters";
 import InfoCard from "custom/InfoCard";
 import ToggleButtons, { CustomToggleButtonProps } from "custom/ToggleButtons";
 import SearchBar from "custom/SearchBar";
@@ -21,6 +22,7 @@ import { useAppDispatch, useAppSelector } from "helpers/hooks";
 import { filterSupports } from "helpers/filterSupports";
 import { selectSupports } from "reducers/support";
 import { clearFilters, selectSupportFilters } from "reducers/supportFilters";
+import { isRightDrawerOpen, toggleRightDrawer } from "reducers/layout";
 import { selectBrowserSettings, setBrowserView, View } from "reducers/browser";
 
 function SupportBrowser() {
@@ -59,6 +61,18 @@ function SupportBrowser() {
         [supports, filters, searchValue, browserSettings]
     );
 
+    const drawerOpen = useAppSelector(isRightDrawerOpen);
+    const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+    const toggleDrawerState = () => {
+        dispatch(toggleRightDrawer());
+    };
+    const handleMobileDrawerOpen = () => {
+        setMobileDrawerOpen(true);
+    };
+    const handleMobileDrawerClose = () => {
+        setMobileDrawerOpen(false);
+    };
+
     const currentView = browserSettings.view;
     const [view, setView] = useState<View>(currentView);
     const handleView = (_: BaseSyntheticEvent, view: View) => {
@@ -85,6 +99,10 @@ function SupportBrowser() {
     useEffect(() => {
         dispatch(clearFilters());
     }, []);
+
+    useEffect(() => {
+        dispatch(toggleRightDrawer(matches_md_up));
+    }, [matches_md_up]);
 
     return (
         <>
@@ -118,7 +136,7 @@ function SupportBrowser() {
                     />
                 </Grid>
                 <Grid size={{ xs: 12, sm: "auto" }}>
-                    {/* <Button
+                    <Button
                         onClick={
                             matches_md_up
                                 ? toggleDrawerState
@@ -138,7 +156,7 @@ function SupportBrowser() {
                         sx={{ height: "36px" }}
                     >
                         Filters
-                    </Button> */}
+                    </Button>
                 </Grid>
             </Grid>
             {view === "icon" && (
@@ -164,6 +182,25 @@ function SupportBrowser() {
                         />
                     ))}
                 </Grid>
+            )}
+            <ActionFab
+                action={
+                    matches_md_up ? toggleDrawerState : handleMobileDrawerOpen
+                }
+                icon={<TuneIcon />}
+                tooltip="Open filters"
+                tooltipArrow="left"
+            />
+            {!matches_md_up && (
+                <Drawer
+                    sx={theme.styles.drawer(matches_sm_up)}
+                    variant="temporary"
+                    anchor={matches_sm_up ? "right" : "bottom"}
+                    open={mobileDrawerOpen}
+                    onClose={handleMobileDrawerClose}
+                >
+                    <SupportFilters handleClose={handleMobileDrawerClose} />
+                </Drawer>
             )}
         </>
     );

@@ -11,11 +11,19 @@ export function filterSupports(
     sortSettings: BrowserSettings
 ) {
     let supps = [...supports];
+    if (filters.specialty.length > 0) {
+        supps = supps.filter((supp) =>
+            filters.specialty.includes(supp.specialty)
+        );
+    }
+    if (filters.rarity.length > 0) {
+        supps = supps.filter((supp) => filters.rarity.includes(supp.rarity));
+    }
     if (searchValue !== "") {
         supps = supps.filter(
-            (char) =>
-                char.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-                char.title.toLowerCase().includes(searchValue.toLowerCase())
+            (supp) =>
+                supp.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+                supp.title.toLowerCase().includes(searchValue.toLowerCase())
         );
     }
 
@@ -51,7 +59,9 @@ export function filterSupports(
                             date: b.release.global,
                         }).obj.getTime(),
                         reverse
-                    ) || sortBy(b.name, a.name, !reverse)
+                    ) ||
+                    sortBy(b.rarity, a.rarity, !reverse) ||
+                    sortBy(b.name, a.name, !reverse)
             );
             break;
     }

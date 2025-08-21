@@ -1,13 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { objectKeys } from "helpers/utils";
-import { Rarity } from "types/_common";
+import { Rarity, Specialty } from "types/_common";
 
 export interface SupportFilterState {
     rarity: Rarity[];
+    specialty: Specialty[];
 }
 
 const initialState: SupportFilterState = {
     rarity: [],
+    specialty: [],
 };
 
 export const supportFilterSlice = createSlice({
@@ -17,7 +19,9 @@ export const supportFilterSlice = createSlice({
         setRarity: (state, action: PayloadAction<Rarity[]>) => {
             state.rarity = action.payload;
         },
-
+        setSpecialty: (state, action: PayloadAction<Specialty[]>) => {
+            state.specialty = action.payload;
+        },
         clearFilters: (
             state,
             action: PayloadAction<keyof SupportFilterState | undefined>
@@ -37,7 +41,8 @@ export const supportFilterSlice = createSlice({
     },
 });
 
-export const { setRarity, clearFilters } = supportFilterSlice.actions;
+export const { setRarity, setSpecialty, clearFilters } =
+    supportFilterSlice.actions;
 
 export const { selectSupportFilters, activeSupportFilters } =
     supportFilterSlice.selectors;
