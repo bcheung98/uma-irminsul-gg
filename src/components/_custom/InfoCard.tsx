@@ -80,7 +80,7 @@ function InfoCard({
     }
 
     const borderWidth = variant !== "icon" ? theme.displayCard.borderWidth : 0;
-    const borderRadius = variant === "icon" ? "4px" : "16px";
+    let borderRadius = variant === "icon" ? "4px" : "16px";
     const borderColor =
         variant === "icon" ? "transparent" : theme.border.color.primary;
 
@@ -135,6 +135,12 @@ function InfoCard({
     const imageContainerStyle: SxProps = {
         display: "flex",
         overflow: "clip",
+        borderRadius: borderRadius,
+        // outline:
+        //     variant === "avatar" && type === "character"
+        //         ? `4px solid ${getRarityColor(rarity)}`
+        //         : "none",
+        // outlineOffset: -16,
         width:
             variant === "material-card" ? `calc(${imgSize} * 8 / 3)` : "auto",
         backgroundColor:
@@ -147,9 +153,9 @@ function InfoCard({
                 : "none",
         backgroundImage:
             variant === "avatar" && type === "support"
-                ? `linear-gradient(${theme.appbar.backgroundColor}, ${
-                      theme.appbar.backgroundColor
-                  }), ${getSupportCardRarityColor(rarity)}`
+                ? `linear-gradient(transparent, transparent), ${getSupportCardRarityColor(
+                      rarity
+                  )}`
                 : "none",
         backgroundOrigin:
             variant === "avatar" && type === "support"
@@ -165,8 +171,8 @@ function InfoCard({
     };
 
     const infoIconStyle: CSSProperties = {
-        width: `calc(${imgSize} / 8 + 12px)`,
-        height: `calc(${imgSize} / 8 + 12px)`,
+        width: `calc(${imgSize} / 6 + 12px)`,
+        height: `calc(${imgSize} / 6 + 12px)`,
         minWidth: "16px",
         minHeight: "16px",
     };
@@ -206,7 +212,7 @@ function InfoCard({
                         {showName && (
                             <Box
                                 sx={{
-                                    p: "8px",
+                                    p: "8px 4px",
                                     borderTop:
                                         type === "support" || variant === "icon"
                                             ? "none"
@@ -215,10 +221,7 @@ function InfoCard({
                                               )}`,
                                 }}
                             >
-                                <RouterLink
-                                    to={href}
-                                    sx={{ display: "flex", mx: "auto" }}
-                                >
+                                <RouterLink to={href} sx={{ display: "flex" }}>
                                     <TextStyled
                                         onMouseEnter={() =>
                                             handleHover("enter")
@@ -229,16 +232,14 @@ function InfoCard({
                                         sx={{
                                             color: theme.appbar.color,
                                             textAlign: "center",
+                                            fontSize: "12px !important",
                                         }}
-                                        variant={"subtitle2-styled"}
+                                        variant="body2-styled"
                                     >
                                         {showName && `[${title}]`}
                                     </TextStyled>
                                 </RouterLink>
-                                <RouterLink
-                                    to={href}
-                                    sx={{ display: "flex", mx: "auto" }}
-                                >
+                                <RouterLink to={href} sx={{ display: "flex" }}>
                                     <TextStyled
                                         onMouseEnter={() =>
                                             handleHover("enter")
@@ -268,17 +269,17 @@ function InfoCard({
                             sx={{
                                 position: "absolute",
                                 zIndex: 5,
-                                top: 0,
-                                left: -4,
+                                top: -2,
+                                left: 8,
                                 borderRadius: "8px",
                             }}
                         >
                             {info.rank !== undefined && type === "support" && (
                                 <Image
-                                    src={`ranks/${rank}`}
+                                    src={`rarity/${rank}`}
                                     alt={rank}
                                     style={{
-                                        height: `calc(${imgSize} / 8 + 8px)`,
+                                        height: `calc(${imgSize} / 4 + 8px)`,
                                     }}
                                 />
                             )}
@@ -291,7 +292,7 @@ function InfoCard({
                                 position: "absolute",
                                 zIndex: 5,
                                 top: -2,
-                                right: -2,
+                                right: 2,
                                 borderRadius: "8px",
                             }}
                         >
@@ -320,13 +321,7 @@ function InfoCard({
 
 export default InfoCard;
 
-function MaterialGrid({
-    materials,
-    size,
-}: {
-    materials: string[];
-    size: string;
-}) {
+function MaterialGrid({ size }: { materials: string[]; size: string }) {
     const theme = useTheme();
 
     const images = [{ src: "", tag: "" }];
