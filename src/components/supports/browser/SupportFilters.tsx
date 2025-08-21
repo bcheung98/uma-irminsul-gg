@@ -50,9 +50,9 @@ function SupportFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
                 value: rarity,
                 icon: (
                     <Image
-                        src={`ranks/badge/${ranks[rarity - 3]}`}
+                        src={`rarity/${ranks[rarity - 3]}`}
                         alt={`${ranks[rarity - 3]}`}
-                        style={{ height: "32px", padding: "2px" }}
+                        style={{ height: "32px", padding: "4px" }}
                         tooltip={`${ranks[rarity - 3]}`}
                     />
                 ),
