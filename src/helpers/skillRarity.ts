@@ -5,10 +5,10 @@ export function getSkillRarityColor(rarity: Rarity) {
         case 1:
             return "none";
         case 2:
-            return "linear-gradient(to left, rgba(255, 255, 205, 1), rgba(247, 195, 74, 1))";
+            return "linear-gradient(to right, rgb(255, 255, 239), rgb(255, 190, 38) 50%)";
         case 3:
         case 4:
         case 5:
-            return "linear-gradient(to left, rgb(222, 255, 214) 0%, rgb(181, 215, 255) 50%, rgb(255, 175, 240) 100%)";
+            return "linear-gradient(to right, rgb(239, 255, 214) 0%, rgb(189, 219, 255) 50%, rgb(255, 186, 231) 100%)";
     }
 }

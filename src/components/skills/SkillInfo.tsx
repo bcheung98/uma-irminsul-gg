@@ -6,7 +6,7 @@ import { FlexBox } from "styled/StyledBox";
 import { Text, TextStyled } from "styled/StyledTypography";
 
 // MUI imports
-import { useTheme, useMediaQuery, Stack, Box } from "@mui/material";
+import { useTheme, useMediaQuery, SxProps, Stack, Box } from "@mui/material";
 
 // Helper imports
 import { useAppSelector } from "helpers/hooks";
@@ -40,23 +40,29 @@ function SkillInfo({
             </Text>
         );
 
-        const textContainerStyle = {
+        const textContainerStyle: SxProps = {
             p: skill.rarity >= 2 ? "2px 8px" : "0px",
             borderRadius:
                 skill.rarity >= 2 ? theme.mainContentBox.borderRadius : 0,
             backgroundImage: getSkillRarityColor(skill.rarity),
         };
 
-        const textContainerStyleMini = {
+        const textContainerStyleMini: SxProps = {
             p: "4px 8px",
             borderRadius: theme.mainContentBox.borderRadius,
             backgroundImage: getSkillRarityColor(skill.rarity),
             backgroundColor: theme.background(0, "main"),
+            "&:hover": {
+                outline: `2px solid ${
+                    skill.rarity >= 2
+                        ? theme.text.primary
+                        : theme.border.color.primary
+                }`,
+            },
         };
 
         const textStyle = {
-            color:
-                skill.rarity >= 2 ? "rgba(58, 39, 11, 1)" : theme.text.primary,
+            color: skill.rarity >= 2 ? "rgb(121, 64, 22)" : theme.text.primary,
         };
 
         return (
