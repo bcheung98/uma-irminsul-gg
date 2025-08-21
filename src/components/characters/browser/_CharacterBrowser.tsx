@@ -158,6 +158,7 @@ function CharacterBrowser() {
                             rarity={char.rarity}
                             materials={char.materials}
                             backgroundColor={theme.background(1)}
+                            size="144px"
                         />
                     ))}
                 </Grid>
