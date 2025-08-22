@@ -101,7 +101,6 @@ function SupportFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
                         }
                         contentPadding="4px 0px 4px 24px"
                     >
-                        (
                         <ToggleButtons
                             color="secondary"
                             buttons={filter.buttons}
@@ -111,7 +110,6 @@ function SupportFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
                             spacing={4}
                             padding={"label" in filter.buttons[0] ? "0 8px" : 0}
                         />
-                        )
                     </Dropdown>
                 ))}
             </List>
