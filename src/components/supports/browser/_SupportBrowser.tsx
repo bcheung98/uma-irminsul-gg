@@ -2,6 +2,7 @@ import { BaseSyntheticEvent, useEffect, useMemo, useState } from "react";
 
 // Component imports
 import SupportFilters from "./SupportFilters";
+import SupportTable from "./SupportTable";
 import InfoCard from "custom/InfoCard";
 import ToggleButtons, { CustomToggleButtonProps } from "custom/ToggleButtons";
 import SearchBar from "custom/SearchBar";
@@ -12,7 +13,6 @@ import { TextStyled } from "styled/StyledTypography";
 import { useTheme, useMediaQuery, Button, Drawer } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import ViewCompactIcon from "@mui/icons-material/ViewCompact";
-import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import TuneIcon from "@mui/icons-material/Tune";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
@@ -87,10 +87,6 @@ function SupportBrowser() {
             icon: <ViewCompactIcon />,
         },
         {
-            value: "card",
-            icon: <ViewModuleIcon />,
-        },
-        {
             value: "table",
             icon: <TableRowsIcon />,
         },
@@ -118,14 +114,14 @@ function SupportBrowser() {
                     </TextStyled>
                 </Grid>
                 <Grid size={{ xs: 6, sm: "auto" }}>
-                    {/* <ToggleButtons
+                    <ToggleButtons
                         color="primary"
                         buttons={buttons}
                         value={view}
                         exclusive
                         onChange={handleView}
                         highlightOnHover={false}
-                    /> */}
+                    />
                 </Grid>
                 <Grid size={{ xs: 12, sm: "auto" }}>
                     <SearchBar
@@ -160,7 +156,7 @@ function SupportBrowser() {
                 </Grid>
             </Grid>
             {view === "icon" && (
-                <Grid container spacing={3}>
+                <Grid container spacing={2}>
                     {currentSupports.map((support) => (
                         <InfoCard
                             key={support.id}
@@ -183,6 +179,7 @@ function SupportBrowser() {
                     ))}
                 </Grid>
             )}
+            {view === "table" && <SupportTable supports={currentSupports} />}
             <ActionFab
                 action={
                     matches_md_up ? toggleDrawerState : handleMobileDrawerOpen

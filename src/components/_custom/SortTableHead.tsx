@@ -11,6 +11,7 @@ export type Order = "asc" | "desc";
 export interface HeadColumn {
     id: string;
     label: string;
+    width?: string;
 }
 
 interface SortTableHeadProps {
@@ -36,11 +37,19 @@ function SortTableHead({
     return (
         <TableHead>
             <TableRow>
-                {headColumns.map((column) => (
+                {headColumns.map((column, index) => (
                     <StyledTableCell
                         key={column.id as string}
                         align="left"
                         sortDirection={orderBy === column.id ? order : false}
+                        sx={{
+                            width: column.width || "max-content",
+                            pl: index > 1 ? 1 : 2,
+                            pr:
+                                index > 1 && index < headColumns.length - 1
+                                    ? 0
+                                    : 1,
+                        }}
                     >
                         <TableSortLabel
                             active={orderBy === column.id}
@@ -59,6 +68,7 @@ function SortTableHead({
                         >
                             <TextStyled
                                 noWrap
+                                variant="body2-styled"
                                 sx={{ color: theme.appbar.color }}
                             >
                                 {column.label}
@@ -85,12 +95,17 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
 export function getComparator<Key extends keyof any>(
     order: Order,
-    orderBy: Key
+    orderBy: Key,
+    defaultKey: Key
 ): (
     a: { [key in Key]: number | string },
     b: { [key in Key]: number | string }
 ) => number {
     return order === "desc"
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
+        ? (a, b) =>
+              descendingComparator(a, b, orderBy) ||
+              descendingComparator(b, a, defaultKey)
+        : (a, b) =>
+              -descendingComparator(a, b, orderBy) ||
+              -descendingComparator(a, b, defaultKey);
 }
