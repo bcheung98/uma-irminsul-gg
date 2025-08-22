@@ -38,9 +38,7 @@ export function filterCharacters(
         case "rarity":
             chars = chars.sort(
                 (a, b) =>
-                    sortBy(a.rarity, b.rarity, reverse) ||
-                    a.name.localeCompare(b.name) ||
-                    a.title.localeCompare(b.title)
+                    sortBy(a.rarity, b.rarity, reverse) || sortBy(b.id, a.id)
             );
             break;
         case "release":
@@ -56,7 +54,7 @@ export function filterCharacters(
                         reverse
                     ) ||
                     sortBy(b.rarity, a.rarity, !reverse) ||
-                    sortBy(b.name, a.name, !reverse)
+                    sortBy(b.id, a.id)
             );
             break;
     }

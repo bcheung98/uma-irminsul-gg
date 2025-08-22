@@ -53,8 +53,7 @@ export function filterSupports(
                         reverse
                     ) ||
                     sortBy(a.rarity, b.rarity) ||
-                    a.name.localeCompare(b.name) ||
-                    a.title.localeCompare(b.title)
+                    sortBy(b.id, a.id)
             );
             break;
         case "rarity":
@@ -62,8 +61,7 @@ export function filterSupports(
                 (a, b) =>
                     sortBy(a.rarity, b.rarity, reverse) ||
                     sortBy(Specialty[b.specialty], Specialty[a.specialty]) ||
-                    a.name.localeCompare(b.name) ||
-                    a.title.localeCompare(b.title)
+                    sortBy(b.id, a.id)
             );
             break;
         case "release":
@@ -79,7 +77,7 @@ export function filterSupports(
                         reverse
                     ) ||
                     sortBy(b.rarity, a.rarity, !reverse) ||
-                    sortBy(b.name, a.name, !reverse)
+                    sortBy(b.id, a.id)
             );
             break;
     }
