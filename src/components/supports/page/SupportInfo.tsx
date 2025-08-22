@@ -1,15 +1,10 @@
 // Component imports
 import MainContentBox from "custom/MainContentBox";
-import Image from "custom/Image";
-import InfoChip from "custom/InfoChip";
 import { TextStyled } from "styled/StyledTypography";
 import { FlexBox } from "styled/StyledBox";
 
 // MUI imports
 import { useTheme, useMediaQuery, Box, Stack, Card } from "@mui/material";
-
-// Helper imports
-import { getSupportCardRarity } from "helpers/supportCardRarity";
 
 // Type imports
 import { SupportProps } from "types/support";
@@ -18,62 +13,31 @@ function SupportInfo({ support }: SupportProps) {
     const theme = useTheme();
     const matches_sm_up = useMediaQuery(theme.breakpoints.up("sm"));
 
-    const { name, title, rarity, specialty, perks } = support;
+    const { name, title, perks } = support;
 
     const uniqueEffects = perks.effects
         .map((effect) => effect.effect)
         .join(" and ");
-
-    const chipIconSize = matches_sm_up ? "32px" : "28px";
 
     return (
         <MainContentBox
             title={
                 <Box
                     sx={{
-                        p: { xs: "12px", sm: "16px" },
-                        backgroundColor: theme.background(2),
+                        p: { xs: "8px", sm: "16px" },
                         width: "100%",
                     }}
                 >
-                    <Stack spacing={1}>
-                        <Box>
-                            <TextStyled
-                                variant={
-                                    matches_sm_up ? "h6-styled" : "body1-styled"
-                                }
-                            >
-                                {`[${title}]`}
-                            </TextStyled>
-                            <TextStyled
-                                variant={
-                                    matches_sm_up ? "h4-styled" : "h6-styled"
-                                }
-                            >
-                                {name}
-                            </TextStyled>
-                        </Box>
-                        {matches_sm_up && (
-                            <FlexBox sx={{ flexWrap: "wrap", gap: "8px" }}>
-                                <Image
-                                    src={`ranks/${getSupportCardRarity(
-                                        rarity
-                                    )}`}
-                                    alt={rarity.toString()}
-                                    style={{ height: "28px" }}
-                                />
-                                <InfoChip
-                                    src={`stat_icons/${specialty}`}
-                                    label={specialty}
-                                    color="tertiary"
-                                    imgSize={{
-                                        width: chipIconSize,
-                                        height: chipIconSize,
-                                    }}
-                                />
-                            </FlexBox>
-                        )}
-                    </Stack>
+                    <TextStyled
+                        variant={matches_sm_up ? "h6-styled" : "body1-styled"}
+                    >
+                        {`[${title}]`}
+                    </TextStyled>
+                    <TextStyled
+                        variant={matches_sm_up ? "h4-styled" : "h6-styled"}
+                    >
+                        {name}
+                    </TextStyled>
                 </Box>
             }
             headerProps={{ padding: "0px" }}

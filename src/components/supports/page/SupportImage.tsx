@@ -45,13 +45,21 @@ function SupportImage({ support }: SupportProps) {
         overflow: "visible",
         width: "100%",
         height: "auto",
+        background: `linear-gradient(to bottom, transparent, ${theme.appbar.backgroundColor})`,
     };
 
     const imageContainerStyle: SxProps = {
         display: "flex",
         overflow: "clip",
+        borderRadius: "16px",
         width: "auto",
         backgroundColor: "transparent",
+        border: "4px solid transparent",
+        backgroundImage: `linear-gradient(transparent, transparent), ${getSupportCardRarityColor(
+            support.rarity
+        )}`,
+        backgroundOrigin: "border-box",
+        backgroundClip: "padding-box, border-box",
     };
 
     return (
@@ -60,7 +68,7 @@ function SupportImage({ support }: SupportProps) {
                 <Card
                     elevation={0}
                     sx={{
-                        backgroundColor: theme.background(2),
+                        backgroundColor: "transparent",
                         width: "100%",
                         height: "auto",
                     }}
@@ -72,16 +80,6 @@ function SupportImage({ support }: SupportProps) {
                             style={{
                                 width: "100%",
                                 height: matches_sm_up ? "300px" : "auto",
-                                border: "4px solid transparent",
-                                backgroundImage: `linear-gradient(${
-                                    theme.appbar.backgroundColor
-                                }, ${
-                                    theme.appbar.backgroundColor
-                                }), ${getSupportCardRarityColor(
-                                    support.rarity
-                                )}`,
-                                backgroundOrigin: "border-box",
-                                backgroundClip: "padding-box, border-box",
                             }}
                         />
                     </Box>
@@ -116,47 +114,41 @@ function SupportImage({ support }: SupportProps) {
                         </Stack>
                     </ButtonBase>
                 </Card>
-                {!matches_sm_up && (
-                    <>
-                        <Box
-                            sx={{
-                                position: "absolute",
-                                zIndex: 5,
-                                top: 0,
-                                left: "-4px",
-                            }}
-                        >
-                            <Image
-                                src={`ranks/${getSupportCardRarity(
-                                    support.rarity
-                                )}`}
-                                alt={support.rarity.toString()}
-                                style={{ width: "50%" }}
-                            />
-                        </Box>
-                        <Box
-                            sx={{
-                                position: "absolute",
-                                zIndex: 5,
-                                top: 0,
-                                right: 0,
-                                borderRadius: "4px",
-                            }}
-                        >
-                            <Image
-                                src={`stat_icons/${support.specialty}`}
-                                alt={support.specialty}
-                                style={{
-                                    height: "24px",
-                                    padding: "1px",
-                                    borderRadius: "4px",
-                                    backgroundColor:
-                                        theme.appbar.backgroundColor,
-                                }}
-                            />
-                        </Box>
-                    </>
-                )}
+                <Box
+                    sx={{
+                        position: "absolute",
+                        zIndex: 5,
+                        top: -2,
+                        left: 8,
+                        width: "100%",
+                    }}
+                >
+                    <Image
+                        src={`rarity/${getSupportCardRarity(support.rarity)}`}
+                        alt={support.rarity.toString()}
+                        style={{ width: "25%" }}
+                    />
+                </Box>
+                <Box
+                    sx={{
+                        position: "absolute",
+                        zIndex: 5,
+                        top: -2,
+                        right: 1,
+                        display: "flex",
+                        justifyContent: "right",
+                        width: "100%",
+                    }}
+                >
+                    <Image
+                        src={`stat_icons/${support.specialty}`}
+                        alt={support.specialty}
+                        style={{
+                            width: "25%",
+                            borderRadius: "4px",
+                        }}
+                    />
+                </Box>
             </Card>
             <Dialog open={open} onClose={handleClose} maxWidth="xl">
                 <SupportSplashText
