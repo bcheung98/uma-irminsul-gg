@@ -1,12 +1,22 @@
+import { useState } from "react";
 import parse from "html-react-parser";
 
 // Component imports
+import SkillPopup from "./SkillPopup";
 import Image from "custom/Image";
 import { FlexBox } from "styled/StyledBox";
 import { Text, TextStyled } from "styled/StyledTypography";
 
 // MUI imports
-import { useTheme, useMediaQuery, SxProps, Stack, Box } from "@mui/material";
+import {
+    useTheme,
+    useMediaQuery,
+    SxProps,
+    Stack,
+    Box,
+    Dialog,
+    Card,
+} from "@mui/material";
 
 // Helper imports
 import { useAppSelector } from "helpers/hooks";
@@ -22,6 +32,14 @@ function SkillInfo({
 }) {
     const theme = useTheme();
     const matches_md_up = useMediaQuery(theme.breakpoints.up("md"));
+
+    const [open, setOpen] = useState(false);
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const skill = useAppSelector(selectSkills).find(
         (skill) => skill.id === tag || skill.name.global === tag
@@ -52,6 +70,7 @@ function SkillInfo({
             borderRadius: theme.mainContentBox.borderRadius,
             backgroundImage: getSkillRarityColor(skill.rarity),
             backgroundColor: theme.background(0, "main"),
+            cursor: "pointer",
             "&:hover": {
                 outline: `2px solid ${
                     skill.rarity >= 2
@@ -63,17 +82,33 @@ function SkillInfo({
 
         const textStyle = {
             color: skill.rarity >= 2 ? "rgb(121, 64, 22)" : theme.text.primary,
+            cursor: "pointer",
         };
 
         return (
             <>
                 {variant === "normal" ? (
-                    <Box>
+                    <Card
+                        sx={{
+                            px: 2,
+                            py: 1,
+                            backgroundColor: theme.background(0, "main"),
+                            border: theme.mainContentBox.border,
+                            borderRadius: theme.mainContentBox.borderRadius,
+                            "&:hover": {
+                                outline: `2px solid ${theme.border.color.primary}`,
+                            },
+                        }}
+                    >
                         <Stack
                             spacing={2}
                             direction="row"
                             alignItems={{ xs: "center", md: "flex-start" }}
-                            sx={{ mb: { xs: "8px", lg: 0 } }}
+                            sx={{
+                                mb: { xs: "8px", lg: 0 },
+                                cursor: "pointer",
+                            }}
+                            onClick={handleClickOpen}
                         >
                             <Stack
                                 spacing={0.5}
@@ -96,7 +131,7 @@ function SkillInfo({
                                     alignItems="center"
                                     sx={textContainerStyle}
                                 >
-                                    <TextStyled sx={textStyle}>
+                                    <TextStyled noWrap sx={textStyle}>
                                         {skillName}
                                     </TextStyled>
                                 </FlexBox>
@@ -106,24 +141,38 @@ function SkillInfo({
                             </Box>
                         </Stack>
                         {!matches_md_up && skillDesc}
-                    </Box>
+                    </Card>
                 ) : (
-                    <Stack
-                        spacing={1.5}
-                        direction="row"
-                        alignItems="center"
-                        sx={textContainerStyleMini}
-                    >
-                        <Image
-                            src={`skills/${skill.icon}`}
-                            alt={skill.icon.toString()}
-                            style={{ width: matches_md_up ? "28px" : "24px" }}
-                        />
-                        <TextStyled variant="body2-styled" sx={textStyle}>
-                            {skillName}
-                        </TextStyled>
-                    </Stack>
+                    <>
+                        <Stack
+                            spacing={1.5}
+                            direction="row"
+                            alignItems="center"
+                            sx={textContainerStyleMini}
+                            onClick={handleClickOpen}
+                        >
+                            <Image
+                                src={`skills/${skill.icon}`}
+                                alt={skill.icon.toString()}
+                                style={{
+                                    width: matches_md_up ? "28px" : "24px",
+                                }}
+                            />
+                            <TextStyled variant="body2-styled" sx={textStyle}>
+                                {skillName}
+                            </TextStyled>
+                        </Stack>
+                    </>
                 )}
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    maxWidth="sm"
+                    fullWidth
+                    disableScrollLock
+                >
+                    <SkillPopup skill={skill} handleClose={handleClose} />
+                </Dialog>
             </>
         );
     } else {

@@ -1,6 +1,10 @@
 import { Rarity } from "./_common";
 import { Version } from "./version";
 
+export interface SkillProps {
+    skill: Skill;
+}
+
 export interface Skill {
     id: number;
     icon: number;
