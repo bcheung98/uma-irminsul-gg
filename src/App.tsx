@@ -9,7 +9,13 @@ import RouteConfig from "components/nav/RouteConfig";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
 // Helper imports
-import { fetchCharacters, fetchSupports, fetchSkills } from "rtk/fetchData";
+import {
+    fetchCharacters,
+    fetchSupports,
+    fetchSkills,
+    fetchCharacterBanners,
+    fetchSupportBanners,
+} from "rtk/fetchData";
 import { useAppDispatch, useAppSelector } from "helpers/hooks";
 import { selectTheme, setTheme } from "reducers/settings";
 import { getTheme } from "themes/theme";
@@ -21,6 +27,8 @@ function App() {
         dispatch(fetchCharacters());
         dispatch(fetchSupports());
         dispatch(fetchSkills());
+        dispatch(fetchCharacterBanners());
+        dispatch(fetchSupportBanners());
     }, []);
 
     const theme = useAppSelector(selectTheme);

@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Character } from "types/character";
 import { Skill } from "types/skill";
 import { Support } from "types/support";
+import { Banner } from "types/banner";
 
 export type LoadingStatus = "idle" | "pending" | "success" | "error";
 
@@ -13,6 +14,9 @@ const supportsURL = "https://api.irminsul.gg/uma/supports.json";
 
 // https://api.irminsul.gg/uma/skills.json
 const skillsURL = "https://api.irminsul.gg/uma/skills.json";
+
+const characterBannerURL = "https://api.irminsul.gg/uma/character-banners.json";
+const supportBannerURL = "https://api.irminsul.gg/uma/support-banners.json";
 
 export const fetchCharacters = createAsyncThunk(
     "GET/characters",
@@ -34,6 +38,22 @@ export const fetchSkills = createAsyncThunk(
     "GET/skills",
     async (): Promise<Skill[]> => {
         const response = await fetch(skillsURL);
+        return await response.json();
+    }
+);
+
+export const fetchCharacterBanners = createAsyncThunk(
+    "GET/characterBanners",
+    async (): Promise<Banner[]> => {
+        const response = await fetch(characterBannerURL);
+        return await response.json();
+    }
+);
+
+export const fetchSupportBanners = createAsyncThunk(
+    "GET/supportBanners",
+    async (): Promise<Banner[]> => {
+        const response = await fetch(supportBannerURL);
         return await response.json();
     }
 );

@@ -1,12 +1,17 @@
 // Component imports
+import CurrentBanners from "components/banners/CurrentBanners";
 
 // MUI imports
-import Grid from "@mui/material/Grid2";
+import { Stack } from "@mui/material";
 
 function Home() {
     document.title = `Umamusume: Pretty Derby - Irminsul.GG`;
 
-    return <Grid container rowSpacing={3} columnSpacing={4}></Grid>;
+    return (
+        <Stack spacing={3}>
+            <CurrentBanners />
+        </Stack>
+    );
 }
 
 export default Home;

@@ -21,6 +21,11 @@ export const navItems: NavItem[] = [
         text: "Support Cards",
         link: "/supports/",
     },
+    {
+        icon: "icons/Ticket",
+        text: "Banner Archive",
+        link: "/banners/",
+    },
 ];
 
 export const otherItems: NavItem[] = [
