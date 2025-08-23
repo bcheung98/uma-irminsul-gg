@@ -30,11 +30,13 @@ function SupportInfo({ support }: SupportProps) {
                 >
                     <TextStyled
                         variant={matches_sm_up ? "h6-styled" : "body1-styled"}
+                        sx={{ color: theme.appbar.color }}
                     >
                         {`[${title}]`}
                     </TextStyled>
                     <TextStyled
                         variant={matches_sm_up ? "h4-styled" : "h6-styled"}
+                        sx={{ color: theme.appbar.color }}
                     >
                         {name}
                     </TextStyled>
