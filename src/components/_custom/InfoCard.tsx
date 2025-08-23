@@ -119,7 +119,7 @@ function InfoCard({
         !disableZoomOnHover &&
             zoomImageOnHover({
                 direction,
-                id: `${id}-img`,
+                id: `${cardID}-img`,
                 baseScale: scale,
                 zoom: scale + 0.05,
             });
@@ -206,7 +206,7 @@ function InfoCard({
                                     <Image
                                         src={imgSrc}
                                         alt={name}
-                                        id={`${id}-img`}
+                                        id={`${cardID}-img`}
                                         style={imageStyle}
                                         loading={imgLoad}
                                     />
