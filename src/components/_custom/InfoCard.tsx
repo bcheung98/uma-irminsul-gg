@@ -54,7 +54,7 @@ function InfoCard({
     type,
     rarity = 3,
     variant = "avatar",
-    size = "128px",
+    size,
     showName = variant !== "icon",
     info,
     infoSecondary,
@@ -79,12 +79,22 @@ function InfoCard({
         rank = getSupportCardRarity(info.rank);
     }
 
-    const borderWidth = variant !== "icon" ? theme.displayCard.borderWidth : 0;
-    let borderRadius = variant === "icon" ? "4px" : "16px";
+    const borderWidth = variant === "icon" && type === "character" ? 2 : 0;
+    const borderRadius = variant === "icon" ? "4px" : "16px";
     const borderColor =
-        variant === "icon" ? "transparent" : theme.border.color.primary;
+        variant === "icon" && type === "character"
+            ? getRarityColor(rarity)
+            : "transparent";
 
-    size = variant === "icon" ? "64px" : variant === "avatar" ? size : "96px";
+    if (!size) {
+        if (variant === "icon") {
+            size = "64px";
+        } else if (variant === "avatar") {
+            size = "96px";
+        } else {
+            size = "128px";
+        }
+    }
     const imgSize =
         variant === "icon" ? `calc(${size} - ${borderWidth * 2}px)` : size;
 
@@ -183,7 +193,7 @@ function InfoCard({
                 <>
                     <Card elevation={0} sx={cardStyle}>
                         <StyledTooltip
-                            title={!disableTooltip ? `${name} [${title}]` : ""}
+                            title={!disableTooltip ? `[${title}] ${name}` : ""}
                             arrow
                             placement="top"
                         >
