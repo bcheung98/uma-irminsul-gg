@@ -10,3 +10,28 @@ export const specialties = [
     "Pal",
     "Group",
 ] as const;
+
+export const aptitude = [
+    "Turf",
+    "Dirt",
+    "Front",
+    "Pace",
+    "Late",
+    "End",
+    "Sprint",
+    "Mile",
+    "Medium",
+    "Long",
+] as const;
+
+export const raceStages = [
+    "Early-Race",
+    "Mid-Race",
+    "Late-Race",
+    "Last-Spurt",
+    "Corner",
+    "Straight",
+    "Final Corner",
+    "Final Straight",
+    "Slope",
+] as const;

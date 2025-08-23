@@ -3,6 +3,7 @@ import { useLocation } from "react-router";
 // Component imports
 import CharacterFilters from "components/characters/browser/CharacterFilters";
 import SupportFilters from "components/supports/browser/SupportFilters";
+import SkillFilters from "components/skills/SkillFilters";
 
 // MUI imports
 import {
@@ -34,7 +35,8 @@ function RightHandDrawer() {
 
     const location = useLocation().pathname;
     const isOpen =
-        ["/characters/", "/supports/"].includes(location) && matches_md_up;
+        ["/characters/", "/supports/", "/skills/"].includes(location) &&
+        matches_md_up;
 
     let component: React.ReactNode;
     switch (location) {
@@ -43,6 +45,9 @@ function RightHandDrawer() {
             break;
         case "/supports/":
             component = <SupportFilters handleClose={handleDrawerClose} />;
+            break;
+        case "/skills/":
+            component = <SkillFilters handleClose={handleDrawerClose} />;
             break;
         default:
             component = null;

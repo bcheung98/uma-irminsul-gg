@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice, isAnyOf } from "@reduxjs/toolkit";
 import { startAppListening } from "helpers/hooks";
 
-export type SortBy = "name" | "rarity" | "specialty" | "release";
+export type SortBy = "name" | "rarity" | "specialty" | "type" | "release";
 export type SortDirection = "asc" | "desc";
 export type View = "icon" | "card" | "table";
 
@@ -14,6 +14,7 @@ export interface BrowserSettings {
 export interface BrowserState {
     characters: BrowserSettings;
     supports: BrowserSettings;
+    skills: BrowserSettings;
 }
 
 export type SortType = keyof BrowserState;
@@ -25,12 +26,16 @@ const defaultSettings: BrowserSettings = {
 };
 
 const storedSettings = localStorage.getItem("browser") || "{}";
-const { characters = defaultSettings, supports = defaultSettings } =
-    JSON.parse(storedSettings);
+const {
+    characters = defaultSettings,
+    supports = defaultSettings,
+    skills = { sortBy: "type", sortDirection: "asc", view: "icon" },
+} = JSON.parse(storedSettings);
 
 const initialState: BrowserState = {
     characters: characters,
     supports: supports,
+    skills: skills,
 };
 
 export const browserSlice = createSlice({

@@ -9,6 +9,7 @@ import characterFilterReducer from "reducers/characterFilters";
 import supportReducer from "reducers/support";
 import supportFilterReducer from "reducers/supportFilters";
 import skillReducer from "reducers/skill";
+import skillFilterReducer from "reducers/skillFilters";
 import bannerReducer from "reducers/banner";
 
 const store = configureStore({
@@ -21,6 +22,7 @@ const store = configureStore({
         support: supportReducer,
         supportFilters: supportFilterReducer,
         skills: skillReducer,
+        skillFilters: skillFilterReducer,
         banners: bannerReducer,
     },
     middleware: (getDefaultMiddleware) =>
