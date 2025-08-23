@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Component imports
 import MainContentBox from "custom/MainContentBox";
 import { FlexBox } from "styled/StyledBox";
 import { TextStyled } from "styled/StyledTypography";
 import { StyledSlider } from "styled/StyledSlider";
+import { StyledTooltip } from "styled/StyledTooltip";
 
 // MUI imports
 import { useTheme, useMediaQuery, Box, Stack, Icon } from "@mui/material";
@@ -122,6 +123,8 @@ function SupportEffects({ support }: SupportProps) {
         );
     };
 
+    useEffect(() => setSliderValue(1), [support]);
+
     return (
         <MainContentBox
             title="Support Effects"
@@ -185,9 +188,20 @@ function SupportEffects({ support }: SupportProps) {
                                                 }
                                             />
                                         </Icon>
-                                        <TextStyled variant="body2-styled">
-                                            {effect.displayName}
-                                        </TextStyled>
+                                        <StyledTooltip
+                                            title={effect.description}
+                                            arrow
+                                            placement="top"
+                                        >
+                                            <Box>
+                                                <TextStyled
+                                                    variant="body2-styled"
+                                                    sx={{ cursor: "default" }}
+                                                >
+                                                    {effect.displayName}
+                                                </TextStyled>
+                                            </Box>
+                                        </StyledTooltip>
                                     </Stack>
                                     {getEffectValue(e)}
                                 </FlexBox>
