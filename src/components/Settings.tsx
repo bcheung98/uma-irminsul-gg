@@ -3,8 +3,7 @@ import { BaseSyntheticEvent, useRef, useState } from "react";
 // Component imports
 import MainContentBox from "custom/MainContentBox";
 import ToggleButtons, { CustomToggleButtonProps } from "custom/ToggleButtons";
-import { Text, TextStyled } from "styled/StyledTypography";
-import { StyledSwitch } from "styled/StyledSwitch";
+import { TextStyled } from "styled/StyledTypography";
 
 // MUI imports
 import {
@@ -15,29 +14,20 @@ import {
     Stack,
     Box,
     Divider,
-    Collapse,
-    Card,
 } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import CloseIcon from "@mui/icons-material/Close";
-import HelpIcon from "@mui/icons-material/Help";
 
 // Helper imports
-import { objectKeys } from "helpers/utils";
 import { useAppDispatch, useAppSelector } from "helpers/hooks";
 import {
     selectSettings,
-    setServer,
     setSettings,
-    setSkillDisplay,
     setTheme,
     setWidth,
-    SkillDisplay,
-    toggleUnreleasedContent,
     Width,
 } from "reducers/settings";
 import { themeList } from "themes/theme";
-import { Region, regions } from "helpers/dates";
 
 // Type imports
 import { ThemeNames } from "types/theme";
@@ -50,7 +40,7 @@ function Settings() {
 
     const settings = useAppSelector(selectSettings);
     const themeName = settings.theme;
-    const { width, skillDisplay, server, unreleasedContent } = settings;
+    const { width, unreleasedContent } = settings;
     const unreleasedContentOld = useRef(unreleasedContent);
 
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -66,10 +56,10 @@ function Settings() {
         setSettingsOpen(false);
     };
 
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const toggleDropdownState = () => {
-        setDropdownOpen(!dropdownOpen);
-    };
+    // const [dropdownOpen, setDropdownOpen] = useState(false);
+    // const toggleDropdownState = () => {
+    //     setDropdownOpen(!dropdownOpen);
+    // };
 
     const toggleButtonsParams = {
         spacing: 0,
@@ -130,41 +120,22 @@ function Settings() {
                 />
             ),
         },
-        {
-            label: "Skill Display",
-            options: (
-                <ToggleButtons
-                    buttons={skillDisplayButtons}
-                    value={skillDisplay}
-                    exclusive
-                    onChange={(
-                        _: BaseSyntheticEvent,
-                        newValue: SkillDisplay
-                    ) => {
-                        if (newValue !== null) {
-                            dispatch(setSkillDisplay(newValue));
-                        }
-                    }}
-                    {...toggleButtonsParams}
-                />
-            ),
-        },
-        {
-            label: "Server",
-            options: (
-                <ToggleButtons
-                    buttons={regionButtons}
-                    value={server}
-                    exclusive
-                    onChange={(_: BaseSyntheticEvent, newValue: Region) => {
-                        if (newValue !== null) {
-                            dispatch(setServer(newValue));
-                        }
-                    }}
-                    {...toggleButtonsParams}
-                />
-            ),
-        },
+        // {
+        //     label: "Server",
+        //     options: (
+        //         <ToggleButtons
+        //             buttons={regionButtons}
+        //             value={server}
+        //             exclusive
+        //             onChange={(_: BaseSyntheticEvent, newValue: Region) => {
+        //                 if (newValue !== null) {
+        //                     dispatch(setServer(newValue));
+        //                 }
+        //             }}
+        //             {...toggleButtonsParams}
+        //         />
+        //     ),
+        // },
     ];
 
     return (
@@ -220,7 +191,7 @@ function Settings() {
                                     </Box>
                                 ))}
                             </Stack>
-                            <Box>
+                            {/* <Box>
                                 <Box sx={settingsBoxStyle}>
                                     <Stack direction="row" alignItems="center">
                                         <TextStyled sx={settingsTextStyle}>
@@ -271,7 +242,7 @@ function Settings() {
                                         </Text>
                                     </Card>
                                 </Collapse>
-                            </Box>
+                            </Box> */}
                         </Stack>
                     </MainContentBox>
                 </Box>
@@ -297,9 +268,9 @@ export const skillDisplayButtons: CustomToggleButtonProps[] = [
     { value: "table", label: "Table" },
 ];
 
-const regionButtons: CustomToggleButtonProps[] = objectKeys(regions).map(
-    (region) => ({
-        value: region,
-        label: region,
-    })
-);
+// const regionButtons: CustomToggleButtonProps[] = objectKeys(regions).map(
+//     (region) => ({
+//         value: region,
+//         label: region,
+//     })
+// );
