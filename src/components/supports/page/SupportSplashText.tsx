@@ -47,20 +47,21 @@ function SupportSplashText({
             }
             contentProps={{ padding: 0 }}
         >
-            <Grid container spacing={0} sx={{ maxHeight: "600px" }}>
+            <Grid container spacing={0} sx={{ maxHeight: { md: "600px" } }}>
                 {matches_sm_up && (
                     <Grid size={{ xs: 5, md: "auto" }}>{cardImage}</Grid>
                 )}
                 <Grid size="grow">
                     <Box
                         sx={{
-                            px: 4,
+                            px: { xs: 2, md: 4 },
                             py: 2,
+                            pb: 4,
                             overflowY: "auto",
                             maxHeight: "600px",
                         }}
                     >
-                        <TextStyled component="span">
+                        <TextStyled component="span" variant="body2-styled">
                             {parse(splash.en)}
                         </TextStyled>
                     </Box>

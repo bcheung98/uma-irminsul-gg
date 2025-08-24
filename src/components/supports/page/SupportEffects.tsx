@@ -104,7 +104,7 @@ function SupportEffects({ support }: SupportProps) {
             valueText += "%";
         }
         if (effect.effect === "Hint Levels") {
-            valueText = `Lv ${value}`;
+            valueText = `Lvl ${value}`;
         }
         return value === -1 ? (
             <Stack spacing={1} direction="row" alignItems="center">
@@ -196,7 +196,7 @@ function SupportEffects({ support }: SupportProps) {
                                             <Box>
                                                 <TextStyled
                                                     variant="body2-styled"
-                                                    sx={{ cursor: "default" }}
+                                                    sx={{ cursor: "default", textDecoration: "underline dotted" }}
                                                 >
                                                     {effect.displayName}
                                                 </TextStyled>

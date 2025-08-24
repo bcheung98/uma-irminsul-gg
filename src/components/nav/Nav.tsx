@@ -54,7 +54,7 @@ function Nav() {
         const index = linkItems.findIndex(
             (site) => site.tag === import.meta.env.VITE_GAME_TAG
         );
-        linkItems.unshift(linkItems.splice(index, 1)[0]);
+        index > -1 && linkItems.unshift(linkItems.splice(index, 1)[0]);
     }
 
     const items = {

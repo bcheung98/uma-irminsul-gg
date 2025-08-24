@@ -53,14 +53,27 @@ function SupportInfo({ support }: SupportProps) {
             }}
         >
             {uniqueEffects.length > 0 && (
-                <Stack spacing={1} sx={{ width: "100%", maxWidth: "300px" }}>
+                <Stack spacing={0.5} sx={{ width: "100%", maxWidth: "300px" }}>
                     <FlexBox
                         columnGap="8px"
                         flexWrap="wrap"
                         justifyContent="space-between"
                     >
                         <TextStyled>{`Unique Perk`}</TextStyled>
-                        <TextStyled>{`(Lv ${perks.unlock})`}</TextStyled>
+                        <Box
+                            sx={{
+                                p: "1px 8px",
+                                backgroundColor: theme.appbar.backgroundColor,
+                                borderRadius: "16px",
+                            }}
+                        >
+                            <TextStyled
+                                variant="body2-styled"
+                                sx={{
+                                    color: theme.appbar.color,
+                                }}
+                            >{`Lvl ${perks.unlock}`}</TextStyled>
+                        </Box>
                     </FlexBox>
                     <Card
                         elevation={0}

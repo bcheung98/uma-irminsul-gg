@@ -19,7 +19,7 @@ function CharacterImage({ character }: CharacterProps) {
                 height: "100%",
                 maxWidth: "512px",
                 borderRadius: "4px",
-                backgroundColor: theme.background(2),
+                backgroundColor: theme.appbar.backgroundColor,
             }}
         />
     );

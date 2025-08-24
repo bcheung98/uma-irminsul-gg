@@ -102,6 +102,13 @@ function SkillPopup({
         .filter((supp) => supp.skillEvents.includes(id))
         .sort((a, b) => sortBy(a.rarity, b.rarity) || sortBy(b.id, a.id));
 
+    const sources = [
+        characterSources,
+        characterEventSources,
+        supportSources,
+        supportEventSources,
+    ].flat();
+
     return (
         <MainContentBox
             title="Skill Details"
@@ -116,137 +123,157 @@ function SkillPopup({
             }
             contentProps={{ padding: "16px" }}
         >
-            <Card
-                sx={{
-                    p: "12px 16px",
-                    mb: "16px",
-                    backgroundColor: theme.background(0, "main"),
-                    backgroundImage: getSkillRarityColor(rarity),
-                }}
-            >
-                <Stack spacing={2} direction="row">
-                    <Stack
-                        spacing={0.5}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <Image
-                            src={`skills/${icon}`}
-                            alt={icon.toString()}
-                            style={{
-                                width: matches_md_up ? "48px" : "40px",
-                            }}
-                        />
-                        {skillUnlock}
-                    </Stack>
-                    <Stack spacing={0.5} sx={{ width: "90%" }}>
-                        <FlexBox
-                            flexWrap="wrap"
-                            gap="8px"
-                            alignItems="center"
-                            justifyContent="space-between"
-                        >
-                            <TextStyled sx={textStyle}>{skillName}</TextStyled>
-                            {cost && (
-                                <Box
-                                    sx={{
-                                        px: 1,
-                                        py: 0.5,
-                                        backgroundColor:
-                                            theme.appbar.backgroundColor,
-                                        borderRadius: "16px",
-                                    }}
-                                >
-                                    <TextStyled
-                                        variant="body2-styled"
-                                        sx={{
-                                            color: theme.appbar.color,
-                                        }}
-                                    >{`Skill Pts: ${cost}`}</TextStyled>
-                                </Box>
-                            )}
-                        </FlexBox>
-                        <Divider />
-                        {skillDesc}
-                    </Stack>
-                </Stack>
-            </Card>
             <Stack spacing={1}>
-                {characterSources.length > 0 && (
-                    <Box>
-                        <TextStyled variant="body2-styled" sx={{ mb: "4px" }}>
-                            Characters:
-                        </TextStyled>
-                        <Grid container spacing={1}>
-                            {characterSources.map((char, index) => (
-                                <Box key={index}>
-                                    {renderImage(
-                                        "character",
-                                        char.id,
-                                        char.name,
-                                        char.title
+                <Card
+                    sx={{
+                        p: "8px",
+                        backgroundColor: theme.background(0, "main"),
+                        backgroundImage: getSkillRarityColor(rarity),
+                    }}
+                >
+                    <Stack spacing={2} direction="row">
+                        <Stack
+                            spacing={0.5}
+                            alignItems="center"
+                            justifyContent="center"
+                        >
+                            <Image
+                                src={`skills/${icon}`}
+                                alt={icon.toString()}
+                                style={{
+                                    width: matches_md_up ? "48px" : "40px",
+                                }}
+                            />
+                            {skillUnlock}
+                        </Stack>
+                        <Stack spacing={0.5} sx={{ width: "90%" }}>
+                            <FlexBox
+                                flexWrap="wrap"
+                                columnGap="8px"
+                                rowGap="4px"
+                                alignItems="center"
+                                justifyContent="space-between"
+                            >
+                                <TextStyled
+                                    variant={
+                                        matches_md_up
+                                            ? "body1-styled"
+                                            : "body2-styled"
+                                    }
+                                    sx={textStyle}
+                                >
+                                    {skillName}
+                                </TextStyled>
+                                {cost && (
+                                    <Box
+                                        sx={{
+                                            p: "1px 8px",
+                                            backgroundColor:
+                                                theme.appbar.backgroundColor,
+                                            borderRadius: "16px",
+                                        }}
+                                    >
+                                        <TextStyled
+                                            variant="body2-styled"
+                                            sx={{
+                                                color: theme.appbar.color,
+                                            }}
+                                        >{`Skill Pts: ${cost}`}</TextStyled>
+                                    </Box>
+                                )}
+                            </FlexBox>
+                            <Divider />
+                            {skillDesc}
+                        </Stack>
+                    </Stack>
+                </Card>
+                {sources.length > 0 && (
+                    <Stack spacing={1}>
+                        {characterSources.length > 0 && (
+                            <Box>
+                                <TextStyled variant="body2-styled">
+                                    Characters:
+                                </TextStyled>
+                                <Grid container spacing={1}>
+                                    {characterSources.map((char, index) => (
+                                        <Box key={index}>
+                                            {renderImage(
+                                                "character",
+                                                char.id,
+                                                char.name,
+                                                char.title
+                                            )}
+                                        </Box>
+                                    ))}
+                                </Grid>
+                            </Box>
+                        )}
+                        {characterEventSources.length > 0 && (
+                            <Box>
+                                <TextStyled variant="body2-styled">
+                                    Character Events:
+                                </TextStyled>
+                                <Grid container spacing={1}>
+                                    {characterEventSources.map(
+                                        (char, index) => (
+                                            <Box key={index}>
+                                                {renderImage(
+                                                    "character",
+                                                    char.id,
+                                                    char.name,
+                                                    char.title
+                                                )}
+                                            </Box>
+                                        )
                                     )}
-                                </Box>
-                            ))}
-                        </Grid>
-                    </Box>
-                )}
-                {characterEventSources.length > 0 && (
-                    <Box>
-                        <TextStyled variant="body2-styled" sx={{ mb: "4px" }}>
-                            Character Events:
-                        </TextStyled>
-                        <Grid container spacing={1}>
-                            {characterEventSources.map((char, index) => (
-                                <Box key={index}>
-                                    {renderImage(
-                                        "character",
-                                        char.id,
-                                        char.name,
-                                        char.title
-                                    )}
-                                </Box>
-                            ))}
-                        </Grid>
-                    </Box>
-                )}
-                {supportSources.length > 0 && (
-                    <Box>
-                        <TextStyled variant="body2-styled" sx={{ mb: "4px" }}>
-                            Support Hints:
-                        </TextStyled>
-                        <Grid container spacing={1}>
-                            {supportSources.map((supp, index) => (
-                                <Box key={index}>
-                                    {renderImage(
-                                        "support",
-                                        supp.id,
-                                        supp.name,
-                                        supp.title
-                                    )}
-                                </Box>
-                            ))}
-                        </Grid>
-                    </Box>
-                )}
-                {supportEventSources.length > 0 && (
-                    <Box>
-                        <TextStyled variant="body2-styled" sx={{ mb: "4px" }}>
-                            Support Events:
-                        </TextStyled>
-                        <Grid container spacing={1}>
-                            {supportEventSources.map((supp, index) => (
-                                <Box key={index}>
-                                    {renderImage(
-                                        "support",
-                                        supp.id,
-                                        supp.name,
-                                        supp.title
-                                    )}
-                                </Box>
-                            ))}
-                        </Grid>
-                    </Box>
+                                </Grid>
+                            </Box>
+                        )}
+                        {supportSources.length > 0 && (
+                            <Box>
+                                <TextStyled
+                                    variant="body2-styled"
+                                    sx={{ mb: "4px" }}
+                                >
+                                    Support Hints:
+                                </TextStyled>
+                                <Grid container spacing={1}>
+                                    {supportSources.map((supp, index) => (
+                                        <Box key={index}>
+                                            {renderImage(
+                                                "support",
+                                                supp.id,
+                                                supp.name,
+                                                supp.title
+                                            )}
+                                        </Box>
+                                    ))}
+                                </Grid>
+                            </Box>
+                        )}
+                        {supportEventSources.length > 0 && (
+                            <Box>
+                                <TextStyled
+                                    variant="body2-styled"
+                                    sx={{ mb: "4px" }}
+                                >
+                                    Support Events:
+                                </TextStyled>
+                                <Grid container spacing={1}>
+                                    {supportEventSources.map((supp, index) => (
+                                        <Box key={index}>
+                                            {renderImage(
+                                                "support",
+                                                supp.id,
+                                                supp.name,
+                                                supp.title
+                                            )}
+                                        </Box>
+                                    ))}
+                                </Grid>
+                            </Box>
+                        )}
+                    </Stack>
                 )}
             </Stack>
         </MainContentBox>

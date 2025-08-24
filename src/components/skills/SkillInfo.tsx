@@ -51,7 +51,7 @@ function SkillInfo({
         const skillDesc = (
             <Text
                 component="span"
-                variant={matches_md_up ? "body2-styled" : "body1-styled"}
+                variant="body2-styled"
                 sx={{ color: theme.text.description }}
             >
                 {parse(skill.description.global || skill.description.jp)}
@@ -95,20 +95,18 @@ function SkillInfo({
                             backgroundColor: theme.background(0, "main"),
                             border: theme.mainContentBox.border,
                             borderRadius: theme.mainContentBox.borderRadius,
+                            cursor: "pointer",
                             "&:hover": {
                                 outline: `2px solid ${theme.border.color.primary}`,
                             },
                         }}
+                        onClick={handleClickOpen}
                     >
                         <Stack
                             spacing={2}
                             direction="row"
                             alignItems={{ xs: "center", md: "flex-start" }}
-                            sx={{
-                                mb: { xs: "8px", lg: 0 },
-                                cursor: "pointer",
-                            }}
-                            onClick={handleClickOpen}
+                            sx={{ mb: { xs: "8px", lg: 0 } }}
                         >
                             <Stack
                                 spacing={0.5}
@@ -131,7 +129,7 @@ function SkillInfo({
                                     alignItems="center"
                                     sx={textContainerStyle}
                                 >
-                                    <TextStyled noWrap sx={textStyle}>
+                                    <TextStyled sx={textStyle}>
                                         {skillName}
                                     </TextStyled>
                                 </FlexBox>

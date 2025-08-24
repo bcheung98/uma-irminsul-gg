@@ -45,6 +45,8 @@ function CharacterStats({ character }: CharacterProps) {
         ),
     }));
 
+    const borderRadius = "4px";
+
     return (
         <Box sx={{ px: "16px" }}>
             <TextStyled>Stats</TextStyled>
@@ -56,20 +58,34 @@ function CharacterStats({ character }: CharacterProps) {
                         flexItem
                     />
                 }
-                sx={{ my: "8px" }}
+                sx={{ my: "8px", borderRadius: "4px" }}
             >
-                {objectKeys(stats).map((stat) => (
+                {objectKeys(stats).map((stat, index) => (
                     <Stack
                         key={stat}
                         direction={{ xs: "row", md: "column" }}
-                        spacing={1}
+                        spacing={0}
                         alignItems="center"
                         justifyContent="space-between"
                         sx={{
-                            p: "8px 16px",
+                            p: { xs: 1, md: 0 },
                             backgroundColor: theme.background(0),
-                            borderRadius: theme.mainContentBox.borderRadius,
+                            borderTopLeftRadius:
+                                index === 0 ? borderRadius : "0px",
+                            borderBottomLeftRadius: {
+                                xs: index === 4 ? borderRadius : "0px",
+                                md: index === 0 ? borderRadius : "0px",
+                            },
+                            borderTopRightRadius: {
+                                xs: index === 0 ? borderRadius : "0px",
+                                md: index === 4 ? borderRadius : "0px",
+                            },
+                            borderBottomRightRadius: {
+                                xs: index === 4 ? borderRadius : "0px",
+                                md: index === 4 ? borderRadius : "0px",
+                            },
                         }}
+                        divider={<Divider orientation="horizontal" flexItem />}
                     >
                         <Stack
                             direction={
@@ -79,22 +95,36 @@ function CharacterStats({ character }: CharacterProps) {
                             }
                             spacing={1}
                             alignItems="center"
+                            sx={{
+                                px: { xs: 0, md: 2 },
+                                py: { xs: 0, md: 0.5 },
+                                backgroundColor: matches_md_up
+                                    ? theme.appbar.backgroundColor
+                                    : "transparent",
+                                borderTopLeftRadius: {
+                                    md: index === 0 ? borderRadius : "0px",
+                                },
+                                borderTopRightRadius: {
+                                    md: index === 4 ? borderRadius : "0px",
+                                },
+                            }}
                         >
                             <Image
                                 src={`stat_icons/${toTitleCase(stat)}`}
                                 alt={stat}
-                                style={{
-                                    width: matches_md_up ? "24px" : "20px",
-                                }}
+                                style={{ width: "20px" }}
                             />
-                            <TextStyled variant="body2-styled">
+                            <TextStyled
+                                variant="body2-styled"
+                                sx={{ color: theme.appbar.color }}
+                            >
                                 {toTitleCase(stat)}
                             </TextStyled>
                         </Stack>
                         <Stack
                             direction={matches_md_up ? "column" : "row"}
                             sx={{
-                                width: { xs: "30%", md: "50%" },
+                                width: { xs: "35%", md: "100%" },
                                 rowGap: "4px",
                                 columnGap: "16px",
                             }}
@@ -103,18 +133,30 @@ function CharacterStats({ character }: CharacterProps) {
                                 xs: "space-between",
                                 md: "center",
                             }}
+                            divider={
+                                matches_md_up && (
+                                    <Divider
+                                        orientation="horizontal"
+                                        flexItem
+                                    />
+                                )
+                            }
                         >
-                            <TextStyled
-                                variant={
-                                    matches_md_up ? "h6-styled" : "body2-styled"
-                                }
-                            >
-                                {
-                                    stats[stat as keyof typeof stats][
-                                        sliderValue - 1
-                                    ]
-                                }
-                            </TextStyled>
+                            <Box sx={{ pt: { md: 1 } }}>
+                                <TextStyled
+                                    variant={
+                                        matches_md_up
+                                            ? "h6-styled"
+                                            : "body2-styled"
+                                    }
+                                >
+                                    {
+                                        stats[stat as keyof typeof stats][
+                                            sliderValue - 1
+                                        ]
+                                    }
+                                </TextStyled>
+                            </Box>
                             <TextStyled variant="body2-styled">
                                 {`+${
                                     stats[stat as keyof typeof stats].slice(

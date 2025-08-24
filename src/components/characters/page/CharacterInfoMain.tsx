@@ -3,7 +3,7 @@ import CharacterImage from "./CharacterImage";
 import CharacterStats from "./CharacterStats";
 import CharacterAptitude from "./CharacterAptitude";
 import MainContentBox from "custom/MainContentBox";
-import RarityStars from "custom/RarityStars";
+import Image from "custom/Image";
 import { TextStyled } from "styled/StyledTypography";
 
 // MUI imports
@@ -27,7 +27,7 @@ function CharacterInfoMain({ character }: CharacterProps) {
                     sx={{ p: { xs: "8px 8px 0px 0px", sm: "16px" } }}
                 >
                     {!matches_sm_up && (
-                        <Box sx={{ width: "auto", height: "128px" }}>
+                        <Box sx={{ width: "128px", height: "128px" }}>
                             <CharacterImage character={character} />
                         </Box>
                     )}
@@ -46,9 +46,10 @@ function CharacterInfoMain({ character }: CharacterProps) {
                         >
                             {name}
                         </TextStyled>
-                        <RarityStars
-                            rarity={rarity}
-                            variant={matches_sm_up ? "h4-styled" : "h6-styled"}
+                        <Image
+                            src={`rarity/stars/${rarity}`}
+                            alt={`${rarity}`}
+                            style={{ marginLeft: "-4px" }}
                         />
                     </Box>
                 </Stack>

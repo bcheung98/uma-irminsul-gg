@@ -3,7 +3,6 @@ import { CSSProperties } from "react";
 // Component imports
 import Image from "custom/Image";
 import RouterLink from "components/nav/RouterLink";
-import RarityStars from "custom/RarityStars";
 import { StyledTableRow, StyledTableCell } from "styled/StyledTable";
 import { TextStyled } from "styled/StyledTypography";
 import { FlexBox } from "styled/StyledBox";
@@ -105,8 +104,11 @@ function CharacterTableRow({ row }: { row: CharacterTableRowProps }) {
             columnWidth: "max-content",
         },
         {
-            label: <RarityStars rarity={row.rarity} variant="h6-styled" />,
-            columnWidth: "48px",
+            img: `rarity/stars/${row.rarity}`,
+            imgStyle: {
+                width: "auto",
+                height: "20px",
+            },
         },
     ];
 

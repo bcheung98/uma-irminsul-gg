@@ -52,12 +52,7 @@ function CharacterAptitude({ character }: CharacterProps) {
                                         alignItems="center"
                                         justifyContent="space-around"
                                     >
-                                        <TextStyled
-                                            sx={{
-                                                xs: "14px",
-                                                sm: "16px",
-                                            }}
-                                        >
+                                        <TextStyled variant="body2-styled">
                                             {getAptitudeName(apt)}
                                         </TextStyled>
                                         <Image
