@@ -14,6 +14,19 @@ export function filterCharacters(
     if (filters.rarity.length > 0) {
         chars = chars.filter((char) => filters.rarity.includes(char.rarity));
     }
+    if (filters.aptitude.length > 0) {
+        chars = chars.filter((character) => {
+            const aptitudes: string[] = [];
+            Object.values(character.aptitude).forEach((values) =>
+                Object.entries(values).forEach(
+                    ([key, value]) => value === "A" && aptitudes.push(key)
+                )
+            );
+            return filters.aptitude.every((f) =>
+                aptitudes.includes(f.toLowerCase())
+            );
+        });
+    }
     if (searchValue !== "") {
         chars = chars.filter(
             (char) =>

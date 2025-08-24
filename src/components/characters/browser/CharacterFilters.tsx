@@ -5,9 +5,17 @@ import BrowserSort from "custom/BrowserSort";
 import Dropdown from "custom/Dropdown";
 import RarityStars from "custom/RarityStars";
 import ToggleButtons from "custom/ToggleButtons";
+import Image from "custom/Image";
 
 // MUI imports
-import { useTheme, List, IconButton, Toolbar, Button } from "@mui/material";
+import {
+    useTheme,
+    List,
+    IconButton,
+    Toolbar,
+    Button,
+    Stack,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
@@ -17,12 +25,13 @@ import {
     activeCharacterFilters,
     clearFilters,
     selectCharacterFilters,
+    setAptitude,
     setRarity,
 } from "reducers/characterFilters";
 import { rarities } from "data/common";
 
 // Type imports
-import { Rarity } from "types/_common";
+import { Aptitude, Rarity } from "types/_common";
 
 function CharacterFilters({
     handleClose,
@@ -34,7 +43,21 @@ function CharacterFilters({
     const filters = useAppSelector(selectCharacterFilters);
     const dispatch = useAppDispatch();
 
+    const aptitudeButtons = {
+        Track: ["Turf", "Dirt"],
+        Distance: ["Sprint", "Mile", "Medium", "Long"],
+        Style: ["Front", "Pace", "Late", "End"],
+    };
+
     const filterGroups = [
+        {
+            name: "Aptitude",
+            value: filters.aptitude,
+            onChange: (_: BaseSyntheticEvent, newValues: Aptitude[]) =>
+                dispatch(setAptitude(newValues)),
+            buttons: createGroupedButtons(aptitudeButtons, null, null),
+            grouped: true,
+        },
         {
             name: "Rarity",
             value: filters.rarity,
@@ -88,15 +111,36 @@ function CharacterFilters({
                         }
                         contentPadding="4px 0px 4px 24px"
                     >
-                        <ToggleButtons
-                            color="secondary"
-                            buttons={filter.buttons}
-                            value={filter.value}
-                            onChange={filter.onChange}
-                            width={filter.width || undefined}
-                            spacing={4}
-                            padding={"label" in filter.buttons[0] ? "0 8px" : 0}
-                        />
+                        {filter.grouped !== undefined ? (
+                            <Stack spacing={1}>
+                                {filter.buttons.map((group, index) => (
+                                    <ToggleButtons
+                                        key={index}
+                                        color="secondary"
+                                        buttons={group.buttons}
+                                        value={filter.value}
+                                        onChange={filter.onChange}
+                                        spacing={4}
+                                        padding={
+                                            "label" in group.buttons[0]
+                                                ? "0 8px"
+                                                : 0
+                                        }
+                                    />
+                                ))}
+                            </Stack>
+                        ) : (
+                            <ToggleButtons
+                                color="secondary"
+                                buttons={filter.buttons}
+                                value={filter.value}
+                                onChange={filter.onChange}
+                                spacing={4}
+                                padding={
+                                    "label" in filter.buttons[0] ? "0 8px" : 0
+                                }
+                            />
+                        )}
                     </Dropdown>
                 ))}
             </List>
@@ -109,3 +153,30 @@ function CharacterFilters({
 }
 
 export default CharacterFilters;
+
+function createButtons<T extends string>(
+    items: readonly T[],
+    url: string | null
+) {
+    return items.map((item) => ({
+        value: item,
+        label: item,
+        icon: url && (
+            <Image
+                src={`${url}/${item}`}
+                alt={`${item}`}
+                style={{ width: "32px", padding: "4px", borderRadius: "4px" }}
+            />
+        ),
+    }));
+}
+
+function createGroupedButtons<
+    T extends { readonly [key: string]: readonly string[] }
+>(items: T, groupUrl: string | null, url: string | null) {
+    return Object.entries(items).map(([key, values]) => ({
+        icon: groupUrl && `${groupUrl}/${key}`,
+        title: key,
+        buttons: createButtons(values, url),
+    }));
+}

@@ -1,13 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { objectKeys } from "helpers/utils";
-import { Rarity } from "types/_common";
+import { Aptitude, Rarity } from "types/_common";
 
 export interface CharacterFilterState {
     rarity: Rarity[];
+    aptitude: Aptitude[];
 }
 
 const initialState: CharacterFilterState = {
     rarity: [],
+    aptitude: [],
 };
 
 export const characterFilterSlice = createSlice({
@@ -16,6 +18,9 @@ export const characterFilterSlice = createSlice({
     reducers: {
         setRarity: (state, action: PayloadAction<Rarity[]>) => {
             state.rarity = action.payload;
+        },
+        setAptitude: (state, action: PayloadAction<Aptitude[]>) => {
+            state.aptitude = action.payload;
         },
         clearFilters: (
             state,
@@ -36,11 +41,8 @@ export const characterFilterSlice = createSlice({
     },
 });
 
-export const {
-    setRarity,
-
-    clearFilters,
-} = characterFilterSlice.actions;
+export const { setRarity, setAptitude, clearFilters } =
+    characterFilterSlice.actions;
 
 export const { selectCharacterFilters, activeCharacterFilters } =
     characterFilterSlice.selectors;
