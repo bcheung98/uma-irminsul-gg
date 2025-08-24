@@ -110,7 +110,7 @@ function SupportBrowser() {
             >
                 <Grid size="auto">
                     <TextStyled variant="h5-styled" sx={{ lineHeight: "36px" }}>
-                        Supports
+                        Support Cards
                     </TextStyled>
                 </Grid>
                 <Grid size={{ xs: 6, sm: "auto" }}>
