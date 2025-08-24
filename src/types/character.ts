@@ -37,7 +37,7 @@ export interface CharacterAptitudeSurface {
     dirt: Rank;
 }
 export interface CharacterAptitudeDistance {
-    short: Rank;
+    sprint: Rank;
     mile: Rank;
     medium: Rank;
     long: Rank;

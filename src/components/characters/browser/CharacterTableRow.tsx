@@ -24,7 +24,7 @@ import { Rank } from "types/_common";
 interface CharacterTableRowProps extends CharacterRow {
     turf: Rank;
     dirt: Rank;
-    short: Rank;
+    sprint: Rank;
     mile: Rank;
     medium: Rank;
     long: Rank;
@@ -43,7 +43,7 @@ function CharacterTableRow({ row }: { row: CharacterTableRowProps }) {
     const aptitudes = [
         row.turf,
         row.dirt,
-        row.short,
+        row.sprint,
         row.mile,
         row.medium,
         row.long,
