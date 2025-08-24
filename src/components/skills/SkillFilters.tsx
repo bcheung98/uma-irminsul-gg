@@ -80,6 +80,7 @@ function SkillFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
                         key={rarity}
                         component="span"
                         variant="body2-styled"
+                        sx={{ color: theme.appbar.color }}
                     >
                         {skillRarities[rarity]}
                     </TextStyled>

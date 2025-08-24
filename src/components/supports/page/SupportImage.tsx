@@ -95,7 +95,7 @@ function SupportImage({ support }: SupportProps) {
                                     width: { xs: "20px", sm: "24px" },
                                     height: { xs: "20px", sm: "24px" },
                                     lineHeight: { xs: "20px", sm: "24px" },
-                                    color: theme.text.primary,
+                                    color: theme.appbar.color,
                                 }}
                             >
                                 <InfoOutlinedIcon
@@ -107,7 +107,10 @@ function SupportImage({ support }: SupportProps) {
 
                             <TextStyled
                                 variant="body2-styled"
-                                sx={{ fontStyle: "italic" }}
+                                sx={{
+                                    fontStyle: "italic",
+                                    color: theme.appbar.color,
+                                }}
                             >
                                 Flavor Text
                             </TextStyled>

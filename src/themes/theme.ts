@@ -286,7 +286,7 @@ export function getTheme(name: string) {
                 },
             },
             "subtitle1-styled": {
-                ...theme.typography.subtitle1,
+                ...theme.typography.body1,
                 [theme.breakpoints.up("xs")]: {
                     fontSize: theme.typography.pxToRem(
                         theme.font.sizes["subtitle1-styled"].xs
@@ -336,7 +336,7 @@ export function getTheme(name: string) {
                 },
             },
             "subtitle2-styled": {
-                ...theme.typography.subtitle2,
+                ...theme.typography.body2,
                 [theme.breakpoints.up("xs")]: {
                     fontSize: theme.typography.pxToRem(
                         theme.font.sizes["subtitle2-styled"].xs

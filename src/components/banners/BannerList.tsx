@@ -174,7 +174,7 @@ function BannerList({ type }: { type: BannerType }) {
                                         marginLeft: "4px",
                                         backgroundColor:
                                             theme.appbar.backgroundColor,
-                                        borderRadius: "64px",
+                                        borderRadius: "4px",
                                     }}
                                 />
                             ) : (
@@ -186,7 +186,7 @@ function BannerList({ type }: { type: BannerType }) {
                                         marginLeft: "4px",
                                         backgroundColor:
                                             theme.appbar.backgroundColor,
-                                        borderRadius: "64px",
+                                        borderRadius: "4px",
                                     }}
                                 />
                             )
@@ -261,7 +261,7 @@ function BannerList({ type }: { type: BannerType }) {
                             justifyContent: "space-between",
                         }}
                     >
-                        <TextStyled>
+                        <TextStyled sx={{ color: theme.appbar.color }}>
                             {`${
                                 type === "character"
                                     ? "Character"
