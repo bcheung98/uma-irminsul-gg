@@ -145,7 +145,10 @@ function InfoCard({
     const imageContainerStyle: SxProps = {
         display: "flex",
         overflow: "clip",
-        borderRadius: borderRadius,
+        borderRadius:
+            variant === "avatar" && type === "character"
+                ? `${borderRadius} ${borderRadius} 0px 0px`
+                : borderRadius,
         // outline:
         //     variant === "avatar" && type === "character"
         //         ? `4px solid ${getRarityColor(rarity)}`
