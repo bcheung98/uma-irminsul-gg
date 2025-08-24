@@ -147,10 +147,12 @@ function SupportImage({ support }: SupportProps) {
                             width: "25%",
                             borderRadius: "4px",
                         }}
+                        tooltip={support.specialty}
+                        tooltipArrow="bottom"
                     />
                 </Box>
             </Card>
-            <Dialog open={open} onClose={handleClose} maxWidth="xl">
+            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xl">
                 <SupportSplashText
                     support={support}
                     handleClose={handleClose}
