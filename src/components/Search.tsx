@@ -318,7 +318,7 @@ function Search() {
                                 />
                                 <Stack spacing={0.5}>
                                     <TextStyled noWrap>
-                                        {`${option.name} (${option.title})`}
+                                        {`[${option.title}] ${option.name}`}
                                     </TextStyled>
                                     <TextStyled variant="subtitle2-styled">
                                         {option.category}
