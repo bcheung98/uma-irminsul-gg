@@ -23,9 +23,9 @@ Make sure to check out the other branches of **Irminsul.GG**:
 
 ## **Roadmap**
 
-[ ] Training Event Helper
+- [ ] Training Event Helper
 
-[ ] Affinity Calculator
+- [ ] Affinity Calculator
 
 ---
 
