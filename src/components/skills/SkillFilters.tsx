@@ -61,6 +61,14 @@ function SkillFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
 
     const filterGroups = [
         {
+            name: "Conditions",
+            value: filters.conditions,
+            onChange: (_: BaseSyntheticEvent, newValues: string[]) =>
+                dispatch(setConditions(newValues)),
+            buttons: createGroupedButtons(conditionButtons, null, null),
+            grouped: true,
+        },
+        {
             name: "Rarity",
             value: filters.rarity,
             onChange: (_: BaseSyntheticEvent, newValues: Rarity[]) =>
@@ -78,14 +86,6 @@ function SkillFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
                 ),
             })),
             width: "192px",
-        },
-        {
-            name: "Conditions",
-            value: filters.conditions,
-            onChange: (_: BaseSyntheticEvent, newValues: string[]) =>
-                dispatch(setConditions(newValues)),
-            buttons: createGroupedButtons(conditionButtons, null, null),
-            grouped: true,
         },
     ];
 
