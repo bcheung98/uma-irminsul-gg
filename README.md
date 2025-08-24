@@ -12,7 +12,22 @@ Make sure to check out the other branches of **Irminsul.GG**:
 
 - [**Zenless Zone Zero**](https://zzz.irminsul.gg/) ([Repo](https://github.com/bcheung98/project-phaethon))
 
+- [**Arknights: Endfield**](https://endfield.irminsul.gg/) ([Repo](https://github.com/bcheung98/project-talos))
+
+## **Current Features**
+
+- Character (Trainee) Browser
+- Support Card Browser
+- Skill Browser
+- Banner Archive
+
+## **Roadmap**
+
+[ ] Training Event Helper
+
+[ ] Affinity Calculator
+
 ---
 
-IRMINSUL.GG is not affiliated with HoYoverse.
-Game contents are trademarks and copyrights of HoYoverse.
+IRMINSUL.GG is not affiliated with Cygames.
+Game contents are trademarks and copyrights of Cygames.
