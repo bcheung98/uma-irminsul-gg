@@ -163,7 +163,7 @@ function CharacterBrowser() {
                         <InfoCard
                             key={char.id}
                             id={char.id}
-                            cardID={`${char.name}-characterBrowser`}
+                            cardID={`${char.id}-characterBrowser`}
                             name={char.name}
                             title={char.title}
                             type="character"
