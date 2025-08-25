@@ -15,11 +15,11 @@ import { CharacterProps } from "types/character";
 function CharacterSkills({ character }: CharacterProps) {
     return (
         <MainContentBox title="Skills" contentProps={{ padding: "16px" }}>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{ width: { xl: "80%" } }}>
                 {Object.entries(character.skills).map(([key, skills]) => (
                     <Grid
                         key={key}
-                        size={key === "unique" ? 12 : { xs: 12, md: 4 }}
+                        size={key === "unique" ? 12 : { xs: 12, sm: 6, md: 4 }}
                     >
                         <TextStyled sx={{ mb: "8px" }}>
                             {`${toTitleCase(key)} Skills`}
