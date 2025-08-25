@@ -27,7 +27,7 @@ function CharacterPage() {
     );
 
     if (character !== undefined) {
-        const name = `${character.name} (${character.title})`;
+        const name = `${character.name} (${character.outfit || "Original"})`;
 
         const documentTitle = `${name} ${import.meta.env.VITE_DOCUMENT_TITLE}`;
         const documentDesc = `${name} - ${character.rarity}★`;

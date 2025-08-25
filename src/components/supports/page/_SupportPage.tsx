@@ -27,8 +27,12 @@ function SupportPage() {
             params.id
     );
 
+    const ranks = ["R", "SR", "SSR"];
+
     if (support !== undefined) {
-        const name = `${support.name} (${support.title})`;
+        const name = `${support.name} (${ranks[support.rarity - 3]} ${
+            support.specialty
+        })`;
 
         const documentTitle = `${name} ${import.meta.env.VITE_DOCUMENT_TITLE}`;
         const documentDesc = `${name} - ${support.rarity}★`;

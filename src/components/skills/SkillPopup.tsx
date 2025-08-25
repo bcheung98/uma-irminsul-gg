@@ -29,6 +29,17 @@ import { getSkillRarityColor } from "helpers/skillRarity";
 
 // Type imports
 import { Skill } from "types/skill";
+import { Rarity, Specialty } from "types/_common";
+
+interface RenderImageProps {
+    type: "character" | "support";
+    id: number;
+    name: string;
+    title: string;
+    rank: Rarity;
+    specialty?: Specialty;
+    outfit?: string;
+}
 
 function SkillPopup({
     skill,
@@ -61,26 +72,40 @@ function SkillPopup({
         <TextStyled sx={textStyle}>(3★)</TextStyled>
     );
 
-    const renderImage = (
-        type: "character" | "support",
-        id: number,
-        name: string,
-        title: string
-    ) => (
-        <RouterLink
-            to={`/${type}s/${name.split(" ").join("-").toLowerCase()}-${id}`}
-        >
-            <Image
-                src={`${type}s/icons/${id}`}
-                alt={`[${title}] ${name}`}
-                style={{
-                    width: matches_md_up ? "48px" : "40px",
-                }}
-                tooltip={`[${title}] ${name}`}
-                onClick={handleClose}
-            />
-        </RouterLink>
-    );
+    const ranks = ["R", "SR", "SSR"];
+
+    const renderImage = ({
+        type,
+        id,
+        name,
+        title,
+        rank,
+        specialty,
+        outfit = "Original",
+    }: RenderImageProps) => {
+        const tooltip =
+            type === "character"
+                ? `${name} (${outfit || "Original"})`
+                : `${name} (${ranks[rank - 3]} ${specialty})`;
+        return (
+            <RouterLink
+                to={`/${type}s/${name
+                    .split(" ")
+                    .join("-")
+                    .toLowerCase()}-${id}`}
+            >
+                <Image
+                    src={`${type}s/icons/${id}`}
+                    alt={`[${title}] ${name}`}
+                    style={{
+                        width: matches_md_up ? "48px" : "40px",
+                    }}
+                    tooltip={tooltip}
+                    onClick={handleClose}
+                />
+            </RouterLink>
+        );
+    };
 
     const characterSources = characters.filter((char) =>
         [
@@ -197,12 +222,14 @@ function SkillPopup({
                                 <Grid container spacing={1}>
                                     {characterSources.map((char, index) => (
                                         <Box key={index}>
-                                            {renderImage(
-                                                "character",
-                                                char.id,
-                                                char.name,
-                                                char.title
-                                            )}
+                                            {renderImage({
+                                                type: "character",
+                                                id: char.id,
+                                                name: char.name,
+                                                title: char.title,
+                                                rank: char.rarity,
+                                                outfit: char.outfit,
+                                            })}
                                         </Box>
                                     ))}
                                 </Grid>
@@ -217,12 +244,14 @@ function SkillPopup({
                                     {characterEventSources.map(
                                         (char, index) => (
                                             <Box key={index}>
-                                                {renderImage(
-                                                    "character",
-                                                    char.id,
-                                                    char.name,
-                                                    char.title
-                                                )}
+                                                {renderImage({
+                                                    type: "character",
+                                                    id: char.id,
+                                                    name: char.name,
+                                                    title: char.title,
+                                                    rank: char.rarity,
+                                                    outfit: char.outfit,
+                                                })}
                                             </Box>
                                         )
                                     )}
@@ -240,12 +269,14 @@ function SkillPopup({
                                 <Grid container spacing={1}>
                                     {supportSources.map((supp, index) => (
                                         <Box key={index}>
-                                            {renderImage(
-                                                "support",
-                                                supp.id,
-                                                supp.name,
-                                                supp.title
-                                            )}
+                                            {renderImage({
+                                                type: "support",
+                                                id: supp.id,
+                                                name: supp.name,
+                                                title: supp.title,
+                                                rank: supp.rarity,
+                                                specialty: supp.specialty,
+                                            })}
                                         </Box>
                                     ))}
                                 </Grid>
@@ -262,12 +293,14 @@ function SkillPopup({
                                 <Grid container spacing={1}>
                                     {supportEventSources.map((supp, index) => (
                                         <Box key={index}>
-                                            {renderImage(
-                                                "support",
-                                                supp.id,
-                                                supp.name,
-                                                supp.title
-                                            )}
+                                            {renderImage({
+                                                type: "support",
+                                                id: supp.id,
+                                                name: supp.name,
+                                                title: supp.title,
+                                                rank: supp.rarity,
+                                                specialty: supp.specialty,
+                                            })}
                                         </Box>
                                     ))}
                                 </Grid>

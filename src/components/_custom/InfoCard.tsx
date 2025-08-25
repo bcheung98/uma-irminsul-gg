@@ -25,6 +25,7 @@ interface InfoCardProps {
     id: number;
     name: string;
     title: string;
+    outfit?: string;
     cardID?: string;
     type: "character" | "support";
     rarity?: Rarity;
@@ -50,6 +51,7 @@ function InfoCard({
     id,
     name,
     title,
+    outfit = "Original",
     cardID = title,
     type,
     rarity = 3,
@@ -190,13 +192,22 @@ function InfoCard({
         minHeight: "16px",
     };
 
+    const ranks = ["R", "SR", "SSR"];
+
+    const tooltip =
+        type === "character"
+            ? `${name} (${outfit || "Original"})`
+            : `${name} (${ranks[(info?.rank || 3) - 3]} ${
+                  infoSecondary?.specialty
+              })`;
+
     return (
         <Card sx={rootStyle} elevation={2}>
             {!loading ? (
                 <>
                     <Card elevation={0} sx={cardStyle}>
                         <StyledTooltip
-                            title={!disableTooltip ? `[${title}] ${name}` : ""}
+                            title={!disableTooltip ? tooltip : ""}
                             arrow
                             placement="top"
                         >
