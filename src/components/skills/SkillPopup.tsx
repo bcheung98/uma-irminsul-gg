@@ -43,9 +43,11 @@ interface RenderImageProps {
 
 function SkillPopup({
     skill,
+    showSources = true,
     handleClose,
 }: {
     skill: Skill;
+    showSources?: boolean;
     handleClose: () => void;
 }) {
     const theme = useTheme();
@@ -212,7 +214,7 @@ function SkillPopup({
                         </Stack>
                     </Stack>
                 </Card>
-                {sources.length > 0 && (
+                {showSources && sources.length > 0 && (
                     <Stack spacing={1}>
                         {characterSources.length > 0 && (
                             <Box>
