@@ -55,3 +55,16 @@ export interface CharacterSkills {
     awakening: (string | number)[];
     event: (string | number)[];
 }
+
+export interface CharacterProfile {
+    id: number;
+    name: string;
+    nameJP: string;
+    description: string;
+    birthday: string;
+    height: number;
+    sizes: [number, number, number];
+    voiceActors: {
+        jp: string;
+    };
+}
