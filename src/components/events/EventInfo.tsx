@@ -1,0 +1,82 @@
+import { useState } from "react";
+
+// Component imports
+import EventPopup from "components/events/EventPopup";
+import { TextStyled } from "styled/StyledTypography";
+
+// MUI imports
+import { useTheme, Card, Popover } from "@mui/material";
+
+// Helper imports
+import { range } from "helpers/utils";
+
+// Type imports
+import { TrainingEvent } from "types/event";
+
+function EventInfo({
+    event,
+    isChain = false,
+    index = 1,
+}: {
+    event: TrainingEvent;
+    isChain?: boolean;
+    index?: number;
+}) {
+    const theme = useTheme();
+
+    let name = event.name || event.nameJP;
+    if (isChain) {
+        name = `(${range(index)
+            .map((_) => "❯")
+            .join("")}) ${name}`;
+    }
+
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+    const handleClickOpen = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const open = Boolean(anchorEl);
+
+    return (
+        <>
+            <Card
+                sx={{
+                    p: "8px 16px",
+                    backgroundColor: theme.background(2),
+                    cursor: "pointer",
+                    "&:hover": {
+                        outline: `2px solid ${theme.border.color.primary}`,
+                    },
+                }}
+                onClick={handleClickOpen}
+            >
+                <TextStyled variant="body2-styled">{name}</TextStyled>
+            </Card>
+            <Popover
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                disableScrollLock
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                }}
+                transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                }}
+            >
+                <EventPopup
+                    name={name}
+                    options={event.options}
+                    optionsJP={event.optionsJP}
+                />
+            </Popover>
+        </>
+    );
+}
+
+export default EventInfo;

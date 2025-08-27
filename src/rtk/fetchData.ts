@@ -1,10 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Character } from "types/character";
+import { Character, CharacterProfile } from "types/character";
 import { Skill } from "types/skill";
 import { Support } from "types/support";
 import { Banner } from "types/banner";
+import { EventData } from "types/event";
 
 export type LoadingStatus = "idle" | "pending" | "success" | "error";
+
+// https://api.irminsul.gg/uma/character-profiles.json
+const characterProfilesURL =
+    "https://api.irminsul.gg/uma/character-profiles.json";
 
 // https://api.irminsul.gg/uma/characters.json
 const charactersURL = "https://api.irminsul.gg/uma/characters.json";
@@ -17,6 +22,14 @@ const skillsURL = "https://api.irminsul.gg/uma/skills.json";
 
 const characterBannerURL = "https://api.irminsul.gg/uma/character-banners.json";
 const supportBannerURL = "https://api.irminsul.gg/uma/support-banners.json";
+
+export const fetchCharacterProfiles = createAsyncThunk(
+    "GET/characterProfiles",
+    async (): Promise<CharacterProfile[]> => {
+        const response = await fetch(characterProfilesURL);
+        return await response.json();
+    }
+);
 
 export const fetchCharacters = createAsyncThunk(
     "GET/characters",
@@ -54,6 +67,17 @@ export const fetchSupportBanners = createAsyncThunk(
     "GET/supportBanners",
     async (): Promise<Banner[]> => {
         const response = await fetch(supportBannerURL);
+        return await response.json();
+    }
+);
+
+export const fetchEvents = createAsyncThunk(
+    "GET/events",
+    // TODO: REPLACE URL AND REMOVE PORT PARAM
+    async (params: { type: string; port: number }): Promise<EventData[]> => {
+        const response = await fetch(
+            `http://localhost:${params.port}/events-${params.type}`
+        );
         return await response.json();
     }
 );

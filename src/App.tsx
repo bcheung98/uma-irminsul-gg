@@ -15,6 +15,8 @@ import {
     fetchSkills,
     fetchCharacterBanners,
     fetchSupportBanners,
+    fetchEvents,
+    fetchCharacterProfiles,
 } from "rtk/fetchData";
 import { useAppDispatch, useAppSelector } from "helpers/hooks";
 import { selectTheme, setTheme } from "reducers/settings";
@@ -24,11 +26,16 @@ function App() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        dispatch(fetchCharacterProfiles());
         dispatch(fetchCharacters());
         dispatch(fetchSupports());
         dispatch(fetchSkills());
         dispatch(fetchCharacterBanners());
         dispatch(fetchSupportBanners());
+        // TODO: REMOVE PORT PARAM
+        dispatch(fetchEvents({ type: "support-common", port: 3000 }));
+        dispatch(fetchEvents({ type: "support-ssr", port: 3001 }));
+        dispatch(fetchEvents({ type: "support-sr", port: 3002 }));
     }, []);
 
     const theme = useAppSelector(selectTheme);

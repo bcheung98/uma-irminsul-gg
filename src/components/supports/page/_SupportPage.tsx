@@ -5,6 +5,7 @@ import SupportImage from "./SupportImage";
 import SupportInfo from "./SupportInfo";
 import SupportEffects from "./SupportEffects";
 import SupportSkills from "./SupportSkills";
+import SupportEvents from "./SupportEvents";
 import BetaTag from "custom/BetaTag";
 import PageNotFound from "components/PageNotFound";
 
@@ -15,6 +16,7 @@ import Grid from "@mui/material/Grid2";
 // Helper imports
 import { useAppSelector } from "helpers/hooks";
 import { selectSupports } from "reducers/support";
+import { selectWidth } from "reducers/settings";
 
 function SupportPage() {
     const theme = useTheme();
@@ -26,6 +28,8 @@ function SupportPage() {
             `${char.name.split(" ").join("-").toLowerCase()}-${char.id}` ===
             params.id
     );
+
+    const width = useAppSelector(selectWidth);
 
     const ranks = ["R", "SR", "SSR"];
 
@@ -53,11 +57,20 @@ function SupportPage() {
         const supportInfo = <SupportInfo support={support} />;
         const supportEffects = <SupportEffects support={support} />;
         const supportSkills = <SupportSkills support={support} />;
+        const supportEvents = <SupportEvents support={support} />;
 
         const supportDetails = (
             <Grid container spacing={2}>
-                <Grid size={{ xs: 12, lg: "grow" }}>{supportEffects}</Grid>
+                <Grid size={{ xs: 12, lg: "grow" }}>
+                    <Stack spacing={2}>
+                        {supportEffects}
+                        {matches_sm_up && width === "wide" && supportEvents}
+                    </Stack>
+                </Grid>
                 <Grid size={{ xs: 12, lg: 6 }}>{supportSkills}</Grid>
+                {matches_sm_up && width === "standard" && (
+                    <Grid size={12}>{supportEvents} </Grid>
+                )}
             </Grid>
         );
 
@@ -74,6 +87,7 @@ function SupportPage() {
                     </Grid>
                 </Grid>
                 {!matches_sm_up && supportDetails}
+                {!matches_sm_up && supportEvents}
             </Stack>
         );
     } else {
