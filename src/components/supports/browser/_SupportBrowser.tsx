@@ -161,7 +161,7 @@ function SupportBrowser() {
                         <InfoCard
                             key={support.id}
                             id={support.id}
-                            cardID={`${support.name}-supportBrowser`}
+                            cardID={`${support.id}-supportBrowser`}
                             name={support.name}
                             title={support.title}
                             type="support"
