@@ -35,8 +35,6 @@ function BannerListRow({
         ? theme.palette.info.dark
         : theme.palette.background.paper;
 
-    console.log(row.rateUps)
-
     return (
         <Box sx={{ backgroundColor: backgroundColor, p: "8px 16px" }}>
             <TextStyled
