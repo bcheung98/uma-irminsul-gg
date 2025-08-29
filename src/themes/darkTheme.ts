@@ -130,7 +130,7 @@ export const darkThemeData = {
         contrast: "rgb(0, 0, 0)",
         selected: "rgb(30, 175, 255)",
         description: "rgb(205, 205, 205)",
-        highlight: "#FFE7B9",
+        highlight: "#F7CA2F",
         highlight2: "#FFFFFF",
         star: "rgb(255, 238, 157)",
         header: "#FFE7B9",
