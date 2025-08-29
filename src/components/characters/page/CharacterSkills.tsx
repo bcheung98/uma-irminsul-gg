@@ -8,14 +8,18 @@ import Grid from "@mui/material/Grid2";
 
 // Helper imports
 import { toTitleCase } from "helpers/utils";
+import { useAppSelector } from "helpers/hooks";
+import { selectWidth } from "reducers/settings";
 
 // Type imports
 import { CharacterProps } from "types/character";
 
 function CharacterSkills({ character }: CharacterProps) {
+    const width = useAppSelector(selectWidth);
+
     return (
         <MainContentBox title="Skills" contentProps={{ padding: "16px" }}>
-            <Grid container spacing={2} sx={{ width: { xl: "80%" } }}>
+            <Grid container spacing={2}>
                 {Object.entries(character.skills).map(([key, skills]) => (
                     <Grid
                         key={key}
@@ -31,7 +35,16 @@ function CharacterSkills({ character }: CharacterProps) {
                                         key={index}
                                         size={{
                                             xs: 12,
-                                            md: key === "unique" ? 6 : 12,
+                                            lg:
+                                                key === "unique" &&
+                                                width === "standard"
+                                                    ? "grow"
+                                                    : 12,
+                                            xl:
+                                                key === "unique" &&
+                                                width === "standard"
+                                                    ? 6
+                                                    : 12,
                                         }}
                                     >
                                         <SkillInfo

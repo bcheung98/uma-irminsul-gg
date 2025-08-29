@@ -73,6 +73,7 @@ function EventInfo({
                     name={name}
                     options={event.options}
                     optionsJP={event.optionsJP}
+                    props={event.props}
                 />
             </Popover>
         </>

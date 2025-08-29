@@ -1,6 +1,6 @@
 // Component imports
 import MainContentBox from "custom/MainContentBox";
-
+import EventInfo from "components/events/EventInfo";
 import { TextStyled } from "styled/StyledTypography";
 import { FlexBox } from "styled/StyledBox";
 
@@ -16,7 +16,6 @@ import { objectKeys } from "helpers/utils";
 // Type imports
 import { SupportProps } from "types/support";
 import { EventData } from "types/event";
-import EventInfo from "components/events/EventInfo";
 
 function SupportEvents({ support }: SupportProps) {
     const profiles = useAppSelector(selectCharacterProfiles);
@@ -30,6 +29,8 @@ function SupportEvents({ support }: SupportProps) {
     let commonEvents: EventData | undefined;
     let chainEvents: EventData | undefined;
 
+    const isPalorGroup = ["Pal", "Group"].includes(support.specialty);
+
     if (loadedEvents.includes("support-common")) {
         const character = profiles.find((char) => char.name === support.name);
         if (character) {
@@ -39,10 +40,20 @@ function SupportEvents({ support }: SupportProps) {
         }
     }
 
-    if (loadedEvents.includes(`support-${rarity}`)) {
-        chainEvents = events[`support-${rarity}`].find(
-            (e) => e.id === support.id
-        );
+    if (isPalorGroup && loadedEvents.includes("support-pal")) {
+        const character = profiles.find((char) => char.name === support.name);
+        if (character) {
+            commonEvents = events["support-pal"].find(
+                (e) => e.id === character.id
+            );
+            chainEvents = commonEvents;
+        }
+    } else {
+        if (loadedEvents.includes(`support-${rarity}`)) {
+            chainEvents = events[`support-${rarity}`].find(
+                (e) => e.id === support.id
+            );
+        }
     }
 
     const flexBoxStyle = {
@@ -59,16 +70,29 @@ function SupportEvents({ support }: SupportProps) {
             <Stack spacing={2}>
                 {chainEvents && chainEvents.events.length > 0 && (
                     <>
-                        <TextStyled sx={{ mb: "8px" }}>Chain Events</TextStyled>
+                        <TextStyled sx={{ mb: "8px" }}>{`${
+                            isPalorGroup ? "Recreation" : "Chain"
+                        } Events`}</TextStyled>
                         <FlexBox sx={flexBoxStyle}>
-                            {chainEvents.events.map((event, index) => (
-                                <EventInfo
-                                    key={index}
-                                    event={event}
-                                    isChain={true}
-                                    index={index + 1}
-                                />
-                            ))}
+                            {isPalorGroup
+                                ? chainEvents.palProps?.recEvents.map(
+                                      (event, index) => (
+                                          <EventInfo
+                                              key={index}
+                                              event={event}
+                                              isChain={true}
+                                              index={index + 1}
+                                          />
+                                      )
+                                  )
+                                : chainEvents.events.map((event, index) => (
+                                      <EventInfo
+                                          key={index}
+                                          event={event}
+                                          isChain={true}
+                                          index={index + 1}
+                                      />
+                                  ))}
                         </FlexBox>
                     </>
                 )}

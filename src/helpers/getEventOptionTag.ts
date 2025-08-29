@@ -1,5 +1,5 @@
 export function getOptionTag(index: number, length: number) {
-    if (length > 1) {
+    if (length > 1 && length < 4) {
         let tag = "";
         switch (index) {
             case 1:
@@ -15,6 +15,8 @@ export function getOptionTag(index: number, length: number) {
                 break;
         }
         return tag + "Option:";
+    } else if (length > 3) {
+        return `Option ${index}:`;
     } else {
         return "";
     }

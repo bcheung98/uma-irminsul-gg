@@ -32,10 +32,12 @@ function App() {
         dispatch(fetchSkills());
         dispatch(fetchCharacterBanners());
         dispatch(fetchSupportBanners());
-        // TODO: REMOVE PORT PARAM
-        dispatch(fetchEvents({ type: "support-common", port: 3000 }));
-        dispatch(fetchEvents({ type: "support-ssr", port: 3001 }));
-        dispatch(fetchEvents({ type: "support-sr", port: 3002 }));
+        dispatch(fetchEvents({ type: "support-common" }));
+        dispatch(fetchEvents({ type: "support-ssr" }));
+        dispatch(fetchEvents({ type: "support-sr" }));
+        dispatch(fetchEvents({ type: "support-pal" }));
+        dispatch(fetchEvents({ type: "character" }));
+        dispatch(fetchEvents({ type: "character-outfit" }));
     }, []);
 
     const theme = useAppSelector(selectTheme);

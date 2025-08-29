@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import CharacterImage from "./CharacterImage";
 import CharacterInfoMain from "./CharacterInfoMain";
 import CharacterSkills from "./CharacterSkills";
+import CharacterEvents from "./CharacterEvents";
 import BetaTag from "custom/BetaTag";
 import PageNotFound from "components/PageNotFound";
 
@@ -14,6 +15,7 @@ import Grid from "@mui/material/Grid2";
 // Helper imports
 import { useAppSelector } from "helpers/hooks";
 import { selectCharacters } from "reducers/character";
+import { selectWidth } from "reducers/settings";
 
 function CharacterPage() {
     const theme = useTheme();
@@ -25,6 +27,8 @@ function CharacterPage() {
             `${char.name.split(" ").join("-").toLowerCase()}-${char.id}` ===
             params.id
     );
+
+    const width = useAppSelector(selectWidth);
 
     if (character !== undefined) {
         const name = `${character.name} (${character.outfit || "Original"})`;
@@ -62,7 +66,14 @@ function CharacterPage() {
                         </Stack>
                     </Grid>
                 </Grid>
-                <CharacterSkills character={character} />
+                <Grid container spacing={2}>
+                    <Grid size={{ lg: width === "standard" ? 12 : 6 }}>
+                        <CharacterSkills character={character} />
+                    </Grid>
+                    <Grid size={{ lg: width === "standard" ? 12 : 6 }}>
+                        <CharacterEvents character={character} />
+                    </Grid>
+                </Grid>
             </Stack>
         );
     } else {

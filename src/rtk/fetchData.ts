@@ -73,10 +73,9 @@ export const fetchSupportBanners = createAsyncThunk(
 
 export const fetchEvents = createAsyncThunk(
     "GET/events",
-    // TODO: REPLACE URL AND REMOVE PORT PARAM
-    async (params: { type: string; port: number }): Promise<EventData[]> => {
+    async (params: { type: string; port?: number }): Promise<EventData[]> => {
         const response = await fetch(
-            `http://localhost:${params.port}/events-${params.type}`
+            `https://api.irminsul.gg/uma/events-${params.type}.json`
         );
         return await response.json();
     }

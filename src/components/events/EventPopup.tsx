@@ -14,12 +14,24 @@ import { EventOutcome } from "types/event";
 function EventPopup({
     name,
     options,
+    props,
 }: {
     name: string;
     options: EventOutcome[][][];
     optionsJP?: EventOutcome[][][];
+    props?: number[][];
 }) {
     const theme = useTheme();
+
+    const getRandomText = (index: number, idx: number) => {
+        if (props) {
+            return idx === 0
+                ? `Randomly either (~${props[index][idx]}%)`
+                : `or (~${props[index][idx]}%)`;
+        } else {
+            return idx === 0 ? "Randomly either" : "or";
+        }
+    };
 
     return (
         <Box sx={{ p: "8px", backgroundColor: theme.background(0, "light") }}>
@@ -53,7 +65,7 @@ function EventPopup({
                                                 color: theme.text.highlight,
                                             }}
                                         >
-                                            {idx === 0 ? "Randomly" : "or"}
+                                            {getRandomText(index, idx)}
                                         </TextStyled>
                                     )}
                                     <Stack>

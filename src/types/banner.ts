@@ -15,6 +15,7 @@ export interface BannerOption {
     id: number;
     name: string;
     title: string;
+    outfit?: string;
     rarity: Rarity;
     specialty?: Specialty;
 }

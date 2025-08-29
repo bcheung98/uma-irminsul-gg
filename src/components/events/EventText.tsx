@@ -20,19 +20,23 @@ import { EventOutcome } from "types/event";
 function EventText({ outcome }: { outcome: EventOutcome }) {
     const theme = useTheme();
 
-    const { tag, value, prop } = outcome;
-
-    const [open, setOpen] = useState(false);
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const { tag, value, prop, random } = outcome;
 
     let res = <></>;
 
-    const renderHint = (event: EventOutcome) => {
+    const textColor = ["Event chain ended", "Recreation enabled"].includes(tag)
+        ? theme.text.highlight
+        : theme.text.primary;
+
+    const renderHint = (event: EventOutcome, isHint: boolean) => {
+        const [open, setOpen] = useState(false);
+        const handleClickOpen = () => {
+            setOpen(true);
+        };
+        const handleClose = () => {
+            setOpen(false);
+        };
+
         const { value, prop } = event;
         const skill = useAppSelector(selectSkills).find(
             (skill) => skill.id === prop
@@ -41,6 +45,7 @@ function EventText({ outcome }: { outcome: EventOutcome }) {
         if (skill) {
             hint = (
                 <>
+                    {!isHint && `Obtain `}
                     <span
                         onClick={handleClickOpen}
                         style={{
@@ -51,7 +56,7 @@ function EventText({ outcome }: { outcome: EventOutcome }) {
                     >
                         {skill.name.global || skill.name.jp}
                     </span>
-                    {` hint ${value}`}
+                    {isHint ? ` hint ${value}` : ` skill`}
                     <Dialog
                         open={open}
                         onClose={handleClose}
@@ -72,10 +77,12 @@ function EventText({ outcome }: { outcome: EventOutcome }) {
     };
 
     if (tag === "Hint") {
-        res = renderHint(outcome);
+        res = renderHint(outcome, true);
+    } else if (tag === "Get skill") {
+        res = renderHint(outcome, false);
     } else if (tag === "") {
         if (Array.isArray(prop)) {
-            const hints = prop.map((hint) => renderHint(hint));
+            const hints = prop.map((hint) => renderHint(hint, true));
             res = (
                 <span>
                     {hints.map((hint, index) => (
@@ -91,7 +98,7 @@ function EventText({ outcome }: { outcome: EventOutcome }) {
                 </span>
             );
         }
-    } else if (tag === "Status") {
+    } else if (tag === "Get status") {
         const statusEffect = statusEffects.find((effect) => effect.id === prop);
         if (statusEffect) {
             res = (
@@ -118,6 +125,8 @@ function EventText({ outcome }: { outcome: EventOutcome }) {
                 </>
             );
         }
+    } else if (tag === "Random stats") {
+        res = <>{`${prop} random stats ${value}`}</>;
     } else if (tag === "Bond") {
         const character = useAppSelector(selectCharacterProfiles).find(
             (character) => character.id === prop
@@ -133,18 +142,18 @@ function EventText({ outcome }: { outcome: EventOutcome }) {
         res = (
             <span
                 style={{
-                    color:
-                        tag === "Event chain ended"
-                            ? theme.text.highlight
-                            : theme.text.primary,
+                    color: textColor,
                 }}
-            >{`${tag} ${value || ""}`}</span>
+            >{`${tag || "???"} ${value || ""}`}</span>
         );
     }
 
     return (
         <>
-            <TextStyled variant="body2-styled">{res}</TextStyled>
+            <TextStyled variant="body2-styled">
+                {random && `(Random) `}
+                {res}
+            </TextStyled>
         </>
     );
 }
