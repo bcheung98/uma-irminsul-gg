@@ -20,6 +20,7 @@ export function createBannerData(
             data.id = char.id;
             data.name = char.name;
             data.title = char.title;
+            data.outfit = char.outfit;
             data.rarity = char.rarity;
         }
     } else {

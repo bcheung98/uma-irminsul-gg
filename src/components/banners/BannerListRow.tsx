@@ -35,6 +35,8 @@ function BannerListRow({
         ? theme.palette.info.dark
         : theme.palette.background.paper;
 
+    console.log(row.rateUps)
+
     return (
         <Box sx={{ backgroundColor: backgroundColor, p: "8px 16px" }}>
             <TextStyled
@@ -59,6 +61,7 @@ function BannerListRow({
                         type={type}
                         name={item.name}
                         title={item.title}
+                        outfit={item.outfit}
                         infoSecondary={{ specialty: item.specialty }}
                         disableLink={isTBA(item.name)}
                         disableZoomOnHover={isTBA(item.name)}
