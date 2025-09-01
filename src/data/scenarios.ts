@@ -1,3 +1,9 @@
+export interface Scenario {
+    id: number;
+    name: string;
+    global: boolean;
+}
+
 export const scenarios = [
     {
         id: 1,
