@@ -201,6 +201,16 @@ function InfoCard({
                   infoSecondary?.specialty
               })`;
 
+    const image = (
+        <Image
+            src={imgSrc}
+            alt={name}
+            id={`${cardID}-img`}
+            style={imageStyle}
+            loading={imgLoad}
+        />
+    );
+
     return (
         <Card sx={rootStyle} elevation={2}>
             {!loading ? (
@@ -216,15 +226,11 @@ function InfoCard({
                                 onMouseLeave={() => handleHover("leave")}
                                 sx={imageContainerStyle}
                             >
-                                <RouterLink to={href}>
-                                    <Image
-                                        src={imgSrc}
-                                        alt={name}
-                                        id={`${cardID}-img`}
-                                        style={imageStyle}
-                                        loading={imgLoad}
-                                    />
-                                </RouterLink>
+                                {!disableLink ? (
+                                    <RouterLink to={href}>{image}</RouterLink>
+                                ) : (
+                                    image
+                                )}
                                 {variant === "material-card" && materials && (
                                     <MaterialGrid
                                         materials={materials}
