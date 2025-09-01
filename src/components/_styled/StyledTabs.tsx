@@ -4,14 +4,19 @@ interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
+    padding?: string | number;
 }
 
 export function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
+    const { children, value, index, padding, ...other } = props;
 
     return (
         <div hidden={value !== index} {...other}>
-            {value === index && <Box sx={{ px: 3, py: 1.5 }}>{children}</Box>}
+            {value === index && (
+                <Box sx={{ p: padding !== undefined ? padding : "12px 24px" }}>
+                    {children}
+                </Box>
+            )}
         </div>
     );
 }
