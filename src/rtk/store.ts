@@ -12,6 +12,7 @@ import supportFilterReducer from "reducers/supportFilters";
 import skillReducer from "reducers/skill";
 import skillFilterReducer from "reducers/skillFilters";
 import eventReducer from "reducers/event";
+import plannerReducer from "reducers/planner";
 import bannerReducer from "reducers/banner";
 
 const store = configureStore({
@@ -27,6 +28,7 @@ const store = configureStore({
         skills: skillReducer,
         skillFilters: skillFilterReducer,
         events: eventReducer,
+        planner: plannerReducer,
         banners: bannerReducer,
     },
     middleware: (getDefaultMiddleware) =>

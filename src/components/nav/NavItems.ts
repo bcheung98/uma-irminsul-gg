@@ -27,6 +27,11 @@ export const navItems: NavItem[] = [
         link: "/skills/",
     },
     {
+        icon: "icons/Training",
+        text: "Training Event Helper",
+        link: "/training-event-helper/",
+    },
+    {
         icon: "icons/Ticket",
         text: "Banner Archive",
         link: "/banners/",

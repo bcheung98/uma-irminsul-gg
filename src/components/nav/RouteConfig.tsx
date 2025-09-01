@@ -8,6 +8,7 @@ import CharacterPage from "components/characters/page/_CharacterPage";
 import SupportBrowser from "components/supports/browser/_SupportBrowser";
 import SupportPage from "components/supports/page/_SupportPage";
 import SkillBrowser from "components/skills/_SkillBrowser";
+import Planner from "components/planner/_Planner";
 import BannerArchive from "components/banners/_BannerArchive";
 
 function RouteConfig() {
@@ -20,6 +21,7 @@ function RouteConfig() {
                 <Route path="/supports" element={<SupportBrowser />} />
                 <Route path="/supports/:id" element={<SupportPage />} />
                 <Route path="/skills" element={<SkillBrowser />} />
+                <Route path="/training-event-helper/" element={<Planner />} />
                 <Route path="/banners/" element={<BannerArchive />} />
                 <Route path="*" element={<PageNotFound />} />
             </Route>
