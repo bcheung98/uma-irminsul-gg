@@ -32,6 +32,7 @@ function App() {
         dispatch(fetchSkills());
         dispatch(fetchCharacterBanners());
         dispatch(fetchSupportBanners());
+        dispatch(fetchEvents({ type: "scenario" }));
         dispatch(fetchEvents({ type: "support-common" }));
         dispatch(fetchEvents({ type: "support-ssr" }));
         dispatch(fetchEvents({ type: "support-sr" }));
