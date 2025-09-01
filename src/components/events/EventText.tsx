@@ -98,6 +98,8 @@ function EventText({ outcome }: { outcome: EventOutcome }) {
                 </span>
             );
         }
+    } else if (tag === "<br />") {
+        res = <br />;
     } else if (tag === "Get status") {
         const statusEffect = statusEffects.find((effect) => effect.id === prop);
         if (statusEffect) {
