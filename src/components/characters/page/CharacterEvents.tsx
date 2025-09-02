@@ -11,7 +11,7 @@ function CharacterEvents({ character }: CharacterProps) {
             title="Training Events"
             contentProps={{ padding: "16px" }}
         >
-            <EventCharacter character={character} />
+            <EventCharacter character={character} expand={false} />
         </MainContentBox>
     );
 }

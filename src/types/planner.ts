@@ -16,3 +16,8 @@ export interface Deck {
         number
     ];
 }
+
+export interface EventViewerSettings {
+    showAll: boolean;
+    expanded: boolean;
+}

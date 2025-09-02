@@ -7,9 +7,9 @@ import { FlexBox } from "styled/StyledBox";
 import { Stack } from "@mui/material";
 
 // Helper imports
+import { objectKeys } from "helpers/utils";
 import { useAppSelector } from "helpers/hooks";
 import { selectEvents } from "reducers/event";
-import { objectKeys } from "helpers/utils";
 import {
     eventMasterTrainer,
     eventMisc,
@@ -18,10 +18,16 @@ import {
 } from "data/events";
 
 // Type imports
-import { CharacterProps } from "types/character";
+import { Character } from "types/character";
 import { EventData, TrainingEvent } from "types/event";
 
-function EventCharacter({ character }: CharacterProps) {
+function EventCharacter({
+    character,
+    expand = true,
+}: {
+    character: Character;
+    expand?: boolean;
+}) {
     const events = useAppSelector(selectEvents);
     const loadedEvents = objectKeys(events);
 
@@ -63,18 +69,22 @@ function EventCharacter({ character }: CharacterProps) {
 
     const flexBoxStyle = {
         flexWrap: "wrap",
-        alignItems: "center",
-        gap: "8px",
+        alignItems: "flex-start",
+        gap: "16px",
     };
 
     return (
         <Stack spacing={2}>
             {outfitEvents && outfitEvents.length > 0 && (
                 <>
-                    <TextStyled sx={{ mb: "8px" }}>Unique Events</TextStyled>
+                    <TextStyled sx={{ mb: "8px" }}>Outfit Events</TextStyled>
                     <FlexBox sx={flexBoxStyle}>
                         {outfitEvents.map((event, index) => (
-                            <EventInfo key={index} event={event} />
+                            <EventInfo
+                                key={index}
+                                event={event}
+                                expand={expand}
+                            />
                         ))}
                     </FlexBox>
                 </>
@@ -84,7 +94,11 @@ function EventCharacter({ character }: CharacterProps) {
                     <TextStyled sx={{ mb: "8px" }}>Character Events</TextStyled>
                     <FlexBox sx={flexBoxStyle}>
                         {eventsWithChoices.map((event, index) => (
-                            <EventInfo key={index} event={event} />
+                            <EventInfo
+                                key={index}
+                                event={event}
+                                expand={expand}
+                            />
                         ))}
                     </FlexBox>
                 </>
@@ -96,7 +110,11 @@ function EventCharacter({ character }: CharacterProps) {
                     </TextStyled>
                     <FlexBox sx={flexBoxStyle}>
                         {recEvents.map((event, index) => (
-                            <EventInfo key={index} event={event} />
+                            <EventInfo
+                                key={index}
+                                event={event}
+                                expand={expand}
+                            />
                         ))}
                     </FlexBox>
                 </>
@@ -108,7 +126,11 @@ function EventCharacter({ character }: CharacterProps) {
                         {eventsCommon({
                             props: characterEvents.props,
                         }).map((event, index) => (
-                            <EventInfo key={index} event={event} />
+                            <EventInfo
+                                key={index}
+                                event={event}
+                                expand={expand}
+                            />
                         ))}
                     </FlexBox>
                 </>
@@ -118,7 +140,11 @@ function EventCharacter({ character }: CharacterProps) {
                     <TextStyled sx={{ mb: "8px" }}>Other Events</TextStyled>
                     <FlexBox sx={flexBoxStyle}>
                         {otherEvents.map((event, index) => (
-                            <EventInfo key={index} event={event} />
+                            <EventInfo
+                                key={index}
+                                event={event}
+                                expand={expand}
+                            />
                         ))}
                     </FlexBox>
                 </>

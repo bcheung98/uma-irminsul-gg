@@ -9,6 +9,8 @@ import { useTheme, Card, Popover } from "@mui/material";
 
 // Helper imports
 import { range } from "helpers/utils";
+import { useAppSelector } from "helpers/hooks";
+import { selectSettings } from "reducers/planner";
 
 // Type imports
 import { TrainingEvent } from "types/event";
@@ -17,12 +19,17 @@ function EventInfo({
     event,
     isChain = false,
     index = 1,
+    expand = false,
 }: {
     event: TrainingEvent;
     isChain?: boolean;
     index?: number;
+    expand?: boolean;
 }) {
     const theme = useTheme();
+
+    const settings = useAppSelector(selectSettings);
+    const expanded = settings.expanded && expand;
 
     let name = event.name || event.nameJP;
     if (isChain) {
@@ -40,7 +47,18 @@ function EventInfo({
     };
     const open = Boolean(anchorEl);
 
-    return (
+    const renderEventPopup = (
+        <EventPopup
+            name={name}
+            options={event.options}
+            optionsJP={event.optionsJP}
+            props={event.props}
+        />
+    );
+
+    return expanded ? (
+        <Card>{renderEventPopup}</Card>
+    ) : (
         <>
             <Card
                 sx={{
@@ -69,12 +87,7 @@ function EventInfo({
                     horizontal: "center",
                 }}
             >
-                <EventPopup
-                    name={name}
-                    options={event.options}
-                    optionsJP={event.optionsJP}
-                    props={event.props}
-                />
+                {renderEventPopup}
             </Popover>
         </>
     );

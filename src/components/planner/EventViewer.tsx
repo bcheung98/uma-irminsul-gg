@@ -4,6 +4,8 @@ import { BaseSyntheticEvent, useEffect, useState } from "react";
 import EventCharacter from "components/events/EventCharacter";
 import EventScenario from "components/events/EventScenario";
 import EventSupport from "components/events/EventSupport";
+import EventSettings from "./EventSettings";
+import EventSearch from "./EventSearch";
 import MainContentBox from "custom/MainContentBox";
 import Image from "custom/Image";
 import { FlexBox } from "styled/StyledBox";
@@ -17,6 +19,8 @@ import {
     Box,
     IconButton,
     Dialog,
+    Stack,
+    Divider,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import SearchIcon from "@mui/icons-material/Search";
@@ -24,7 +28,11 @@ import ZoomInIcon from "@mui/icons-material/ZoomIn";
 
 // Helper imports
 import { useAppSelector, useAppDispatch } from "helpers/hooks";
-import { addSupport, selectCurrentDeck } from "reducers/planner";
+import {
+    addSupport,
+    selectCurrentDeck,
+    selectSettings,
+} from "reducers/planner";
 import { selectCharacters } from "reducers/character";
 import { selectSupports } from "reducers/support";
 import { Scenario, scenarios } from "data/scenarios";
@@ -33,13 +41,14 @@ import { Scenario, scenarios } from "data/scenarios";
 import { DeckData } from "types/planner";
 import { Character } from "types/character";
 import { Support } from "types/support";
-import EventSearch from "./EventSearch";
 
 function EventViewer() {
     const theme = useTheme();
     const matches_md_up = useMediaQuery(theme.breakpoints.up("md"));
 
     const dispatch = useAppDispatch();
+
+    const settings = useAppSelector(selectSettings);
 
     const characters = [...useAppSelector(selectCharacters)];
     const supports = [...useAppSelector(selectSupports)];
@@ -99,8 +108,6 @@ function EventViewer() {
             } else {
                 return "";
             }
-        } else if (index === 8) {
-            return "Other Events";
         } else {
             const ranks = ["R", "SR", "SSR"];
             if (item && "specialty" in item) {
@@ -131,7 +138,7 @@ function EventViewer() {
                         gap: "16px",
                     }}
                 >
-                    {tabValue < 8 ? (
+                    {index < 8 ? (
                         <>
                             <Image
                                 src={`${imgURL(index)}/${id}`}
@@ -180,16 +187,14 @@ function EventViewer() {
                         </>
                     )}
                 </FlexBox>
-                {tabValue === 0 && (
+                {index === 0 && (
                     <EventCharacter character={item as Character} />
                 )}
-                {tabValue === 1 && (
-                    <EventScenario scenario={item as Scenario} />
-                )}
-                {tabValue > 1 && tabValue < 8 && (
+                {index === 1 && <EventScenario scenario={item as Scenario} />}
+                {index > 1 && index < 8 && (
                     <EventSupport support={item as Support} />
                 )}
-                {tabValue === 8 && id !== -1 && (
+                {index === 8 && id !== -1 && (
                     <EventSupport support={item as Support} />
                 )}
             </>
@@ -204,77 +209,94 @@ function EventViewer() {
         <>
             <MainContentBox
                 title="Training Event Viewer"
-                contentProps={{ padding: 0 }}
+                actions={<EventSettings />}
+                contentProps={{ padding: settings.showAll ? 2 : 0 }}
             >
                 {!tabs.includes(null) ? (
                     <Grid container alignItems="flex-start">
-                        <Grid size={{ xs: 12, md: "auto" }}>
-                            <StyledTabs
-                                variant="scrollable"
-                                orientation={
-                                    matches_md_up ? "vertical" : "horizontal"
-                                }
-                                value={tabValue}
-                                onChange={handleTabChange}
-                                scrollButtons="auto"
-                                allowScrollButtonsMobile={!matches_md_up}
-                                sx={{
-                                    height: "100%",
-                                    "& .MuiTabScrollButton-root": {
-                                        color: theme.text.primary,
-                                        backgroundColor: theme.background(2),
-                                    },
-                                    ".MuiTabs-scrollButtons.Mui-disabled": {
-                                        opacity: 0.3,
-                                    },
-                                    "& .MuiTabs-indicatorSpan": {
-                                        width: "100%",
-                                        backgroundColor:
-                                            theme.border.color.primary,
-                                    },
-                                }}
-                            >
-                                {tabs.map((id, index) => (
-                                    <StyledTab
-                                        key={index}
-                                        icon={
-                                            index < 8 ? (
-                                                <Image
-                                                    src={`${imgURL(
-                                                        index
-                                                    )}/${id}`}
-                                                    alt={`${id}`}
-                                                    style={imgStyles(index)}
-                                                    // tooltip={itemName(index, id)}
-                                                    // tooltipArrow={
-                                                    //     matches_md_up ? "top" : "bottom"
-                                                    // }
-                                                />
-                                            ) : (
-                                                <ZoomInIcon
-                                                    sx={{
-                                                        ...imgStyles(tabValue),
-                                                        color: theme.text
-                                                            .primary,
-                                                    }}
-                                                />
-                                            )
-                                        }
-                                        sx={{ px: 0, py: 0.5 }}
-                                    />
-                                ))}
-                            </StyledTabs>
-                        </Grid>
-                        <Grid size={{ xs: 12, md: "grow" }}>
-                            {tabs.map((id, index) => (
-                                <TabPanel
-                                    key={index}
-                                    index={index}
+                        {!settings.showAll && (
+                            <Grid size={{ xs: 12, md: "auto" }}>
+                                <StyledTabs
+                                    variant="scrollable"
+                                    orientation={
+                                        matches_md_up
+                                            ? "vertical"
+                                            : "horizontal"
+                                    }
                                     value={tabValue}
+                                    onChange={handleTabChange}
+                                    scrollButtons="auto"
+                                    allowScrollButtonsMobile={!matches_md_up}
+                                    sx={{
+                                        height: "100%",
+                                        "& .MuiTabScrollButton-root": {
+                                            color: theme.text.primary,
+                                            backgroundColor:
+                                                theme.background(2),
+                                        },
+                                        ".MuiTabs-scrollButtons.Mui-disabled": {
+                                            opacity: 0.3,
+                                        },
+                                        "& .MuiTabs-indicatorSpan": {
+                                            width: "100%",
+                                            backgroundColor:
+                                                theme.border.color.primary,
+                                        },
+                                    }}
                                 >
-                                    {renderTabPanel(index, id)}
-                                </TabPanel>
-                            ))}
+                                    {tabs.map((id, index) => (
+                                        <StyledTab
+                                            key={index}
+                                            icon={
+                                                index < 8 ? (
+                                                    <Image
+                                                        src={`${imgURL(
+                                                            index
+                                                        )}/${id}`}
+                                                        alt={`${id}`}
+                                                        style={imgStyles(index)}
+                                                        // tooltip={itemName(index, id)}
+                                                        // tooltipArrow={
+                                                        //     matches_md_up ? "top" : "bottom"
+                                                        // }
+                                                    />
+                                                ) : (
+                                                    <ZoomInIcon
+                                                        sx={{
+                                                            ...imgStyles(index),
+                                                            color: theme.text
+                                                                .primary,
+                                                        }}
+                                                    />
+                                                )
+                                            }
+                                            sx={{ px: 0, py: 0.5 }}
+                                        />
+                                    ))}
+                                </StyledTabs>
+                            </Grid>
+                        )}
+                        <Grid size={{ xs: 12, md: "grow" }}>
+                            <Stack
+                                spacing={settings.showAll ? 2 : 0}
+                                divider={settings.showAll && <Divider />}
+                            >
+                                {tabs.map((id, index) =>
+                                    !settings.showAll ? (
+                                        <TabPanel
+                                            key={index}
+                                            index={index}
+                                            value={tabValue}
+                                        >
+                                            {renderTabPanel(index, id)}
+                                        </TabPanel>
+                                    ) : (
+                                        <Box key={index}>
+                                            {renderTabPanel(index, id)}
+                                        </Box>
+                                    )
+                                )}
+                            </Stack>
                         </Grid>
                     </Grid>
                 ) : (

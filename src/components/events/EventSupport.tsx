@@ -7,16 +7,22 @@ import { FlexBox } from "styled/StyledBox";
 import { Stack } from "@mui/material";
 
 // Helper imports
+import { objectKeys } from "helpers/utils";
 import { useAppSelector } from "helpers/hooks";
 import { selectEvents } from "reducers/event";
 import { selectCharacterProfiles } from "reducers/characterProfiles";
-import { objectKeys } from "helpers/utils";
 
 // Type imports
-import { SupportProps } from "types/support";
+import { Support } from "types/support";
 import { EventData } from "types/event";
 
-function EventSupport({ support }: SupportProps) {
+function EventSupport({
+    support,
+    expand = true,
+}: {
+    support: Support;
+    expand?: boolean;
+}) {
     const profiles = useAppSelector(selectCharacterProfiles);
 
     const ranks = ["r", "sr", "ssr"] as const;
@@ -57,7 +63,7 @@ function EventSupport({ support }: SupportProps) {
 
     const flexBoxStyle = {
         flexWrap: "wrap",
-        alignItems: "center",
+        alignItems: "flex-start",
         gap: "16px",
     };
 
@@ -77,6 +83,7 @@ function EventSupport({ support }: SupportProps) {
                                           event={event}
                                           isChain={true}
                                           index={index + 1}
+                                          expand={expand}
                                       />
                                   )
                               )
@@ -86,6 +93,7 @@ function EventSupport({ support }: SupportProps) {
                                       event={event}
                                       isChain={true}
                                       index={index + 1}
+                                      expand={expand}
                                   />
                               ))}
                     </FlexBox>
@@ -96,7 +104,11 @@ function EventSupport({ support }: SupportProps) {
                     <TextStyled sx={{ mb: "8px" }}>Random Events</TextStyled>
                     <FlexBox sx={flexBoxStyle}>
                         {commonEvents.events.map((event, index) => (
-                            <EventInfo key={index} event={event} />
+                            <EventInfo
+                                key={index}
+                                event={event}
+                                expand={expand}
+                            />
                         ))}
                     </FlexBox>
                 </>

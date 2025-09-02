@@ -37,7 +37,7 @@ function EventScenario({ scenario }: { scenario: Scenario }) {
 
     const flexBoxStyle = {
         flexWrap: "wrap",
-        alignItems: "center",
+        alignItems: "flex-start",
         gap: "16px",
     };
 

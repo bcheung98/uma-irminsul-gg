@@ -11,7 +11,7 @@ function SupportEvents({ support }: SupportProps) {
             title="Training Events"
             contentProps={{ padding: "16px" }}
         >
-            <EventSupport support={support} />
+            <EventSupport support={support} expand={false} />
         </MainContentBox>
     );
 }
