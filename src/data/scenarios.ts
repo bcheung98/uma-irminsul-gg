@@ -1,10 +1,6 @@
-export interface Scenario {
-    id: number;
-    name: string;
-    global: boolean;
-}
+import { Scenario } from "types/scenario";
 
-export const scenarios = [
+export const scenarios: Scenario[] = [
     {
         id: 1,
         name: "URA Finals",

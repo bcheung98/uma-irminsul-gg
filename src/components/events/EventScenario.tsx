@@ -13,7 +13,7 @@ import { objectKeys } from "helpers/utils";
 
 // Type imports
 import { EventData, TrainingEvent } from "types/event";
-import { Scenario } from "data/scenarios";
+import { Scenario } from "types/scenario";
 
 function EventScenario({ scenario }: { scenario: Scenario }) {
     const events = useAppSelector(selectEvents);

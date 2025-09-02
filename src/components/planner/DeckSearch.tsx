@@ -25,12 +25,13 @@ import { addCharacter, addScenario, addSupport } from "reducers/planner";
 import { selectCurrentDeck } from "reducers/planner";
 import { selectCharacters } from "reducers/character";
 import { selectSupports } from "reducers/support";
-import { Scenario, scenarios } from "data/scenarios";
+import { scenarios } from "data/scenarios";
 
 // Type imports
 import { CardType, Deck } from "types/planner";
 import { Character } from "types/character";
 import { Support } from "types/support";
+import { Scenario } from "types/scenario";
 
 function DeckSearch({
     deck,

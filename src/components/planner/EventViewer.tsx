@@ -35,12 +35,13 @@ import {
 } from "reducers/planner";
 import { selectCharacters } from "reducers/character";
 import { selectSupports } from "reducers/support";
-import { Scenario, scenarios } from "data/scenarios";
+import { scenarios } from "data/scenarios";
 
 // Type imports
 import { DeckData } from "types/planner";
 import { Character } from "types/character";
 import { Support } from "types/support";
+import { Scenario } from "types/scenario";
 
 function EventViewer() {
     const theme = useTheme();
