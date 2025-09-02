@@ -9,6 +9,7 @@ interface SearchBarProps {
     backgroundColor?: string;
     textColor?: string;
     onChange?: (event: BaseSyntheticEvent) => void;
+    onKeyDown?: (event: React.KeyboardEvent) => void;
     value?: string;
     placeholder?: string;
     inputIcon?: React.ReactNode;
@@ -24,6 +25,7 @@ function SearchBar({
     backgroundColor,
     textColor,
     onChange,
+    onKeyDown,
     value,
     placeholder = "Search",
     inputIcon,
@@ -43,6 +45,7 @@ function SearchBar({
             value={value}
             placeholder={placeholder}
             onChange={onChange}
+            onKeyDown={onKeyDown}
             fullWidth
             autoComplete="off"
             spellCheck={false}
