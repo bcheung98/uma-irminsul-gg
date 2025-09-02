@@ -17,11 +17,11 @@ import { selectSupports } from "reducers/support";
 import { selectCharacterBanners, selectSupportBanners } from "reducers/banner";
 import { selectServer } from "reducers/settings";
 import { createDateObject, isCurrentBanner } from "helpers/dates";
+import { createBannerData } from "helpers/createBannerData";
 import { isTBA } from "helpers/utils";
 
 // Type imports
 import { Banner, BannerData, BannerType } from "types/banner";
-import { createBannerData } from "helpers/createBannerData";
 
 function CurrentBanners() {
     const region = useAppSelector(selectServer);
