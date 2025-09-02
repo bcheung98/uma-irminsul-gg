@@ -28,7 +28,7 @@ function Planner() {
                 variant="h5-styled"
                 sx={{ mb: "20px", lineHeight: "36px" }}
             >
-                Training Event Helper
+                Training Event Helper (WIP)
             </TextStyled>
             <Stack spacing={4}>
                 <DeckBuilder />

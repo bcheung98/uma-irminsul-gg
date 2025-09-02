@@ -303,7 +303,7 @@ function EventViewer() {
                 ) : (
                     <Box sx={{ p: 2 }}>
                         <TextStyled>
-                            Select a trainee and complete your Support Card deck
+                            Select a Trainee and complete your Support Card deck
                             to begin
                         </TextStyled>
                     </Box>
