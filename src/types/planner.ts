@@ -6,5 +6,13 @@ export interface Deck {
     name: string;
     character: DeckData;
     scenario: DeckData;
-    supports: [DeckData, DeckData, DeckData, DeckData, DeckData, DeckData];
+    supports: [
+        DeckData,
+        DeckData,
+        DeckData,
+        DeckData,
+        DeckData,
+        DeckData,
+        number
+    ];
 }

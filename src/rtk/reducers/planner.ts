@@ -12,7 +12,7 @@ const defaultDecks: Deck[] = range(1, 6).map((i) => ({
     name: `Deck ${i}`,
     character: null,
     scenario: 1,
-    supports: [null, null, null, null, null, null],
+    supports: [null, null, null, null, null, null, -1],
 }));
 
 const storedDecks =

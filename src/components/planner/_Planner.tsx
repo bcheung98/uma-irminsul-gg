@@ -1,6 +1,10 @@
 // Component imports
 import DeckBuilder from "./DeckBuilder";
+import EventViewer from "./EventViewer";
 import { TextStyled } from "styled/StyledTypography";
+
+// MUI imports
+import { Stack } from "@mui/material";
 
 function Planner() {
     const documentTitle = `Training Event Planner ${
@@ -26,7 +30,10 @@ function Planner() {
             >
                 Training Event Helper
             </TextStyled>
-            <DeckBuilder />
+            <Stack spacing={4}>
+                <DeckBuilder />
+                <EventViewer />
+            </Stack>
         </>
     );
 }
