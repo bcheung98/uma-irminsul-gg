@@ -29,8 +29,8 @@ function DeckSupportCard({ data }: { data: DeckData }) {
     );
 
     const cardStyles: SxProps = {
-        width: { xs: "72px", sm: "96px" },
-        height: { xs: "102px", sm: "136px" },
+        width: { xs: "64px", sm: "96px" },
+        height: { xs: "64px", sm: "136px" },
         borderRadius: "16px",
         backgroundColor: theme.background(0, "dark"),
         cursor: "pointer",
@@ -47,7 +47,7 @@ function DeckSupportCard({ data }: { data: DeckData }) {
             spacing={1}
             alignItems="center"
             justifyContent="center"
-            sx={{ width: { xs: "72px", sm: "96px" } }}
+            sx={{ width: { xs: "64px", sm: "96px" } }}
         >
             {support ? (
                 <Box sx={{ cursor: "pointer" }}>
@@ -63,7 +63,8 @@ function DeckSupportCard({ data }: { data: DeckData }) {
                             rank: support.rarity,
                         }}
                         backgroundColor={theme.background(0, "dark")}
-                        size={matches_sm_up ? "96px" : "72px"}
+                        size={matches_sm_up ? "96px" : "64px"}
+                        variant={matches_sm_up ? "avatar" : "icon"}
                         showName={false}
                         disableTooltip
                         disableLink
