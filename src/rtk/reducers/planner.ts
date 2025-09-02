@@ -8,7 +8,7 @@ interface PlannerState {
     currentDeck: number;
 }
 
-const defaultDecks: Deck[] = range(1, 6).map((i) => ({
+const defaultDecks: Deck[] = range(1, 10).map((i) => ({
     name: `Deck ${i}`,
     character: null,
     scenario: 1,
