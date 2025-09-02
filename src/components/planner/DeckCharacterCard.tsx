@@ -13,7 +13,7 @@ import { selectCharacters } from "reducers/character";
 // Type imports
 import { DeckData } from "types/planner";
 
-function DeckCharacterCard({ data }: { data: DeckData }) {
+function DeckCharacterCard({ data, mini }: { data: DeckData; mini?: boolean }) {
     const theme = useTheme();
 
     const character = useAppSelector(selectCharacters).find(
@@ -21,16 +21,18 @@ function DeckCharacterCard({ data }: { data: DeckData }) {
     );
 
     const cardStyles: SxProps = {
-        width: "96px",
-        height: "96px",
+        width: mini ? "64px" : "96px",
+        height: mini ? "64px" : "96px",
         borderRadius: "16px",
         backgroundColor: theme.background(0, "dark"),
-        cursor: "pointer",
+        cursor: mini ? "default" : "pointer",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         "&:hover": {
-            backgroundColor: theme.background(0, "light"),
+            backgroundColor: mini
+                ? theme.background(0, "dark")
+                : theme.background(0, "light"),
         },
     };
 
@@ -39,10 +41,10 @@ function DeckCharacterCard({ data }: { data: DeckData }) {
             spacing={1}
             alignItems="center"
             justifyContent="center"
-            sx={{ width: "96px" }}
+            sx={{ width: mini ? "64px" : "96px" }}
         >
             {character ? (
-                <Box sx={{ cursor: "pointer" }}>
+                <Box sx={{ cursor: mini ? "default" : "pointer" }}>
                     <InfoCard
                         key={character.id}
                         id={character.id}
@@ -55,7 +57,7 @@ function DeckCharacterCard({ data }: { data: DeckData }) {
                             rank: character.rarity,
                         }}
                         backgroundColor={theme.background(0, "dark")}
-                        size="96px"
+                        size={mini ? "64px" : "96px"}
                         showName={false}
                         disableTooltip
                         disableLink
@@ -64,23 +66,27 @@ function DeckCharacterCard({ data }: { data: DeckData }) {
                 </Box>
             ) : (
                 <Card sx={cardStyles}>
-                    <AddCircleOutlineIcon
-                        fontSize="large"
-                        sx={{ color: theme.text.primary }}
-                    />
+                    {!mini && (
+                        <AddCircleOutlineIcon
+                            fontSize="large"
+                            sx={{ color: theme.text.primary }}
+                        />
+                    )}
                 </Card>
             )}
-            <TextStyled
-                variant="body2-styled"
-                sx={{
-                    textAlign: "center",
-                    "&:hover": {
-                        cursor: "pointer",
-                    },
-                }}
-            >
-                {character ? character.name : "Trainee"}
-            </TextStyled>
+            {!mini && (
+                <TextStyled
+                    variant="body2-styled"
+                    sx={{
+                        textAlign: "center",
+                        "&:hover": {
+                            cursor: "pointer",
+                        },
+                    }}
+                >
+                    {character ? character.name : "Trainee"}
+                </TextStyled>
+            )}
         </Stack>
     );
 }

@@ -20,7 +20,7 @@ import { selectSupports } from "reducers/support";
 // Type imports
 import { DeckData } from "types/planner";
 
-function DeckSupportCard({ data }: { data: DeckData }) {
+function DeckSupportCard({ data, mini }: { data: DeckData; mini?: boolean }) {
     const theme = useTheme();
     const matches_sm_up = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -29,16 +29,18 @@ function DeckSupportCard({ data }: { data: DeckData }) {
     );
 
     const cardStyles: SxProps = {
-        width: { xs: "64px", sm: "96px" },
-        height: { xs: "64px", sm: "136px" },
+        width: { xs: "64px", sm: mini ? "64px" : "96px" },
+        height: { xs: "64px", sm: mini ? "64px" : "136px" },
         borderRadius: "16px",
         backgroundColor: theme.background(0, "dark"),
-        cursor: "pointer",
+        cursor: mini ? "default" : "pointer",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         "&:hover": {
-            backgroundColor: theme.background(0, "light"),
+            backgroundColor: mini
+                ? theme.background(0, "dark")
+                : theme.background(0, "light"),
         },
     };
 
@@ -47,10 +49,10 @@ function DeckSupportCard({ data }: { data: DeckData }) {
             spacing={1}
             alignItems="center"
             justifyContent="center"
-            sx={{ width: { xs: "64px", sm: "96px" } }}
+            sx={{ width: { xs: "64px", sm: mini ? "64px" : "96px" } }}
         >
             {support ? (
-                <Box sx={{ cursor: "pointer" }}>
+                <Box sx={{ cursor: mini ? "default" : "pointer" }}>
                     <InfoCard
                         key={support.id}
                         id={support.id}
@@ -59,12 +61,11 @@ function DeckSupportCard({ data }: { data: DeckData }) {
                         title={support.title}
                         type="support"
                         rarity={support.rarity}
-                        info={{
-                            rank: support.rarity,
-                        }}
                         backgroundColor={theme.background(0, "dark")}
-                        size={matches_sm_up ? "96px" : "64px"}
-                        variant={matches_sm_up ? "avatar" : "icon"}
+                        size={matches_sm_up ? (mini ? "64px" : "96px") : "64px"}
+                        variant={
+                            matches_sm_up ? (mini ? "icon" : "avatar") : "icon"
+                        }
                         showName={false}
                         disableTooltip
                         disableLink
@@ -73,23 +74,27 @@ function DeckSupportCard({ data }: { data: DeckData }) {
                 </Box>
             ) : (
                 <Card sx={cardStyles}>
-                    <AddCircleOutlineIcon
-                        fontSize="large"
-                        sx={{ color: theme.text.primary }}
-                    />
+                    {!mini && (
+                        <AddCircleOutlineIcon
+                            fontSize="large"
+                            sx={{ color: theme.text.primary }}
+                        />
+                    )}
                 </Card>
             )}
-            <TextStyled
-                variant="body2-styled"
-                sx={{
-                    textAlign: "center",
-                    "&:hover": {
-                        cursor: "pointer",
-                    },
-                }}
-            >
-                {support ? support.name : "Support"}
-            </TextStyled>
+            {!mini && (
+                <TextStyled
+                    variant="body2-styled"
+                    sx={{
+                        textAlign: "center",
+                        "&:hover": {
+                            cursor: "pointer",
+                        },
+                    }}
+                >
+                    {support ? support.name : "Support"}
+                </TextStyled>
+            )}
         </Stack>
     );
 }

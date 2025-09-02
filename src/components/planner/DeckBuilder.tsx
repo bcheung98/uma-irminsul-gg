@@ -6,6 +6,7 @@ import DeckCharacterCard from "./DeckCharacterCard";
 import DeckScenarioCard from "./DeckScenarioCard";
 import DeckSupportCard from "./DeckSupportCard";
 import DeckSearch from "./DeckSearch";
+import DeckActions from "./DeckActions";
 import { FlexBox } from "styled/StyledBox";
 import { TextStyled } from "styled/StyledTypography";
 import { StyledTabs, StyledTab, TabPanel } from "styled/StyledTabs";
@@ -16,7 +17,11 @@ import Grid from "@mui/material/Grid2";
 
 // Helper imports
 import { useAppDispatch, useAppSelector } from "helpers/hooks";
-import { selectDecks, setCurrentDeck } from "reducers/planner";
+import {
+    selectCurrentDeckIndex,
+    selectDecks,
+    setCurrentDeck,
+} from "reducers/planner";
 
 // Type imports
 import { CardType } from "types/planner";
@@ -28,8 +33,9 @@ function DeckBuilder() {
     const dispatch = useAppDispatch();
 
     const decks = useAppSelector(selectDecks);
+    const currentDeck = useAppSelector(selectCurrentDeckIndex);
 
-    const [tabValue, setTabValue] = useState(0);
+    const [tabValue, setTabValue] = useState(currentDeck);
     const handleTabChange = (_: BaseSyntheticEvent, newValue: number) => {
         setTabValue(newValue);
         dispatch(setCurrentDeck(newValue));
@@ -61,7 +67,9 @@ function DeckBuilder() {
         justifyContent: { xs: "center", md: "left" },
     };
 
-    useEffect(() => {}, [decks, tabValue]);
+    useEffect(() => {
+        setTabValue(currentDeck);
+    }, [decks, tabValue]);
 
     return (
         <>
@@ -199,6 +207,7 @@ function DeckBuilder() {
                         </Grid>
                     </TabPanel>
                 ))}
+                <DeckActions />
             </MainContentBox>
             <Dialog
                 open={open}

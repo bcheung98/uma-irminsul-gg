@@ -56,6 +56,17 @@ export const plannerSlice = createSlice({
         setCurrentDeck: (state, action: PayloadAction<number>) => {
             state.currentDeck = action.payload;
         },
+        renameDeck: (state, action: PayloadAction<string>) => {
+            state.decks[state.currentDeck].name = action.payload;
+        },
+        copyDeck: (state, action: PayloadAction<number>) => {
+            const name = state.decks[state.currentDeck].name;
+            state.decks[action.payload] = { ...state.decks[state.currentDeck] };
+            state.decks[action.payload].name = `Copy of ${name}`;
+        },
+        resetDeck: (state, action: PayloadAction<number>) => {
+            state.decks[action.payload] = defaultDecks[state.currentDeck];
+        },
         setSettings: (state, action: PayloadAction<EventViewerSettings>) => {
             Object.assign(state, action.payload);
         },
@@ -69,6 +80,7 @@ export const plannerSlice = createSlice({
     selectors: {
         selectDecks: (state): Deck[] => state.decks,
         selectCurrentDeck: (state): Deck => state.decks[state.currentDeck],
+        selectCurrentDeckIndex: (state): number => state.currentDeck,
         selectSettings: (state): EventViewerSettings => state.settings,
     },
 });
@@ -78,18 +90,32 @@ export const {
     addSupport,
     addScenario,
     setCurrentDeck,
+    renameDeck,
+    copyDeck,
+    resetDeck,
     setSettings,
     setExpanded,
     setDisplay,
 } = plannerSlice.actions;
 
-export const { selectDecks, selectCurrentDeck, selectSettings } =
-    plannerSlice.selectors;
+export const {
+    selectDecks,
+    selectCurrentDeck,
+    selectCurrentDeckIndex,
+    selectSettings,
+} = plannerSlice.selectors;
 
 export default plannerSlice.reducer;
 
 startAppListening({
-    matcher: isAnyOf(addCharacter, addSupport, addScenario),
+    matcher: isAnyOf(
+        addCharacter,
+        addSupport,
+        addScenario,
+        renameDeck,
+        copyDeck,
+        resetDeck
+    ),
     effect: (_, state) => {
         const data = JSON.stringify(state.getState().planner.decks);
         if (data !== storedDecks) {
