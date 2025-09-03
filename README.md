@@ -16,14 +16,17 @@ Make sure to check out the other branches of **Irminsul.GG**:
 
 ## **Current Features**
 
-- Character (Trainee) Browser
+- Character Browser
 - Support Card Browser
 - Skill Browser
+- Training Event Helper (WIP)
 - Banner Archive
 
 ## **Roadmap**
 
-- [ ] Training Event Helper
+- [x] Training Event Helper
+
+- [ ] View JP server data
 
 - [ ] Affinity Calculator
 
