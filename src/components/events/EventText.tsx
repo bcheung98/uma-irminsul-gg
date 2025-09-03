@@ -24,6 +24,8 @@ function EventText({ outcome }: { outcome: EventOutcome }) {
 
     let res = <></>;
 
+    let character;
+
     const textColor = ["Event chain ended", "Recreation enabled"].includes(tag)
         ? theme.text.highlight
         : theme.text.primary;
@@ -76,78 +78,116 @@ function EventText({ outcome }: { outcome: EventOutcome }) {
         return hint;
     };
 
-    if (tag === "Hint") {
-        res = renderHint(outcome, true);
-    } else if (tag === "Get skill") {
-        res = renderHint(outcome, false);
-    } else if (tag === "") {
-        if (Array.isArray(prop)) {
-            const hints = prop.map((hint) => renderHint(hint, true));
+    switch (tag) {
+        case "<br />":
+            res = <br />;
+            break;
+        case "Hint":
+            res = renderHint(outcome, true);
+            break;
+        case "Get skill":
+            res = renderHint(outcome, false);
+            break;
+        case "Random stats":
+            res = <>{`${prop} random stats ${value}`}</>;
+            break;
+        case "":
+            if (Array.isArray(prop)) {
+                const hints = prop.map((hint) => renderHint(hint, true));
+                res = (
+                    <span>
+                        {hints.map((hint, index) => (
+                            <span key={index}>
+                                {hint}
+                                {index < hints.length - 1 && (
+                                    <span
+                                        style={{ color: theme.text.highlight }}
+                                    >{` or `}</span>
+                                )}
+                            </span>
+                        ))}
+                    </span>
+                );
+            }
+            break;
+        case "Get status":
+            const statusEffect = statusEffects.find(
+                (effect) => effect.id === prop
+            );
+            if (statusEffect) {
+                res = (
+                    <>
+                        {`Get `}
+                        <StyledTooltip
+                            title={
+                                statusEffect.description ||
+                                statusEffect.descriptionJP
+                            }
+                            placement="top"
+                        >
+                            <span
+                                style={{
+                                    color: theme.text.value,
+                                    textDecoration: "underline dotted",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                {statusEffect.name || statusEffect.nameJP}
+                            </span>
+                        </StyledTooltip>
+                        {` status`}
+                    </>
+                );
+            }
+            break;
+        case "Bond":
+            character = useAppSelector(selectCharacterProfiles).find(
+                (character) => character.id === prop
+            );
+            if (character) {
+                res = (
+                    <span>{`${character.name || character.nameJP} bond ${
+                        value || ""
+                    }`}</span>
+                );
+            }
+            break;
+        case "Scenario link":
+            character = useAppSelector(selectCharacterProfiles).find(
+                (character) => character.id === prop
+            );
+            if (character) {
+                res = (
+                    <span>{`- If ${
+                        character.name || character.nameJP
+                    } is scenario-linked:`}</span>
+                );
+            }
+            break;
+        case "Date":
+            res = <span>{`- ${value}`}</span>;
+            break;
+        case "Fans":
+            res = (
+                <span>{`- Have at least ${value?.toLocaleString()} fans`}</span>
+            );
+            break;
+        case "fd":
             res = (
                 <span>
-                    {hints.map((hint, index) => (
-                        <span key={index}>
-                            {hint}
-                            {index < hints.length - 1 && (
-                                <span
-                                    style={{ color: theme.text.highlight }}
-                                >{` or `}</span>
-                            )}
-                        </span>
-                    ))}
+                    {"4 random types of training will be disabled for one turn"}
                 </span>
             );
-        }
-    } else if (tag === "<br />") {
-        res = <br />;
-    } else if (tag === "Get status") {
-        const statusEffect = statusEffects.find((effect) => effect.id === prop);
-        if (statusEffect) {
+            break;
+        default:
             res = (
-                <>
-                    {`Get `}
-                    <StyledTooltip
-                        title={
-                            statusEffect.description ||
-                            statusEffect.descriptionJP
-                        }
-                        placement="top"
-                    >
-                        <span
-                            style={{
-                                color: theme.text.value,
-                                textDecoration: "underline dotted",
-                                cursor: "pointer",
-                            }}
-                        >
-                            {statusEffect.name || statusEffect.nameJP}
-                        </span>
-                    </StyledTooltip>
-                    {` status`}
-                </>
+                <span
+                    style={{
+                        color: textColor,
+                    }}
+                >{`${tag || "???"} ${value || ""}`}</span>
             );
-        }
-    } else if (tag === "Random stats") {
-        res = <>{`${prop} random stats ${value}`}</>;
-    } else if (tag === "Bond") {
-        const character = useAppSelector(selectCharacterProfiles).find(
-            (character) => character.id === prop
-        );
-        if (character) {
-            res = (
-                <span>{`${character.name || character.nameJP} bond ${
-                    value || ""
-                }`}</span>
-            );
-        }
-    } else {
-        res = (
-            <span
-                style={{
-                    color: textColor,
-                }}
-            >{`${tag || "???"} ${value || ""}`}</span>
-        );
+            break;
     }
 
     return (
