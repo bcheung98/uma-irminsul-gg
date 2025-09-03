@@ -99,7 +99,18 @@ function DeckBuilder() {
                         {decks.map((_, index) => (
                             <StyledTab
                                 key={index}
-                                label={<TextStyled>{index + 1}</TextStyled>}
+                                label={
+                                    <TextStyled
+                                        sx={{
+                                            color:
+                                                index === tabValue
+                                                    ? theme.border.color.primary
+                                                    : theme.appbar.color,
+                                        }}
+                                    >
+                                        {index + 1}
+                                    </TextStyled>
+                                }
                                 sx={{ p: 0 }}
                             />
                         ))}
