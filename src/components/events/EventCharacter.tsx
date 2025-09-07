@@ -50,7 +50,7 @@ function EventCharacter({
             );
             recEvents = characterEvents.props?.recEvents;
             otherEvents = characterEvents.events.filter(
-                (event) => event.options.length === 1
+                (event) => event.options.length <= 1
             );
             otherEvents.unshift(
                 eventMasterTrainer({ props: characterEvents.props })

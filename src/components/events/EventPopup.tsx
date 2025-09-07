@@ -39,47 +39,63 @@ function EventPopup({
                 {name}
             </TextStyled>
             <Stack spacing={1}>
-                {options.map((option, index) => (
+                {options.length > 0 ? (
+                    options.map((option, index) => (
+                        <Stack
+                            spacing={1}
+                            key={index}
+                            sx={{
+                                p: "8px",
+                                borderRadius: "4px",
+                                backgroundColor: theme.background(1),
+                            }}
+                        >
+                            {options.length > 1 && (
+                                <TextStyled variant="body2-styled">
+                                    {getOptionTag(index + 1, options.length)}
+                                </TextStyled>
+                            )}
+                            <Stack spacing={1}>
+                                {option.map((opt, idx) => (
+                                    <Box key={idx}>
+                                        {option.length > 1 && (
+                                            <TextStyled
+                                                variant="body2-styled"
+                                                sx={{
+                                                    mb: "8px",
+                                                    color: theme.text.highlight,
+                                                }}
+                                            >
+                                                {getRandomText(index, idx)}
+                                            </TextStyled>
+                                        )}
+                                        <Stack>
+                                            {opt.map((outcome, i) => (
+                                                <Box key={i}>
+                                                    <EventText
+                                                        outcome={outcome}
+                                                    />
+                                                </Box>
+                                            ))}
+                                        </Stack>
+                                    </Box>
+                                ))}
+                            </Stack>
+                        </Stack>
+                    ))
+                ) : (
                     <Stack
-                        spacing={1}
-                        key={index}
                         sx={{
                             p: "8px",
                             borderRadius: "4px",
                             backgroundColor: theme.background(1),
                         }}
                     >
-                        {options.length > 1 && (
-                            <TextStyled variant="body2-styled">
-                                {getOptionTag(index + 1, options.length)}
-                            </TextStyled>
-                        )}
-                        <Stack spacing={1}>
-                            {option.map((opt, idx) => (
-                                <Box key={idx}>
-                                    {option.length > 1 && (
-                                        <TextStyled
-                                            variant="body2-styled"
-                                            sx={{
-                                                mb: "8px",
-                                                color: theme.text.highlight,
-                                            }}
-                                        >
-                                            {getRandomText(index, idx)}
-                                        </TextStyled>
-                                    )}
-                                    <Stack>
-                                        {opt.map((outcome, i) => (
-                                            <Box key={i}>
-                                                <EventText outcome={outcome} />
-                                            </Box>
-                                        ))}
-                                    </Stack>
-                                </Box>
-                            ))}
-                        </Stack>
+                        <TextStyled variant="body2-styled">
+                            Nothing happens
+                        </TextStyled>
                     </Stack>
-                ))}
+                )}
             </Stack>
         </Box>
     );
