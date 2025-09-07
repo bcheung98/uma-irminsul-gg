@@ -41,8 +41,8 @@ export function createDateObject({
                 .slice(0, 2)
                 .join(" ")
                 .replace(/-/g, "/")}${offset}`;
-        if (date.endsWith("UTC+8")) {
-            dateObj = new Date(formatDate(date, "+8"));
+        if (date.endsWith("UTC+0")) {
+            dateObj = new Date(formatDate(date, "+0"));
         } else {
             dateObj = new Date(formatDate(date, regions[region]));
         }
