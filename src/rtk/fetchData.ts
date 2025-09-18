@@ -74,9 +74,14 @@ export const fetchSupportBanners = createAsyncThunk(
 export const fetchEvents = createAsyncThunk(
     "GET/events",
     async (params: { type: string; port?: number }): Promise<EventData[]> => {
-        const response = await fetch(
-            `https://api.irminsul.gg/uma/events-${params.type}.json`
-        );
+        let url: string;
+        if (params.port)
+            // URL for localhost development
+            url = `http://localhost:${params.port}/events-${params.type}`;
+        else {
+            url = `https://api.irminsul.gg/uma/events-${params.type}.json`;
+        }
+        const response = await fetch(url);
         return await response.json();
     }
 );
