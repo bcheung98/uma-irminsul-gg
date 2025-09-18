@@ -35,6 +35,7 @@ function EventCharacter({
     let outfitEvents: TrainingEvent[] | undefined = [];
     let eventsWithChoices: TrainingEvent[] = [];
     let recEvents: TrainingEvent[] | undefined = [];
+    let secretEvents: TrainingEvent[] | undefined = [];
     let otherEvents: TrainingEvent[] = [];
 
     if (loadedEvents.includes("character")) {
@@ -49,9 +50,12 @@ function EventCharacter({
                 eventSlowMetabolism({ props: characterEvents.props })
             );
             recEvents = characterEvents.props?.recEvents;
-            otherEvents = characterEvents.events.filter(
-                (event) => event.options.length <= 1
+            secretEvents = characterEvents.props?.secretEvents.filter(
+                (event) => event.name !== ""
             );
+            otherEvents = characterEvents.events
+                .filter((event) => event.options.length <= 1)
+                .filter((event) => event.name !== "");
             otherEvents.unshift(
                 eventMasterTrainer({ props: characterEvents.props })
             );
@@ -110,6 +114,20 @@ function EventCharacter({
                     </TextStyled>
                     <FlexBox sx={flexBoxStyle}>
                         {recEvents.map((event, index) => (
+                            <EventInfo
+                                key={index}
+                                event={event}
+                                expand={expand}
+                            />
+                        ))}
+                    </FlexBox>
+                </>
+            )}
+            {secretEvents && secretEvents.length > 0 && (
+                <>
+                    <TextStyled sx={{ mb: "8px" }}>Secret Events</TextStyled>
+                    <FlexBox sx={flexBoxStyle}>
+                        {secretEvents.map((event, index) => (
                             <EventInfo
                                 key={index}
                                 event={event}

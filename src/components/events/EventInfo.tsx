@@ -53,6 +53,7 @@ function EventInfo({
             options={event.options}
             optionsJP={event.optionsJP}
             props={event.props}
+            conditions={event.conditions}
         />
     );
 

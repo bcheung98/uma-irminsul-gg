@@ -13,16 +13,16 @@ export interface EventData {
     palProps?: PalEventProps;
 }
 
-export interface CharacterEventProps {
+export interface PalEventProps {
+    recEvents: TrainingEvent[];
+}
+
+export interface CharacterEventProps extends PalEventProps {
     dance: [string, string];
     year: string;
     master: string;
     miscEventNames: { en: string; jp: string }[];
-    recEvents: TrainingEvent[];
-}
-
-export interface PalEventProps {
-    recEvents: TrainingEvent[];
+    secretEvents: TrainingEvent[];
 }
 
 export interface TrainingEvent {
@@ -31,11 +31,20 @@ export interface TrainingEvent {
     options: EventOutcome[][][];
     optionsJP?: EventOutcome[][][];
     props?: number[][];
+    conditions?: EventOutcome[];
 }
 
 export interface EventOutcome {
     tag: string;
-    value?: string | number | null;
+    value?: string | number | (string | number)[] | null;
     prop?: number | EventOutcome[];
     random?: boolean;
+}
+
+export interface StatusEffect {
+    id: number;
+    name: string;
+    description: string;
+    nameJP: string;
+    descriptionJP: string;
 }

@@ -15,11 +15,13 @@ function EventPopup({
     name,
     options,
     props,
+    conditions,
 }: {
     name: string;
     options: EventOutcome[][][];
     optionsJP?: EventOutcome[][][];
     props?: number[][];
+    conditions?: EventOutcome[];
 }) {
     const theme = useTheme();
 
@@ -33,69 +35,108 @@ function EventPopup({
         }
     };
 
+    const hasConditions = conditions && conditions?.length > 0;
+
     return (
         <Box sx={{ p: "8px", backgroundColor: theme.background(0, "light") }}>
-            <TextStyled variant="body2-styled" sx={{ mb: "4px" }}>
+            <TextStyled
+                variant="body2-styled"
+                sx={{ mb: hasConditions ? "16px" : "4px" }}
+            >
                 {name}
             </TextStyled>
-            <Stack spacing={1}>
-                {options.length > 0 ? (
-                    options.map((option, index) => (
-                        <Stack
-                            spacing={1}
-                            key={index}
-                            sx={{
-                                p: "8px",
-                                borderRadius: "4px",
-                                backgroundColor: theme.background(1),
-                            }}
-                        >
-                            {options.length > 1 && (
-                                <TextStyled variant="body2-styled">
-                                    {getOptionTag(index + 1, options.length)}
-                                </TextStyled>
-                            )}
-                            <Stack spacing={1}>
-                                {option.map((opt, idx) => (
-                                    <Box key={idx}>
-                                        {option.length > 1 && (
-                                            <TextStyled
-                                                variant="body2-styled"
-                                                sx={{
-                                                    mb: "8px",
-                                                    color: theme.text.highlight,
-                                                }}
-                                            >
-                                                {getRandomText(index, idx)}
-                                            </TextStyled>
-                                        )}
-                                        <Stack>
-                                            {opt.map((outcome, i) => (
-                                                <Box key={i}>
-                                                    <EventText
-                                                        outcome={outcome}
-                                                    />
-                                                </Box>
-                                            ))}
-                                        </Stack>
-                                    </Box>
-                                ))}
-                            </Stack>
-                        </Stack>
-                    ))
-                ) : (
-                    <Stack
-                        sx={{
-                            p: "8px",
-                            borderRadius: "4px",
-                            backgroundColor: theme.background(1),
-                        }}
-                    >
+            <Stack spacing={2}>
+                {hasConditions && (
+                    <Box sx={{ color: theme.text.primary }}>
                         <TextStyled variant="body2-styled">
-                            Nothing happens
+                            Conditions:
                         </TextStyled>
-                    </Stack>
+                        <Box>
+                            <ul>
+                                {conditions.map((con, index) => (
+                                    <li key={index}>
+                                        <EventText outcome={con} />
+                                    </li>
+                                ))}
+                            </ul>
+                        </Box>
+                    </Box>
                 )}
+                <Box>
+                    {hasConditions && (
+                        <TextStyled variant="body2-styled" sx={{ mb: "4px" }}>
+                            Rewards:
+                        </TextStyled>
+                    )}
+                    <Stack spacing={1}>
+                        {options.length > 0 ? (
+                            options.map((option, index) => (
+                                <Stack
+                                    spacing={1}
+                                    key={index}
+                                    sx={{
+                                        p: "8px",
+                                        borderRadius: "4px",
+                                        backgroundColor: theme.background(1),
+                                    }}
+                                >
+                                    {options.length > 1 && (
+                                        <TextStyled variant="body2-styled">
+                                            {getOptionTag(
+                                                index + 1,
+                                                options.length
+                                            )}
+                                        </TextStyled>
+                                    )}
+                                    <Stack spacing={1}>
+                                        {option.map((opt, idx) => (
+                                            <Box key={idx}>
+                                                {option.length > 1 && (
+                                                    <TextStyled
+                                                        variant="body2-styled"
+                                                        sx={{
+                                                            mb: "8px",
+                                                            color: theme.text
+                                                                .highlight,
+                                                        }}
+                                                    >
+                                                        {getRandomText(
+                                                            index,
+                                                            idx
+                                                        )}
+                                                    </TextStyled>
+                                                )}
+                                                <Stack>
+                                                    {opt.map((outcome, i) => (
+                                                        <Box key={i}>
+                                                            <EventText
+                                                                outcome={
+                                                                    outcome
+                                                                }
+                                                            />
+                                                        </Box>
+                                                    ))}
+                                                </Stack>
+                                            </Box>
+                                        ))}
+                                    </Stack>
+                                </Stack>
+                            ))
+                        ) : (
+                            <Stack
+                                sx={{
+                                    p: "8px",
+                                    borderRadius: "4px",
+                                    backgroundColor: theme.background(1),
+                                }}
+                            >
+                                <TextStyled variant="body2-styled">
+                                    Nothing happens
+                                </TextStyled>
+                            </Stack>
+                        )}
+                    </Stack>
+                </Box>
             </Stack>
         </Box>
     );
