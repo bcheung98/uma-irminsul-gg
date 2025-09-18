@@ -1,4 +1,6 @@
-export const statusEffects = [
+import { StatusEffect } from "types/event";
+
+export const statusEffects: StatusEffect[] = [
     {
         id: 1,
         name: "Night Owl",
