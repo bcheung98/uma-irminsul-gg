@@ -8,7 +8,6 @@ import { TextStyled } from "styled/StyledTypography";
 
 // MUI imports
 import { useTheme, SxProps, Box, Card, Stack, Skeleton } from "@mui/material";
-import Grid from "@mui/material/Grid2";
 
 // Helper imports
 import { getRarityColor } from "helpers/rarityColors";
@@ -38,7 +37,6 @@ interface InfoCardProps {
     infoSecondary?: {
         specialty?: Specialty;
     };
-    materials?: string[];
     backgroundColor?: string;
     disableTooltip?: boolean;
     disableLink?: boolean;
@@ -60,7 +58,6 @@ function InfoCard({
     showName = variant !== "icon",
     info,
     infoSecondary,
-    materials,
     backgroundColor,
     disableTooltip = showName,
     disableLink = false,
@@ -201,7 +198,7 @@ function InfoCard({
                   infoSecondary?.specialty
               })`;
 
-    const image = (
+    const cardImage = (
         <Image
             src={imgSrc}
             alt={name}
@@ -210,6 +207,31 @@ function InfoCard({
             loading={imgLoad}
         />
     );
+
+    function CardText({
+        subtitle = false,
+        children,
+    }: {
+        subtitle?: boolean;
+        children: React.ReactNode;
+    }) {
+        return (
+            <RouterLink to={href} sx={{ display: "flex" }}>
+                <TextStyled
+                    onMouseEnter={() => handleHover("enter")}
+                    onMouseLeave={() => handleHover("leave")}
+                    sx={{
+                        color: theme.appbar.color,
+                        textAlign: "center",
+                        fontSize: subtitle ? "12px !important" : "inherit",
+                    }}
+                    variant="body2-styled"
+                >
+                    {children}
+                </TextStyled>
+            </RouterLink>
+        );
+    }
 
     return (
         <Card sx={rootStyle} elevation={2}>
@@ -227,15 +249,11 @@ function InfoCard({
                                 sx={imageContainerStyle}
                             >
                                 {!disableLink ? (
-                                    <RouterLink to={href}>{image}</RouterLink>
+                                    <RouterLink to={href}>
+                                        {cardImage}
+                                    </RouterLink>
                                 ) : (
-                                    image
-                                )}
-                                {variant === "material-card" && materials && (
-                                    <MaterialGrid
-                                        materials={materials}
-                                        size={imgSize}
-                                    />
+                                    cardImage
                                 )}
                             </Box>
                         </StyledTooltip>
@@ -251,45 +269,12 @@ function InfoCard({
                                               )}`,
                                 }}
                             >
-                                <RouterLink to={href} sx={{ display: "flex" }}>
-                                    <TextStyled
-                                        onMouseEnter={() =>
-                                            handleHover("enter")
-                                        }
-                                        onMouseLeave={() =>
-                                            handleHover("leave")
-                                        }
-                                        sx={{
-                                            color: theme.appbar.color,
-                                            textAlign: "center",
-                                            fontSize: "12px !important",
-                                        }}
-                                        variant="body2-styled"
-                                    >
-                                        {showName && `[${title}]`}
-                                    </TextStyled>
-                                </RouterLink>
-                                <RouterLink to={href} sx={{ display: "flex" }}>
-                                    <TextStyled
-                                        onMouseEnter={() =>
-                                            handleHover("enter")
-                                        }
-                                        onMouseLeave={() =>
-                                            handleHover("leave")
-                                        }
-                                        sx={{
-                                            color: theme.appbar.color,
-                                            textAlign: "center",
-                                        }}
-                                        variant={
-                                            variant === "material-card"
-                                                ? "body1-styled"
-                                                : "body2-styled"
-                                        }
-                                    >
-                                        {showName && name}
-                                    </TextStyled>
-                                </RouterLink>
+                                <CardText subtitle>
+                                    {showName && type === "character"
+                                        ? `(${outfit})`
+                                        : `[${title}]`}
+                                </CardText>
+                                <CardText>{showName && name}</CardText>
                             </Box>
                         )}
                     </Card>
@@ -350,30 +335,3 @@ function InfoCard({
 }
 
 export default InfoCard;
-
-function MaterialGrid({ size }: { materials: string[]; size: string }) {
-    const theme = useTheme();
-
-    const images = [{ src: "", tag: "" }];
-
-    return (
-        <Box sx={{ px: "8px", py: "4px", height: size }}>
-            <Grid container spacing={0.75}>
-                {images.map((img) => (
-                    <Image
-                        key={img.tag}
-                        src={img.src}
-                        alt={img.tag}
-                        style={{
-                            width: `calc(${size} / (8 / 3.5))`,
-                            border: `1px solid ${theme.border.color.primary}`,
-                            borderRadius: "4px",
-                            backgroundColor: theme.icon.backgroundColor,
-                        }}
-                        tooltip={img.tag}
-                    />
-                ))}
-            </Grid>
-        </Box>
-    );
-}
