@@ -3,7 +3,7 @@ import { Aptitude, RaceStage } from "types/_common";
 export function formatAptitude(aptitude: Aptitude) {
     switch (aptitude) {
         case "Front":
-            return "Front-Runner";
+            return "Front Runner";
         case "Pace":
             return "Pace Chaser";
         case "Late":
