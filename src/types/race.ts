@@ -13,11 +13,9 @@ export interface Race {
 }
 
 export interface Racetrack {
-    id: number;
-    name: string;
+    [key: number]: string;
 }
 
 export interface RaceSeries {
-    name: string;
-    races: string[];
+    [key: string]: { name: string; races: string[] };
 }
