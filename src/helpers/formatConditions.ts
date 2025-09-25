@@ -1,14 +1,16 @@
-import { Aptitude, RaceStage } from "types/_common";
-
-export function formatAptitude(aptitude: Aptitude) {
+export function formatAptitude(aptitude: string) {
     switch (aptitude) {
         case "Front":
+        case "Runner":
             return "Front Runner";
         case "Pace":
+        case "Leader":
             return "Pace Chaser";
         case "Late":
+        case "Betweener":
             return "Late Surger";
         case "End":
+        case "Chaser":
             return "End Closer";
         case "Turf":
         case "Dirt":
@@ -17,10 +19,12 @@ export function formatAptitude(aptitude: Aptitude) {
         case "Medium":
         case "Long":
             return aptitude;
+        default:
+            return aptitude;
     }
 }
 
-export function formatRaceStage(stage: RaceStage) {
+export function formatRaceStage(stage: string) {
     switch (stage) {
         case "Early-Race":
         case "Mid-Race":
@@ -31,6 +35,8 @@ export function formatRaceStage(stage: RaceStage) {
         case "Final Corner":
         case "Final Straight":
         case "Slope":
+            return stage;
+        default:
             return stage;
     }
 }
