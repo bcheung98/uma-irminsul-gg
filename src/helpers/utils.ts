@@ -128,3 +128,20 @@ export function toTitleCase(str: string) {
         )
         .join("_");
 }
+
+export function countText({
+    count = 1,
+    single,
+    multi,
+    showCount = false,
+}: {
+    count?: number | number[];
+    single: string;
+    multi?: string | null;
+    showCount?: boolean;
+}) {
+    let strCount = Array.isArray(count) ? count.join("–") : count.toString();
+    multi = multi?.replace("$X", strCount);
+    const res = `${Number(count) === 1 ? single : multi || `${single}s`}`;
+    return showCount ? `${strCount} ${res}` : res;
+}
