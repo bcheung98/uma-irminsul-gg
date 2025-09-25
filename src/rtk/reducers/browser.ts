@@ -28,7 +28,7 @@ const defaultSettings: BrowserSettings = {
 const storedSettings = localStorage.getItem("browser") || "{}";
 const {
     characters = defaultSettings,
-    supports = defaultSettings,
+    supports = { sortBy: "specialty", sortDirection: "asc", view: "icon" },
     skills = { sortBy: "type", sortDirection: "asc", view: "icon" },
 } = JSON.parse(storedSettings);
 
