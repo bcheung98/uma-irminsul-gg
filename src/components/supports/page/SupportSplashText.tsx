@@ -62,7 +62,7 @@ function SupportSplashText({
                         }}
                     >
                         <TextStyled component="span" variant="body2-styled">
-                            {parse(splash.en)}
+                            {parse(splash.en || splash.jp)}
                         </TextStyled>
                     </Box>
                 </Grid>

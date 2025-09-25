@@ -32,6 +32,7 @@ interface CharacterTableRowProps extends CharacterRow {
     late: Rank;
     end: Rank;
     releaseDate: string;
+    releaseDateGlobal: string;
 }
 
 function CharacterTableRow({ row }: { row: CharacterTableRowProps }) {
@@ -123,9 +124,28 @@ function CharacterTableRow({ row }: { row: CharacterTableRowProps }) {
     );
 
     columns.push({
-        label: `${
-            createDateObject({ date: row.releaseDate, region: region }).date
-        }`,
+        label: (
+            <>
+                <TextStyled variant="body2-styled">
+                    {`Global: ${
+                        row.releaseDateGlobal
+                            ? createDateObject({
+                                  date: row.releaseDateGlobal,
+                                  region: region,
+                              }).date
+                            : "---"
+                    }`}
+                </TextStyled>
+                <TextStyled variant="body2-styled">
+                    {`Japan: ${
+                        createDateObject({
+                            date: row.releaseDate,
+                            region: region,
+                        }).date
+                    }`}
+                </TextStyled>
+            </>
+        ),
     });
 
     return (

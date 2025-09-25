@@ -7,6 +7,7 @@ export interface CharacterProps {
 
 export interface Character {
     id: number;
+    charID: number;
     name: string;
     outfit?: string;
     title: string;
@@ -50,10 +51,17 @@ export interface CharacterAptitudeStrategy {
 }
 
 export interface CharacterSkills {
-    unique: (string | number)[];
-    innate: (string | number)[];
-    awakening: (string | number)[];
-    event: (string | number)[];
+    unique: (number | string)[];
+    innate: (number | string)[];
+    awakening: (number | string)[];
+    event: (number | string)[];
+    eventJP?: (number | string)[];
+    evo: CharacterEvoSkill[];
+}
+
+export interface CharacterEvoSkill {
+    new: number;
+    old: number;
 }
 
 export interface CharacterProfile {

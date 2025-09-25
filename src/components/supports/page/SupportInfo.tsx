@@ -15,9 +15,9 @@ function SupportInfo({ support }: SupportProps) {
 
     const { name, title, perks } = support;
 
-    const uniqueEffects = perks.effects
-        .map((effect) => effect.effect)
-        .join(" and ");
+    const uniqueEffects = perks.description
+        ? perks.description.map((desc) => desc).join(" and ")
+        : perks.effects.map((effect) => effect.effect).join(" and ");
 
     return (
         <MainContentBox
@@ -53,7 +53,7 @@ function SupportInfo({ support }: SupportProps) {
             }}
         >
             {uniqueEffects.length > 0 && (
-                <Stack spacing={0.5} sx={{ width: "100%", maxWidth: "300px" }}>
+                <Stack spacing={0.5} sx={{ width: "100%", maxWidth: "400px" }}>
                     <FlexBox
                         columnGap="8px"
                         flexWrap="wrap"

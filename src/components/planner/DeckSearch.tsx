@@ -20,11 +20,14 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 // Helper imports
 import { sortBy, toTitleCase } from "helpers/utils";
-import { useAppDispatch, useAppSelector } from "helpers/hooks";
+import {
+    useAppDispatch,
+    useAppSelector,
+    selectAppCharacters,
+    selectAppSupports,
+} from "helpers/hooks";
 import { addCharacter, addScenario, addSupport } from "reducers/planner";
 import { selectCurrentDeck } from "reducers/planner";
-import { selectCharacters } from "reducers/character";
-import { selectSupports } from "reducers/support";
 import { scenarios } from "data/scenarios";
 
 // Type imports
@@ -49,8 +52,8 @@ function DeckSearch({
 
     const dispatch = useAppDispatch();
 
-    const characters = [...useAppSelector(selectCharacters)];
-    const supports = [...useAppSelector(selectSupports)];
+    const characters = [...useAppSelector(selectAppCharacters)];
+    const supports = [...useAppSelector(selectAppSupports)];
 
     const currentDeck = useAppSelector(selectCurrentDeck);
 

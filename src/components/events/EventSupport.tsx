@@ -10,11 +10,11 @@ import { Stack } from "@mui/material";
 import { objectKeys } from "helpers/utils";
 import { useAppSelector } from "helpers/hooks";
 import { selectEvents } from "reducers/event";
-import { selectCharacterProfiles } from "reducers/characterProfiles";
+import { selectUnreleasedContent } from "reducers/settings";
 
 // Type imports
 import { Support } from "types/support";
-import { EventData } from "types/event";
+import { EventData, TrainingEvent } from "types/event";
 
 function EventSupport({
     support,
@@ -23,12 +23,11 @@ function EventSupport({
     support: Support;
     expand?: boolean;
 }) {
-    const profiles = useAppSelector(selectCharacterProfiles);
-
     const ranks = ["r", "sr", "ssr"] as const;
     const rarity = ranks[support.rarity - 3];
 
     const events = useAppSelector(selectEvents);
+    const showUnreleased = useAppSelector(selectUnreleasedContent);
     const loadedEvents = objectKeys(events);
 
     let commonEvents: EventData | undefined;
@@ -36,23 +35,56 @@ function EventSupport({
 
     const isPalorGroup = ["Pal", "Group"].includes(support.specialty);
 
-    if (loadedEvents.includes("support-common")) {
-        const character = profiles.find((char) => char.name === support.name);
-        if (character) {
-            commonEvents = events["support-common"].find(
-                (e) => e.id === character.id
-            );
+    const getOptions = (event: TrainingEvent) => {
+        if (support.release.global === "" || showUnreleased) {
+            return event.optionsJP || event.options;
+        } else {
+            return event.options;
         }
+    };
+
+    const showEvent = (event: TrainingEvent) => {
+        if (support.release.global === "" || showUnreleased) {
+            return true;
+        } else {
+            return event.name !== "";
+        }
+    };
+
+    function renderEventInfo({
+        index,
+        event,
+        isChain = false,
+        expand,
+    }: {
+        index: number;
+        event: TrainingEvent;
+        isChain?: boolean;
+        expand: boolean;
+    }) {
+        const e = { ...event };
+        e.options = getOptions(event);
+        return showEvent(event) ? (
+            <EventInfo
+                key={index}
+                event={e}
+                isChain={isChain}
+                index={index}
+                expand={expand}
+            />
+        ) : null;
     }
 
+    if (loadedEvents.includes("support-common")) {
+        commonEvents = events["support-common"].find(
+            (e) => e.id === support.charID
+        );
+    }
     if (isPalorGroup && loadedEvents.includes("support-pal")) {
-        const character = profiles.find((char) => char.name === support.name);
-        if (character) {
-            commonEvents = events["support-pal"].find(
-                (e) => e.id === character.id
-            );
-            chainEvents = commonEvents;
-        }
+        commonEvents = events["support-pal"].find(
+            (e) => e.id === support.charID
+        );
+        chainEvents = commonEvents;
     } else {
         if (loadedEvents.includes(`support-${rarity}`)) {
             chainEvents = events[`support-${rarity}`].find(
@@ -77,25 +109,22 @@ function EventSupport({
                     <FlexBox sx={flexBoxStyle}>
                         {isPalorGroup
                             ? chainEvents.palProps?.recEvents.map(
-                                  (event, index) => (
-                                      <EventInfo
-                                          key={index}
-                                          event={event}
-                                          isChain={true}
-                                          index={index + 1}
-                                          expand={expand}
-                                      />
-                                  )
+                                  (event, index) =>
+                                      renderEventInfo({
+                                          index,
+                                          event,
+                                          expand,
+                                          isChain: true,
+                                      })
                               )
-                            : chainEvents.events.map((event, index) => (
-                                  <EventInfo
-                                      key={index}
-                                      event={event}
-                                      isChain={true}
-                                      index={index + 1}
-                                      expand={expand}
-                                  />
-                              ))}
+                            : chainEvents.events.map((event, index) =>
+                                  renderEventInfo({
+                                      index,
+                                      event,
+                                      expand,
+                                      isChain: true,
+                                  })
+                              )}
                     </FlexBox>
                 </>
             )}
@@ -103,13 +132,9 @@ function EventSupport({
                 <>
                     <TextStyled sx={{ mb: "8px" }}>Random Events</TextStyled>
                     <FlexBox sx={flexBoxStyle}>
-                        {commonEvents.events.map((event, index) => (
-                            <EventInfo
-                                key={index}
-                                event={event}
-                                expand={expand}
-                            />
-                        ))}
+                        {commonEvents.events.map((event, index) =>
+                            renderEventInfo({ index, event, expand })
+                        )}
                     </FlexBox>
                 </>
             )}

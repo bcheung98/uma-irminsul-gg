@@ -10,9 +10,6 @@ export interface SupportState {
 
 const storedSupports = localStorage.getItem("data/support") || "null";
 
-const storedSettings = localStorage.getItem("settings") || "{}";
-const { unreleasedContent = false } = JSON.parse(storedSettings);
-
 const initialState: SupportState = {
     status: "idle",
     support: storedSupports !== "null" ? JSON.parse(storedSupports) : [],
@@ -28,9 +25,6 @@ export const supportSlice = createSlice({
         });
         builder.addCase(fetchSupports.fulfilled, (state, action) => {
             let payload = action.payload;
-            if (!unreleasedContent) {
-                payload = payload.filter((item) => item.release.global !== "");
-            }
             if (JSON.stringify(payload) !== storedSupports) {
                 state.support = payload;
             }
@@ -52,11 +46,7 @@ export default supportSlice.reducer;
 startAppListening({
     actionCreator: fetchSupports.fulfilled,
     effect: (action) => {
-        let payload = action.payload;
-        if (!unreleasedContent) {
-            payload = payload.filter((item) => item.release.global !== "");
-        }
-        const data = JSON.stringify(payload);
+        const data = JSON.stringify(action.payload);
         if (data !== storedSupports) {
             localStorage.setItem("data/support", data);
         }

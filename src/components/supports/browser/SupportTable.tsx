@@ -43,7 +43,8 @@ function SupportTable({ supports }: { supports: Support[] }) {
         title: supp.title,
         rarity: supp.rarity,
         specialty: supp.specialty,
-        releaseDate: supp.release.global,
+        releaseDate: supp.release.jp,
+        releaseDateGlobal: supp.release.global
     }));
 
     return (

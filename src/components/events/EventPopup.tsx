@@ -7,29 +7,21 @@ import { useTheme, Box, Stack } from "@mui/material";
 
 // Helper imports
 import { getOptionTag } from "helpers/getEventOptionTag";
+import { trainingEventContents } from "helpers/getEventText";
 
 // Type imports
-import { EventOutcome } from "types/event";
+import { TrainingEvent, TrainingEventExtraProps } from "types/event";
 
-function EventPopup({
-    name,
-    options,
-    props,
-    conditions,
-}: {
-    name: string;
-    options: EventOutcome[][][];
-    optionsJP?: EventOutcome[][][];
-    props?: number[][];
-    conditions?: EventOutcome[];
-}) {
+function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
     const theme = useTheme();
 
+    const { options, conditions, chances, props } = event;
+
     const getRandomText = (index: number, idx: number) => {
-        if (props) {
+        if (chances) {
             return idx === 0
-                ? `Randomly either (~${props[index][idx]}%)`
-                : `or (~${props[index][idx]}%)`;
+                ? `Randomly either (~${chances[index][idx]}%)`
+                : `or (~${chances[index][idx]}%)`;
         } else {
             return idx === 0 ? "Randomly either" : "or";
         }
@@ -37,11 +29,28 @@ function EventPopup({
 
     const hasConditions = conditions && conditions?.length > 0;
 
+    const headers: string[] = [];
+    props &&
+        Object.keys(trainingEventContents).forEach((e) => {
+            if (props[e as keyof TrainingEventExtraProps]) {
+                headers.push(trainingEventContents[e]);
+            }
+        });
+
     return (
-        <Box sx={{ p: "8px", backgroundColor: theme.background(0, "light") }}>
+        <Box
+            sx={{
+                p: "8px",
+                minWidth: "150px",
+                maxWidth: "400px",
+                backgroundColor: theme.background(0, "light"),
+            }}
+        >
             <TextStyled
                 variant="body2-styled"
-                sx={{ mb: hasConditions ? "16px" : "4px" }}
+                sx={{
+                    mb: hasConditions || headers.length > 0 ? "16px" : "4px",
+                }}
             >
                 {name}
             </TextStyled>
@@ -62,6 +71,12 @@ function EventPopup({
                         </Box>
                     </Box>
                 )}
+                {headers.length > 0 &&
+                    headers.map((header, index) => (
+                        <TextStyled key={index} variant="body2-styled">
+                            {header}
+                        </TextStyled>
+                    ))}
                 <Box>
                     {hasConditions && (
                         <TextStyled variant="body2-styled" sx={{ mb: "4px" }}>

@@ -15,8 +15,7 @@ const months = [
 
 export const regions = {
     NA: "-5",
-    EU: "+1",
-    Asia: "+8",
+    JP: "+8",
 };
 export type Region = keyof typeof regions;
 

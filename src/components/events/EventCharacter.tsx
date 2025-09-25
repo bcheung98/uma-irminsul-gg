@@ -4,18 +4,14 @@ import { TextStyled } from "styled/StyledTypography";
 import { FlexBox } from "styled/StyledBox";
 
 // MUI imports
-import { Stack } from "@mui/material";
+import { Stack, LinearProgress } from "@mui/material";
 
 // Helper imports
 import { objectKeys } from "helpers/utils";
 import { useAppSelector } from "helpers/hooks";
 import { selectEvents } from "reducers/event";
-import {
-    eventMasterTrainer,
-    eventMisc,
-    eventsCommon,
-    eventSlowMetabolism,
-} from "data/events";
+import { selectUnreleasedContent } from "reducers/settings";
+import { eventMisc, eventsCommon, eventSlowMetabolism } from "data/events";
 
 // Type imports
 import { Character } from "types/character";
@@ -29,6 +25,7 @@ function EventCharacter({
     expand?: boolean;
 }) {
     const events = useAppSelector(selectEvents);
+    const showUnreleased = useAppSelector(selectUnreleasedContent);
     const loadedEvents = objectKeys(events);
 
     let characterEvents: EventData | undefined;
@@ -38,30 +35,59 @@ function EventCharacter({
     let secretEvents: TrainingEvent[] | undefined = [];
     let otherEvents: TrainingEvent[] = [];
 
+    const getOptions = (event: TrainingEvent) => {
+        if (character.release.global === "" || showUnreleased) {
+            return event.optionsJP || event.options;
+        } else {
+            return event.options;
+        }
+    };
+
+    const showEvent = (event: TrainingEvent) => {
+        if (character.release.global === "" || showUnreleased) {
+            return true;
+        } else {
+            return event.name !== "";
+        }
+    };
+
+    function renderEventInfo({
+        index,
+        event,
+        expand,
+    }: {
+        index: number;
+        event: TrainingEvent;
+        expand: boolean;
+    }) {
+        const e = { ...event };
+        e.options = getOptions(event);
+        return showEvent(event) ? (
+            <EventInfo key={index} event={e} expand={expand} />
+        ) : null;
+    }
+
     if (loadedEvents.includes("character")) {
         characterEvents = events["character"].find(
-            (char) => char.id === Number(character.id.toString().slice(0, 4))
+            (char) => char.id === character.charID
         );
         if (characterEvents) {
             eventsWithChoices = characterEvents.events.filter(
-                (event) => event.options.length > 1
+                (event) => getOptions(event).length > 1
             );
             eventsWithChoices.push(
                 eventSlowMetabolism({ props: characterEvents.props })
             );
             recEvents = characterEvents.props?.recEvents;
             secretEvents = characterEvents.props?.secretEvents.filter(
-                (event) => event.name !== ""
-            );
-            otherEvents = characterEvents.events
-                .filter((event) => event.options.length <= 1)
-                .filter((event) => event.name !== "");
-            otherEvents.unshift(
-                eventMasterTrainer({ props: characterEvents.props })
+                (event) => getOptions(event).length > 0
             );
             eventMisc({ props: characterEvents.props }).map((event) =>
                 otherEvents.push(event)
             );
+            characterEvents.events
+                .filter((event) => getOptions(event).length == 1)
+                .map((event) => otherEvents.push(event));
         }
     }
 
@@ -77,19 +103,15 @@ function EventCharacter({
         gap: "16px",
     };
 
-    return (
+    return characterEvents ? (
         <Stack spacing={2}>
             {outfitEvents && outfitEvents.length > 0 && (
                 <>
                     <TextStyled sx={{ mb: "8px" }}>Outfit Events</TextStyled>
                     <FlexBox sx={flexBoxStyle}>
-                        {outfitEvents.map((event, index) => (
-                            <EventInfo
-                                key={index}
-                                event={event}
-                                expand={expand}
-                            />
-                        ))}
+                        {outfitEvents.map((event, index) =>
+                            renderEventInfo({ index, event, expand })
+                        )}
                     </FlexBox>
                 </>
             )}
@@ -97,13 +119,9 @@ function EventCharacter({
                 <>
                     <TextStyled sx={{ mb: "8px" }}>Character Events</TextStyled>
                     <FlexBox sx={flexBoxStyle}>
-                        {eventsWithChoices.map((event, index) => (
-                            <EventInfo
-                                key={index}
-                                event={event}
-                                expand={expand}
-                            />
-                        ))}
+                        {eventsWithChoices.map((event, index) =>
+                            renderEventInfo({ index, event, expand })
+                        )}
                     </FlexBox>
                 </>
             )}
@@ -113,13 +131,9 @@ function EventCharacter({
                         Recreation Events
                     </TextStyled>
                     <FlexBox sx={flexBoxStyle}>
-                        {recEvents.map((event, index) => (
-                            <EventInfo
-                                key={index}
-                                event={event}
-                                expand={expand}
-                            />
-                        ))}
+                        {recEvents.map((event, index) =>
+                            renderEventInfo({ index, event, expand })
+                        )}
                     </FlexBox>
                 </>
             )}
@@ -127,13 +141,9 @@ function EventCharacter({
                 <>
                     <TextStyled sx={{ mb: "8px" }}>Secret Events</TextStyled>
                     <FlexBox sx={flexBoxStyle}>
-                        {secretEvents.map((event, index) => (
-                            <EventInfo
-                                key={index}
-                                event={event}
-                                expand={expand}
-                            />
-                        ))}
+                        {secretEvents.map((event, index) =>
+                            renderEventInfo({ index, event, expand })
+                        )}
                     </FlexBox>
                 </>
             )}
@@ -143,13 +153,9 @@ function EventCharacter({
                     <FlexBox sx={flexBoxStyle}>
                         {eventsCommon({
                             props: characterEvents.props,
-                        }).map((event, index) => (
-                            <EventInfo
-                                key={index}
-                                event={event}
-                                expand={expand}
-                            />
-                        ))}
+                        }).map((event, index) =>
+                            renderEventInfo({ index, event, expand })
+                        )}
                     </FlexBox>
                 </>
             )}
@@ -157,17 +163,15 @@ function EventCharacter({
                 <>
                     <TextStyled sx={{ mb: "8px" }}>Other Events</TextStyled>
                     <FlexBox sx={flexBoxStyle}>
-                        {otherEvents.map((event, index) => (
-                            <EventInfo
-                                key={index}
-                                event={event}
-                                expand={expand}
-                            />
-                        ))}
+                        {otherEvents.map((event, index) =>
+                            renderEventInfo({ index, event, expand })
+                        )}
                     </FlexBox>
                 </>
             )}
         </Stack>
+    ) : (
+        <LinearProgress color="info" />
     );
 }
 

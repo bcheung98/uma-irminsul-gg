@@ -21,6 +21,7 @@ import { SupportRow } from "./SupportTable";
 
 interface SupportTableRowProps extends SupportRow {
     releaseDate: string;
+    releaseDateGlobal: string;
 }
 
 function SupportTableRow({ row }: { row: SupportTableRowProps }) {
@@ -92,9 +93,28 @@ function SupportTableRow({ row }: { row: SupportTableRowProps }) {
             label: row.specialty,
         },
         {
-            label: `${
-                createDateObject({ date: row.releaseDate, region: region }).date
-            }`,
+            label: (
+                <>
+                    <TextStyled variant="body2-styled">
+                        {`Global: ${
+                            row.releaseDateGlobal
+                                ? createDateObject({
+                                      date: row.releaseDateGlobal,
+                                      region: region,
+                                  }).date
+                                : "---"
+                        }`}
+                    </TextStyled>
+                    <TextStyled variant="body2-styled">
+                        {`Japan: ${
+                            createDateObject({
+                                date: row.releaseDate,
+                                region: region,
+                            }).date
+                        }`}
+                    </TextStyled>
+                </>
+            ),
         },
     ];
 

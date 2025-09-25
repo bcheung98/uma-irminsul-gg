@@ -46,6 +46,9 @@ export const settingsSlice = createSlice({
         setServer: (state, action: PayloadAction<Region>) => {
             state.server = action.payload;
         },
+        setUnreleasedContent: (state, action: PayloadAction<boolean>) => {
+            state.unreleasedContent = action.payload;
+        },
         toggleUnreleasedContent: (state) => {
             state.unreleasedContent = !state.unreleasedContent;
         },
@@ -66,6 +69,7 @@ export const {
     setWidth,
     setSkillDisplay,
     setServer,
+    setUnreleasedContent,
     toggleUnreleasedContent,
 } = settingsSlice.actions;
 

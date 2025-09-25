@@ -8,14 +8,28 @@ import { useTheme, Stack, Icon, Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 
+// Helper imports
+import { useAppSelector } from "helpers/hooks";
+import { selectUnreleasedContent } from "reducers/settings";
+
 // Type imports
 import { SupportProps } from "types/support";
 
 function SupportSkills({ support }: SupportProps) {
     const theme = useTheme();
 
+    const showUnreleasedContent = useAppSelector(selectUnreleasedContent);
+
     const { skills, stats } = support.hints;
-    const { skillEvents } = support;
+    const { skillEvents, skillEventsJP } = support;
+
+    let eventSkills = skillEvents;
+    if (
+        skillEventsJP &&
+        (support.release.global === "" || showUnreleasedContent)
+    ) {
+        eventSkills = skillEventsJP;
+    }
 
     const gridParams = {
         size: { xs: 12, md: 6 },
@@ -24,13 +38,13 @@ function SupportSkills({ support }: SupportProps) {
     return (
         <MainContentBox title="Skills" contentProps={{ padding: "16px" }}>
             <Stack spacing={2}>
-                {skillEvents.length > 0 && (
+                {eventSkills.length > 0 && (
                     <Box>
                         <TextStyled sx={{ mb: "8px" }}>
                             Skills From Events
                         </TextStyled>
                         <Grid container spacing={1}>
-                            {skillEvents.map((skill, index) => (
+                            {eventSkills.map((skill, index) => (
                                 <Grid key={index} {...gridParams}>
                                     <SkillInfo tag={skill} variant="mini" />
                                 </Grid>

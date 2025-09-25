@@ -18,9 +18,12 @@ import TuneIcon from "@mui/icons-material/Tune";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 // Helper imports
-import { useAppDispatch, useAppSelector } from "helpers/hooks";
+import {
+    selectAppCharacters,
+    useAppDispatch,
+    useAppSelector,
+} from "helpers/hooks";
 import { filterCharacters } from "helpers/filterCharacters";
-import { selectCharacters } from "reducers/character";
 import {
     clearFilters,
     selectCharacterFilters,
@@ -48,7 +51,7 @@ function CharacterBrowser() {
 
     const dispatch = useAppDispatch();
 
-    const characters = [...useAppSelector(selectCharacters)];
+    const characters = useAppSelector(selectAppCharacters);
     const filters = useAppSelector(selectCharacterFilters);
     const browserSettings = useAppSelector(selectBrowserSettings).characters;
 
@@ -166,9 +169,9 @@ function CharacterBrowser() {
                             cardID={`${char.id}-characterBrowser`}
                             name={char.name}
                             title={char.title}
+                            outfit={char.outfit}
                             type="character"
                             rarity={char.rarity}
-                            materials={char.materials}
                             backgroundColor={theme.background(1)}
                             size="144px"
                         />

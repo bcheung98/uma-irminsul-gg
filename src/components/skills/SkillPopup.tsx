@@ -1,10 +1,9 @@
-import parse from "html-react-parser";
-
 // Component imports
+import SkillDescription from "./SkillDescription";
 import MainContentBox from "custom/MainContentBox";
 import Image from "custom/Image";
 import RouterLink from "components/nav/RouterLink";
-import { Text, TextStyled } from "styled/StyledTypography";
+import { TextStyled } from "styled/StyledTypography";
 import { FlexBox } from "styled/StyledBox";
 
 // MUI imports
@@ -21,25 +20,18 @@ import Grid from "@mui/material/Grid2";
 import CloseIcon from "@mui/icons-material/Close";
 
 // Helper imports
-import { useAppSelector } from "helpers/hooks";
 import { sortBy } from "helpers/utils";
-import { selectCharacters } from "reducers/character";
-import { selectSupports } from "reducers/support";
+import {
+    selectAppCharacters,
+    selectAppSupports,
+    useAppSelector,
+} from "helpers/hooks";
+import { selectUnreleasedContent } from "reducers/settings";
 import { getSkillRarityColor } from "helpers/skillRarity";
 
 // Type imports
 import { Skill } from "types/skill";
 import { Rarity, Specialty } from "types/_common";
-
-interface RenderImageProps {
-    type: "character" | "support";
-    id: number;
-    name: string;
-    title: string;
-    rank: Rarity;
-    specialty?: Specialty;
-    outfit?: string;
-}
 
 function SkillPopup({
     skill,
@@ -53,21 +45,25 @@ function SkillPopup({
     const theme = useTheme();
     const matches_md_up = useMediaQuery(theme.breakpoints.up("md"));
 
-    const characters = useAppSelector(selectCharacters);
-    const supports = useAppSelector(selectSupports);
+    const characters = useAppSelector(selectAppCharacters);
+    const supports = useAppSelector(selectAppSupports);
 
-    const { id, name, description, rarity, cost, icon } = skill;
+    const showUnreleased = useAppSelector(selectUnreleasedContent);
+
+    const { id, name, rarity, cost, icon } = skill;
 
     const skillName = name.global || name.jp;
 
+    const textColor = rarity >= 2 ? "rgb(121, 64, 22)" : theme.text.primary;
     const textStyle = {
-        color: rarity >= 2 ? "rgb(121, 64, 22)" : theme.text.primary,
+        color: textColor,
     };
 
     const skillDesc = (
-        <Text component="span" variant="body2-styled" sx={textStyle}>
-            {parse(description.global || description.jp)}
-        </Text>
+        <SkillDescription
+            description={skill.description.global || skill.description.jp}
+            color={textColor}
+        />
     );
 
     const skillUnlock = rarity === 4 && (
@@ -111,15 +107,18 @@ function SkillPopup({
 
     const characterSources = characters.filter((char) =>
         [
-            ...char.skills.awakening,
-            ...char.skills.innate,
-            ...char.skills.unique,
+            ...char.skills.awakening.map((skill) => Number(skill)),
+            ...char.skills.innate.map((skill) => Number(skill)),
+            ...char.skills.unique.map((skill) => Number(skill)),
+            ...char.skills.evo.map((skill) => Number(skill.new)),
         ].includes(id)
     );
 
-    const characterEventSources = characters.filter((char) =>
-        char.skills.event.includes(id)
-    );
+    const characterEventSources = characters.filter((char) => {
+        return showUnreleased
+            ? (char.skills.eventJP || char.skills.event).includes(id)
+            : char.skills.event.includes(id);
+    });
 
     const supportSources = supports
         .filter((supp) => supp.hints.skills.includes(id))
@@ -316,3 +315,13 @@ function SkillPopup({
 }
 
 export default SkillPopup;
+
+interface RenderImageProps {
+    type: "character" | "support";
+    id: number;
+    name: string;
+    title: string;
+    rank: Rarity;
+    specialty?: Specialty;
+    outfit?: string;
+}

@@ -23,15 +23,19 @@ export function filterCharacters(
                 )
             );
             return filters.aptitude.every((f) =>
-                aptitudes.includes(f.toLowerCase())
+                aptitudes.includes(f.toLocaleLowerCase())
             );
         });
     }
     if (searchValue !== "") {
         chars = chars.filter(
             (char) =>
-                char.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-                char.title.toLowerCase().includes(searchValue.toLowerCase())
+                char.name
+                    .toLocaleLowerCase()
+                    .includes(searchValue.toLocaleLowerCase()) ||
+                char.title
+                    .toLocaleLowerCase()
+                    .includes(searchValue.toLocaleLowerCase())
         );
     }
 
@@ -42,7 +46,7 @@ export function filterCharacters(
             chars = chars.sort(
                 (a, b) =>
                     a.name.localeCompare(b.name) ||
-                    a.title.localeCompare(b.title)
+                    sortBy(b.id, a.id)
             );
             if (reverse) {
                 chars = chars.reverse();
@@ -51,7 +55,9 @@ export function filterCharacters(
         case "rarity":
             chars = chars.sort(
                 (a, b) =>
-                    sortBy(a.rarity, b.rarity, reverse) || sortBy(b.id, a.id)
+                    sortBy(a.rarity, b.rarity, reverse) ||
+                    a.name.localeCompare(b.name) ||
+                    sortBy(b.id, a.id)
             );
             break;
         case "release":
@@ -59,10 +65,10 @@ export function filterCharacters(
                 (a, b) =>
                     sortBy(
                         createDateObject({
-                            date: a.release.global,
+                            date: a.release.jp,
                         }).obj.getTime(),
                         createDateObject({
-                            date: b.release.global,
+                            date: b.release.jp,
                         }).obj.getTime(),
                         reverse
                     ) ||

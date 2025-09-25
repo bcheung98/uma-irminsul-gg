@@ -28,10 +28,9 @@ import {
     setConditions,
     setRarity,
 } from "reducers/skillFilters";
-import { rarities } from "data/common";
 
 // Type imports
-import { Rarity } from "types/_common";
+import { SkillRarity } from "types/_common";
 
 function SkillFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
     const theme = useTheme();
@@ -39,7 +38,8 @@ function SkillFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
     const filters = useAppSelector(selectSkillFilters);
     const dispatch = useAppDispatch();
 
-    const skillRarities = ["", "Normal", "Rare", "Unique"];
+    const skillRarities = ["Normal", "Rare", "Unique", "_", "_", "Evolved"];
+    const rarities: SkillRarity[] = [6, 3, 2, 1];
 
     const conditionButtons = {
         None: ["No condition"],
@@ -71,9 +71,9 @@ function SkillFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
         {
             name: "Rarity",
             value: filters.rarity,
-            onChange: (_: BaseSyntheticEvent, newValues: Rarity[]) =>
+            onChange: (_: BaseSyntheticEvent, newValues: SkillRarity[]) =>
                 dispatch(setRarity(newValues)),
-            buttons: rarities.slice(2).map((rarity) => ({
+            buttons: rarities.map((rarity) => ({
                 value: rarity,
                 label: (
                     <TextStyled
@@ -82,7 +82,7 @@ function SkillFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
                         variant="body2-styled"
                         sx={{ color: theme.appbar.color }}
                     >
-                        {skillRarities[rarity]}
+                        {skillRarities[rarity - 1]}
                     </TextStyled>
                 ),
             })),

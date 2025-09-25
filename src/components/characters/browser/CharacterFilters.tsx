@@ -63,7 +63,7 @@ function CharacterFilters({
             value: filters.rarity,
             onChange: (_: BaseSyntheticEvent, newValues: Rarity[]) =>
                 dispatch(setRarity(newValues)),
-            buttons: rarities.slice(2).map((rarity) => ({
+            buttons: rarities.slice(3).map((rarity) => ({
                 value: rarity,
                 label: <RarityStars rarity={rarity} variant="h6-styled" />,
             })),

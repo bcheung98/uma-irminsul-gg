@@ -13,16 +13,16 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "-1",
                         },
                         {
-                            tag: "Last trained stat",
+                            tag: "last_trained_stat",
                             value: "-5",
                         },
                         {
-                            tag: "Get status",
-                            prop: 6,
+                            tag: "obtain_status",
+                            data: 6,
                             random: true,
                         },
                     ],
@@ -30,23 +30,23 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "-1",
                         },
                         {
-                            tag: "Last trained stat",
+                            tag: "last_trained_stat",
                             value: "-10",
                         },
                         {
-                            tag: "Get status",
-                            prop: 6,
+                            tag: "obtain_status",
+                            data: 6,
                             random: true,
                         },
                     ],
                     [
                         {
-                            tag: "Get status",
-                            prop: 10,
+                            tag: "obtain_status",
+                            data: 10,
                         },
                     ],
                 ],
@@ -59,25 +59,25 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "+10",
                         },
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "-2",
                         },
                         {
-                            tag: "Last trained stat",
+                            tag: "last_trained_stat",
                             value: "-10",
                         },
                         {
-                            tag: "Random stats",
+                            tag: "random_stats",
                             value: "-10",
-                            prop: 2,
+                            count: 2,
                         },
                         {
-                            tag: "Get status",
-                            prop: 6,
+                            tag: "obtain_status",
+                            data: 6,
                             random: true,
                         },
                     ],
@@ -85,107 +85,32 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "-3",
                         },
                         {
-                            tag: "Last trained stat",
+                            tag: "last_trained_stat",
                             value: "-10",
                         },
                         {
-                            tag: "Random stats",
+                            tag: "random_stats",
                             value: "-10",
-                            prop: 2,
+                            count: 2,
                         },
                         {
-                            tag: "Get status",
-                            prop: 6,
+                            tag: "obtain_status",
+                            data: 6,
                             random: true,
                         },
                     ],
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "+10",
                         },
                         {
-                            tag: "Get status",
-                            prop: 10,
-                        },
-                    ],
-                ],
-            ],
-        },
-        {
-            name: "Extra Training",
-            nameJP: "追加の自主トレ",
-            options: [
-                [
-                    [
-                        {
-                            tag: "Energy",
-                            value: "-5",
-                        },
-                        {
-                            tag: "Last trained stat",
-                            value: "+5",
-                        },
-                        {
-                            tag: "Heal a negative status effect",
-                            random: true,
-                        },
-                        {
-                            tag: "Bond",
-                            value: "+5",
-                            prop: 9002,
-                        },
-                    ],
-                ],
-                [
-                    [
-                        {
-                            tag: "Energy",
-                            value: "+5",
-                        },
-                    ],
-                ],
-            ],
-        },
-        {
-            name: "At Summer Camp (Year 2)",
-            nameJP: "夏合宿（2年目）にて",
-            options: [
-                [
-                    [
-                        {
-                            tag: "Power",
-                            value: "+10",
-                        },
-                    ],
-                ],
-                [
-                    [
-                        {
-                            tag: "Guts",
-                            value: "+10",
-                        },
-                    ],
-                ],
-            ],
-        },
-        {
-            name: "Fan Letter",
-            nameJP: "ファンレター",
-            options: [
-                [
-                    [
-                        {
-                            tag: "Mood",
-                            value: "+1",
-                        },
-                        {
-                            tag: "Skill points",
-                            value: "+30",
+                            tag: "obtain_status",
+                            data: 10,
                         },
                     ],
                 ],
@@ -228,7 +153,7 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "+20",
                         },
                     ],
@@ -236,7 +161,7 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "Skill points",
+                            tag: "skill_points",
                             value: "+20",
                         },
                     ],
@@ -250,7 +175,7 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "+30",
                         },
                     ],
@@ -258,7 +183,7 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "All stats",
+                            tag: "all_stats",
                             value: "+5",
                         },
                     ],
@@ -266,8 +191,65 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "Skill points",
+                            tag: "skill_points",
                             value: "+35",
+                        },
+                    ],
+                ],
+            ],
+        },
+        {
+            name: "Extra Training",
+            nameJP: "追加の自主トレ",
+            options: [
+                [
+                    [
+                        {
+                            tag: "energy",
+                            value: "-5",
+                        },
+                        {
+                            tag: "last_trained_stat",
+                            value: "+5",
+                        },
+                        {
+                            tag: "heal_status_one",
+                            random: true,
+                        },
+                        {
+                            tag: "bond",
+                            value: "+5",
+                            data: 9002,
+                        },
+                    ],
+                ],
+                [
+                    [
+                        {
+                            tag: "energy",
+                            value: "+5",
+                        },
+                    ],
+                ],
+            ],
+        },
+        {
+            name: "At Summer Camp (Year 2)",
+            nameJP: "夏合宿（2年目）にて",
+            options: [
+                [
+                    [
+                        {
+                            tag: "power",
+                            value: "+10",
+                        },
+                    ],
+                ],
+                [
+                    [
+                        {
+                            tag: "guts",
+                            value: "+10",
                         },
                     ],
                 ],
@@ -276,7 +258,7 @@ export const eventsCommon = ({
         {
             name: "Just an Acupuncturist, No Worries! ☆",
             nameJP: "あんし～ん笹針師、参☆上",
-            props: [
+            chances: [
                 [30, 70],
                 [45, 55],
                 [70, 30],
@@ -286,43 +268,43 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "All stats",
+                            tag: "all_stats",
                             value: "+20",
                         },
                     ],
                     [
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "-2",
                         },
                         {
-                            tag: "All stats",
+                            tag: "all_stats",
                             value: "-15",
                         },
                         {
-                            tag: "Get status",
-                            prop: 1,
+                            tag: "obtain_status",
+                            data: 1,
                         },
                     ],
                 ],
                 [
                     [
                         {
-                            tag: "Get skill",
-                            prop: 200352,
+                            tag: "obtain_skill",
+                            data: 200352,
                         },
                         {
-                            tag: "Get skill",
-                            prop: 200382,
+                            tag: "obtain_skill",
+                            data: 200382,
                         },
                     ],
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "-20",
                         },
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "-2",
                         },
                     ],
@@ -330,59 +312,59 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "Maximum Energy",
+                            tag: "max_energy",
                             value: "+12",
                         },
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "+40",
                         },
                         {
-                            tag: "Heal all negative status effects",
+                            tag: "heal_status_all",
                         },
                     ],
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "-20",
                         },
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "-2",
                         },
                         {
-                            tag: "Get status",
-                            prop: 1,
+                            tag: "obtain_status",
+                            data: 1,
                         },
                     ],
                 ],
                 [
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "+20",
                         },
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "+1",
                         },
                         {
-                            tag: "Get status",
-                            prop: 8,
+                            tag: "obtain_status",
+                            data: 8,
                         },
                     ],
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "-10/-20",
                         },
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "-1",
                         },
                         {
-                            tag: "Get status",
-                            prop: 1,
+                            tag: "obtain_status",
+                            data: 1,
                             random: true,
                         },
                     ],
@@ -390,7 +372,7 @@ export const eventsCommon = ({
                 [
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "+10",
                         },
                     ],
@@ -408,16 +390,16 @@ export const eventSlowMetabolism = ({
     return {
         name: props?.miscEventNames[0].en || "",
         nameJP: props?.miscEventNames[0].jp || "",
-        props: [[], [90, 10]],
+        chances: [[], [90, 10]],
         options: [
             [
                 [
                     {
-                        tag: "Energy",
+                        tag: "energy",
                         value: "+10",
                     },
                     {
-                        tag: "Skill points",
+                        tag: "skill_points",
                         value: "+5",
                     },
                 ],
@@ -425,60 +407,34 @@ export const eventSlowMetabolism = ({
             [
                 [
                     {
-                        tag: "Energy",
+                        tag: "energy",
                         value: "+30",
                     },
                     {
-                        tag: "Skill points",
+                        tag: "skill_points",
                         value: "+10",
                     },
                 ],
                 [
                     {
-                        tag: "Energy",
+                        tag: "energy",
                         value: "+30",
                     },
                     {
-                        tag: "Skill points",
+                        tag: "skill_points",
                         value: "+10",
                     },
                     {
-                        tag: "Speed",
+                        tag: "speed",
                         value: "-5",
                     },
                     {
-                        tag: "Power",
+                        tag: "power",
                         value: "+5",
                     },
                     {
-                        tag: "Get status",
-                        prop: 4,
-                    },
-                ],
-            ],
-        ],
-    };
-};
-
-export const eventMasterTrainer = ({
-    props,
-}: {
-    props?: CharacterEventProps;
-}): TrainingEvent => {
-    return {
-        name: "Master Trainer",
-        nameJP: "名指導",
-        options: [
-            [
-                [
-                    {
-                        tag: props?.master || "",
-                        value: "+10",
-                    },
-                    {
-                        tag: "Get status",
-                        prop: 10,
-                        random: true,
+                        tag: "obtain_status",
+                        data: 4,
                     },
                 ],
             ],
@@ -493,17 +449,54 @@ export const eventMisc = ({
 }): TrainingEvent[] => {
     return [
         {
+            name: "Master Trainer",
+            nameJP: "名指導",
+            options: [
+                [
+                    [
+                        {
+                            tag: props?.master || "random_stats",
+                            value: "+10",
+                        },
+                        {
+                            tag: "obtain_status",
+                            data: 10,
+                            random: true,
+                        },
+                    ],
+                ],
+            ],
+        },
+        {
+            name: "Fan Letter",
+            nameJP: "ファンレター",
+            options: [
+                [
+                    [
+                        {
+                            tag: "mood",
+                            value: "+1",
+                        },
+                        {
+                            tag: "skill_points",
+                            value: "+30",
+                        },
+                    ],
+                ],
+            ],
+        },
+        {
             name: props?.miscEventNames[1].en || "",
             nameJP: props?.miscEventNames[1].jp || "",
             options: [
                 [
                     [
                         {
-                            tag: "All stats",
+                            tag: "all_stats",
                             value: "+5",
                         },
                         {
-                            tag: "Skill points",
+                            tag: "skill_points",
                             value: "+5",
                         },
                     ],
@@ -517,7 +510,7 @@ export const eventMisc = ({
                 [
                     [
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "-1",
                         },
                     ],
@@ -531,11 +524,11 @@ export const eventMisc = ({
                 [
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "-10",
                         },
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "-1",
                         },
                     ],
@@ -549,20 +542,20 @@ export const eventMisc = ({
                 [
                     [
                         {
-                            tag: "All stats",
+                            tag: "all_stats",
                             value: "+5",
                         },
                         {
-                            tag: "Skill points",
+                            tag: "skill_points",
                             value: "+30",
                         },
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "+2",
                         },
                         {
-                            tag: "Get status",
-                            prop: 7,
+                            tag: "obtain_status",
+                            data: 7,
                             random: true,
                         },
                     ],
@@ -576,30 +569,30 @@ export const eventMisc = ({
                 [
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "+15",
                         },
                         {
-                            tag: "Guts",
+                            tag: "guts",
                             value: "-5",
                         },
                         {
-                            tag: "Mood",
+                            tag: "mood",
                             value: "-1",
                         },
                     ],
                     [
                         {
-                            tag: "Energy",
+                            tag: "energy",
                             value: "+15",
                         },
                         {
-                            tag: "Guts",
+                            tag: "guts",
                             value: "-5",
                         },
                         {
-                            tag: "Get status",
-                            prop: 2,
+                            tag: "obtain_status",
+                            data: 2,
                         },
                     ],
                 ],

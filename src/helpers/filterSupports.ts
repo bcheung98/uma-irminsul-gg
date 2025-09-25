@@ -22,8 +22,12 @@ export function filterSupports(
     if (searchValue !== "") {
         supps = supps.filter(
             (supp) =>
-                supp.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-                supp.title.toLowerCase().includes(searchValue.toLowerCase())
+                supp.name
+                    .toLocaleLowerCase()
+                    .includes(searchValue.toLocaleLowerCase()) ||
+                supp.title
+                    .toLocaleLowerCase()
+                    .includes(searchValue.toLocaleLowerCase())
         );
     }
 
@@ -38,7 +42,8 @@ export function filterSupports(
                         Specialty[b.specialty],
                         Specialty[a.specialty],
                         reverse
-                    )
+                    ) ||
+                    sortBy(b.id, a.id, !reverse)
             );
             if (reverse) {
                 supps = supps.reverse();
@@ -69,10 +74,10 @@ export function filterSupports(
                 (a, b) =>
                     sortBy(
                         createDateObject({
-                            date: a.release.global,
+                            date: a.release.jp,
                         }).obj.getTime(),
                         createDateObject({
-                            date: b.release.global,
+                            date: b.release.jp,
                         }).obj.getTime(),
                         reverse
                     ) ||

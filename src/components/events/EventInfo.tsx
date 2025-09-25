@@ -11,6 +11,7 @@ import { useTheme, Card, Popover } from "@mui/material";
 import { range } from "helpers/utils";
 import { useAppSelector } from "helpers/hooks";
 import { selectSettings } from "reducers/planner";
+import { selectUnreleasedContent } from "reducers/settings";
 
 // Type imports
 import { TrainingEvent } from "types/event";
@@ -28,12 +29,25 @@ function EventInfo({
 }) {
     const theme = useTheme();
 
+    const showUnreleased = useAppSelector(selectUnreleasedContent);
+
     const settings = useAppSelector(selectSettings);
     const expanded = settings.expanded && expand;
 
-    let name = event.name || event.nameJP;
+    let name: string;
+    if (showUnreleased) {
+        if (event.name === event.nameJP) {
+            name = event.name;
+        } else {
+            name = event.name
+                ? `${event.name} (${event.nameJP})`
+                : event.nameJP;
+        }
+    } else {
+        name = event.name || event.nameJP;
+    }
     if (isChain) {
-        name = `(${range(index)
+        name = `(${range(index + 1)
             .map((_) => "❯")
             .join("")}) ${name}`;
     }
@@ -47,15 +61,7 @@ function EventInfo({
     };
     const open = Boolean(anchorEl);
 
-    const renderEventPopup = (
-        <EventPopup
-            name={name}
-            options={event.options}
-            optionsJP={event.optionsJP}
-            props={event.props}
-            conditions={event.conditions}
-        />
-    );
+    const renderEventPopup = <EventPopup name={name} event={event} />;
 
     return expanded ? (
         <Card>{renderEventPopup}</Card>

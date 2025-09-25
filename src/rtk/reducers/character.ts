@@ -10,9 +10,6 @@ export interface CharacterState {
 
 const storedCharacters = localStorage.getItem("data/characters") || "null";
 
-const storedSettings = localStorage.getItem("settings") || "{}";
-const { unreleasedContent = false } = JSON.parse(storedSettings);
-
 const initialState: CharacterState = {
     status: "idle",
     characters: storedCharacters !== "null" ? JSON.parse(storedCharacters) : [],
@@ -28,9 +25,6 @@ export const characterSlice = createSlice({
         });
         builder.addCase(fetchCharacters.fulfilled, (state, action) => {
             let payload = action.payload;
-            if (!unreleasedContent) {
-                payload = payload.filter((item) => item.release.global !== "");
-            }
             if (JSON.stringify(payload) !== storedCharacters) {
                 state.characters = payload;
             }
@@ -52,11 +46,7 @@ export default characterSlice.reducer;
 startAppListening({
     actionCreator: fetchCharacters.fulfilled,
     effect: (action) => {
-        let payload = action.payload;
-        if (!unreleasedContent) {
-            payload = payload.filter((item) => item.release.global !== "");
-        }
-        const data = JSON.stringify(payload);
+        const data = JSON.stringify(action.payload);
         if (data !== storedCharacters) {
             localStorage.setItem("data/characters", data);
         }

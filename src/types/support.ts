@@ -7,17 +7,16 @@ export interface SupportProps {
 
 export interface Support {
     id: number;
+    charID: number;
     name: string;
     title: string;
     rarity: Rarity;
     specialty: Specialty;
-    perks: {
-        effects: SupportEffect[];
-        unlock: number;
-    };
+    perks: SupportPerks;
     supportEffects: SupportEffect[];
     hints: SupportHints;
-    skillEvents: (string | number)[];
+    skillEvents: number[];
+    skillEventsJP: number[];
     trainingEvents: {
         chain: string[];
         random: string[];
@@ -29,15 +28,26 @@ export interface Support {
     release: Version;
 }
 
+export interface SupportPerks {
+    effects: UniqueEffect[];
+    unlock: number;
+    description?: string[];
+}
+
 export interface SupportEffect {
     effect: string;
     values: number[];
-    unlock?: number;
+    unlock: number;
+}
+
+export interface UniqueEffect {
+    effect: string;
+    value: number;
 }
 
 export interface SupportHints {
     stats: StatHint[];
-    skills: (number | string)[];
+    skills: number[];
 }
 
 export interface StatHint {

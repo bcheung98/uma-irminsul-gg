@@ -1,11 +1,11 @@
 import { useState } from "react";
-import parse from "html-react-parser";
 
 // Component imports
 import SkillPopup from "./SkillPopup";
+import SkillDescription from "./SkillDescription";
 import Image from "custom/Image";
 import { FlexBox } from "styled/StyledBox";
-import { Text, TextStyled } from "styled/StyledTypography";
+import { TextStyled } from "styled/StyledTypography";
 
 // MUI imports
 import {
@@ -42,20 +42,22 @@ function SkillInfo({
     };
 
     const skill = useAppSelector(selectSkills).find(
-        (skill) => skill.id === tag || skill.name.global === tag
+        (skill) => skill.id === Number(tag)
     );
 
     if (skill !== undefined) {
+        const textColor =
+            skill.rarity >= 2 ? "rgb(121, 64, 22)" : theme.text.primary;
+        const textStyle = {
+            color: textColor,
+            cursor: "pointer",
+        };
         const skillUnlock = skill.rarity === 4 && <TextStyled>(3★)</TextStyled>;
         const skillName = skill.name.global || skill.name.jp;
         const skillDesc = (
-            <Text
-                component="span"
-                variant="body2-styled"
-                sx={{ color: theme.text.description }}
-            >
-                {parse(skill.description.global || skill.description.jp)}
-            </Text>
+            <SkillDescription
+                description={skill.description.global || skill.description.jp}
+            />
         );
 
         const textContainerStyle: SxProps = {
@@ -78,11 +80,6 @@ function SkillInfo({
                         : theme.border.color.primary
                 }`,
             },
-        };
-
-        const textStyle = {
-            color: skill.rarity >= 2 ? "rgb(121, 64, 22)" : theme.text.primary,
-            cursor: "pointer",
         };
 
         return (

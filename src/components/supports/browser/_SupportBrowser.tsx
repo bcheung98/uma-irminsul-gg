@@ -18,9 +18,12 @@ import TuneIcon from "@mui/icons-material/Tune";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 // Helper imports
-import { useAppDispatch, useAppSelector } from "helpers/hooks";
+import {
+    selectAppSupports,
+    useAppDispatch,
+    useAppSelector,
+} from "helpers/hooks";
 import { filterSupports } from "helpers/filterSupports";
-import { selectSupports } from "reducers/support";
 import { clearFilters, selectSupportFilters } from "reducers/supportFilters";
 import { isRightDrawerOpen, toggleRightDrawer } from "reducers/layout";
 import { selectBrowserSettings, setBrowserView, View } from "reducers/browser";
@@ -47,7 +50,7 @@ function SupportBrowser() {
 
     const dispatch = useAppDispatch();
 
-    const supports = [...useAppSelector(selectSupports)];
+    const supports = useAppSelector(selectAppSupports);
     const filters = useAppSelector(selectSupportFilters);
     const browserSettings = useAppSelector(selectBrowserSettings).supports;
 

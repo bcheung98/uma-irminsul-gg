@@ -30,16 +30,63 @@ export interface TrainingEvent {
     nameJP: string;
     options: EventOutcome[][][];
     optionsJP?: EventOutcome[][][];
-    props?: number[][];
+    chances?: number[][];
     conditions?: EventOutcome[];
+    props?: TrainingEventExtraProps;
+}
+
+export interface TrainingEventExtraProps {
+    has_meaningless_choices?: boolean;
+    can_occur_repeatedly?: boolean;
+    repeatable_changes_values?: boolean;
+    scenario_link?: boolean;
+    alt_outcome?: boolean;
 }
 
 export interface EventOutcome {
     tag: string;
     value?: string | number | (string | number)[] | null;
-    prop?: number | EventOutcome[];
+    count?: number | number[];
+    data?: number | string;
+    props?: EventExtraProps;
     random?: boolean;
 }
+
+export interface EventExtraProps {
+    year?: number;
+    month?: number;
+    half?: number;
+    grade?: number;
+    gradeList?: number[];
+    distance?: number;
+    distanceList?: number[];
+    strategy?: number;
+    strategyList?: number[];
+    terrain?: number;
+    length?: number;
+    raceName?: number | string;
+    raceList?: (number | string)[];
+    trackName?: number | string;
+    trackList?: (number | string)[];
+    trackCond?: number;
+    trackConds?: number[];
+    position?: number;
+    pop?: number;
+    stat?: number;
+    mood?: number;
+    statusEffect?: number;
+    eventName?: string;
+    eventNumber?: number;
+    eventOption?: number;
+    eventOptions?: number[];
+    eventOutcome?: number;
+    charName?: number | string;
+    charList?: number[];
+    eventHints?: EventSubHint;
+    conditions?: EventOutcome[];
+}
+export type EventSubOutcome = Pick<EventOutcome, "value" | "data">;
+export type EventSubHint = Required<EventSubOutcome>[];
 
 export interface StatusEffect {
     id: number;

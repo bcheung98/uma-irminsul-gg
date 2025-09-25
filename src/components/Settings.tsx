@@ -22,12 +22,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useAppDispatch, useAppSelector } from "helpers/hooks";
 import {
     selectSettings,
+    setUnreleasedContent,
+    setServer,
     setSettings,
     setTheme,
     setWidth,
     Width,
 } from "reducers/settings";
 import { themeList } from "themes/theme";
+import { Region } from "helpers/dates";
 
 // Type imports
 import { ThemeNames } from "types/theme";
@@ -40,7 +43,7 @@ function Settings() {
 
     const settings = useAppSelector(selectSettings);
     const themeName = settings.theme;
-    const { width, unreleasedContent } = settings;
+    const { width, server, unreleasedContent } = settings;
     const unreleasedContentOld = useRef(unreleasedContent);
 
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -55,11 +58,6 @@ function Settings() {
         }
         setSettingsOpen(false);
     };
-
-    // const [dropdownOpen, setDropdownOpen] = useState(false);
-    // const toggleDropdownState = () => {
-    //     setDropdownOpen(!dropdownOpen);
-    // };
 
     const toggleButtonsParams = {
         spacing: 0,
@@ -120,22 +118,27 @@ function Settings() {
                 />
             ),
         },
-        // {
-        //     label: "Server",
-        //     options: (
-        //         <ToggleButtons
-        //             buttons={regionButtons}
-        //             value={server}
-        //             exclusive
-        //             onChange={(_: BaseSyntheticEvent, newValue: Region) => {
-        //                 if (newValue !== null) {
-        //                     dispatch(setServer(newValue));
-        //                 }
-        //             }}
-        //             {...toggleButtonsParams}
-        //         />
-        //     ),
-        // },
+        {
+            label: "Server",
+            options: (
+                <ToggleButtons
+                    buttons={regionButtons}
+                    value={server}
+                    exclusive
+                    onChange={(_: BaseSyntheticEvent, newValue: Region) => {
+                        if (newValue !== null) {
+                            dispatch(setServer(newValue));
+                            if (newValue === "NA") {
+                                dispatch(setUnreleasedContent(false));
+                            } else {
+                                dispatch(setUnreleasedContent(true));
+                            }
+                        }
+                    }}
+                    {...toggleButtonsParams}
+                />
+            ),
+        },
     ];
 
     return (
@@ -191,58 +194,6 @@ function Settings() {
                                     </Box>
                                 ))}
                             </Stack>
-                            {/* <Box>
-                                <Box sx={settingsBoxStyle}>
-                                    <Stack direction="row" alignItems="center">
-                                        <TextStyled sx={settingsTextStyle}>
-                                            Forbidden Knowledge
-                                        </TextStyled>
-                                        <IconButton
-                                            onClick={toggleDropdownState}
-                                            disableRipple
-                                            disableTouchRipple
-                                        >
-                                            <HelpIcon
-                                                sx={{
-                                                    color: theme.text.primary,
-                                                }}
-                                            />
-                                        </IconButton>
-                                    </Stack>
-                                    <StyledSwitch
-                                        checked={unreleasedContent}
-                                        onChange={() =>
-                                            dispatch(toggleUnreleasedContent())
-                                        }
-                                    />
-                                </Box>
-                                <Collapse in={dropdownOpen} timeout="auto">
-                                    <Card
-                                        sx={{
-                                            m: 1,
-                                            p: 1,
-                                            backgroundColor:
-                                                theme.palette.error.dark,
-                                        }}
-                                    >
-                                        <Text component="span" variant="body2">
-                                            Enabling this option will allow you
-                                            to view content from the game's beta
-                                            version.
-                                            <br />
-                                            Any information from the beta is
-                                            heavily subject to change and will
-                                            usually be incomplete and/or
-                                            inaccurate.
-                                            <br />
-                                            Please note that updates from the
-                                            beta are not done automatically and
-                                            may differ from other websites that
-                                            you might use.
-                                        </Text>
-                                    </Card>
-                                </Collapse>
-                            </Box> */}
                         </Stack>
                     </MainContentBox>
                 </Box>
@@ -268,9 +219,7 @@ export const skillDisplayButtons: CustomToggleButtonProps[] = [
     { value: "table", label: "Table" },
 ];
 
-// const regionButtons: CustomToggleButtonProps[] = objectKeys(regions).map(
-//     (region) => ({
-//         value: region,
-//         label: region,
-//     })
-// );
+const regionButtons: CustomToggleButtonProps[] = [
+    { value: "NA", label: "Global" },
+    { value: "JP", label: "Japan" },
+];

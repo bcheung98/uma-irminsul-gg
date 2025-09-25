@@ -46,8 +46,7 @@ export default skillSlice.reducer;
 startAppListening({
     actionCreator: fetchSkills.fulfilled,
     effect: (action) => {
-        let payload = action.payload;
-        const data = JSON.stringify(payload);
+        const data = JSON.stringify(action.payload);
         if (data !== storedSkills) {
             localStorage.setItem("data/skills", data);
         }

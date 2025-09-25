@@ -15,8 +15,7 @@ import TuneIcon from "@mui/icons-material/Tune";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 // Helper imports
-import { useAppDispatch, useAppSelector } from "helpers/hooks";
-import { selectSkills } from "reducers/skill";
+import { useAppDispatch, useAppSelector, selectAppSkills } from "helpers/hooks";
 import { filterSkills } from "helpers/filterSkills";
 import { clearFilters, selectSkillFilters } from "reducers/skillFilters";
 import { isRightDrawerOpen, toggleRightDrawer } from "reducers/layout";
@@ -42,7 +41,7 @@ function SkillBrowser() {
 
     const dispatch = useAppDispatch();
 
-    const skills = [...useAppSelector(selectSkills)];
+    const skills = useAppSelector(selectAppSkills);
     const filters = useAppSelector(selectSkillFilters);
     const browserSettings = useAppSelector(selectBrowserSettings).skills;
 

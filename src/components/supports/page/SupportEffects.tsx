@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // Component imports
 import MainContentBox from "custom/MainContentBox";
@@ -26,22 +26,15 @@ function SupportEffects({ support }: SupportProps) {
 
     const { rarity, supportEffects } = support;
 
-    let levels = [20, 25, 30, 35, 40];
-    if (rarity === 4) {
-        levels = levels.map((i) => i + 5);
-    }
-    if (rarity === 5) {
-        levels = levels.map((i) => i + 10);
-    }
-
-    const [sliderValue, setSliderValue] = useState(1);
+    let levels = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+    const [sliderValue, setSliderValue] = useState(rarity + 1);
     const handleSliderChange = (_: Event, newValue: number | number[]) => {
         setSliderValue(newValue as number);
     };
 
-    const effects = [
-        ...supportEffects.filter((effect) => effect.unlock !== 0),
-    ].sort((a, b) => sortBy(b.unlock || 1, a.unlock || 1));
+    const effects = [...supportEffects].sort((a, b) =>
+        sortBy(b.unlock, a.unlock)
+    );
 
     const getEffect = (tag: string | number) => {
         return effectList.find(
@@ -50,15 +43,15 @@ function SupportEffects({ support }: SupportProps) {
     };
 
     const marks = levels.map((level, index) => ({
-        value: index + 1,
+        value: index,
         label: (
             <TextStyled
                 variant={
-                    sliderValue === index + 1 ? "body1-styled" : "body2-styled"
+                    sliderValue === index ? "body1-styled" : "body2-styled"
                 }
                 sx={{
                     userSelect: "none",
-                    opacity: sliderValue === index + 1 ? 1 : 0.25,
+                    opacity: sliderValue === index ? 1 : 0.25,
                 }}
             >
                 {level}
@@ -75,7 +68,7 @@ function SupportEffects({ support }: SupportProps) {
         return {
             p: 1,
             backgroundColor:
-                levels[sliderValue - 1] < (effect.unlock || 1)
+                levels[sliderValue] < effect.unlock
                     ? theme.background(1, "light")
                     : theme.background(0, "main"),
             border: theme.mainContentBox.border,
@@ -84,7 +77,7 @@ function SupportEffects({ support }: SupportProps) {
     };
 
     const getEffectValue = (effect: SupportEffect) => {
-        const value = effect.values[sliderValue - 1];
+        const value = effect.values[sliderValue];
         let valueText = value.toString();
         if (
             [
@@ -123,8 +116,6 @@ function SupportEffects({ support }: SupportProps) {
         );
     };
 
-    useEffect(() => setSliderValue(1), [support]);
-
     return (
         <MainContentBox
             title="Support Effects"
@@ -140,13 +131,13 @@ function SupportEffects({ support }: SupportProps) {
                     value={sliderValue}
                     marks={marks}
                     step={1}
-                    min={1}
-                    max={5}
+                    min={0}
+                    max={rarity + 5}
                     onChange={handleSliderChange}
                     size={matches_md_up ? "medium" : "small"}
                     sx={{
-                        minWidth: "100px",
-                        maxWidth: "200px",
+                        minWidth: "200px",
+                        maxWidth: "400px",
                         ml: 2,
                     }}
                 />
@@ -196,7 +187,11 @@ function SupportEffects({ support }: SupportProps) {
                                             <Box>
                                                 <TextStyled
                                                     variant="body2-styled"
-                                                    sx={{ cursor: "default", textDecoration: "underline dotted" }}
+                                                    sx={{
+                                                        cursor: "default",
+                                                        textDecoration:
+                                                            "underline dotted",
+                                                    }}
                                                 >
                                                     {effect.displayName}
                                                 </TextStyled>

@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { objectKeys } from "helpers/utils";
-import { Rarity } from "types/_common";
+import { SkillRarity } from "types/_common";
 
 export interface SkillFilterState {
-    rarity: Rarity[];
+    rarity: SkillRarity[];
     conditions: string[];
 }
 
@@ -16,7 +16,7 @@ export const skillFilterSlice = createSlice({
     name: "skillFilters",
     initialState,
     reducers: {
-        setRarity: (state, action: PayloadAction<Rarity[]>) => {
+        setRarity: (state, action: PayloadAction<SkillRarity[]>) => {
             let data = action.payload;
             if (data.includes(3)) {
                 data.push(4, 5);

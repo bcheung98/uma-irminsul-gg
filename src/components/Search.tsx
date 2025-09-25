@@ -32,9 +32,11 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarIcon from "@mui/icons-material/Star";
 
 // Helper imports
-import { useAppSelector } from "helpers/hooks";
-import { selectCharacters } from "reducers/character";
-import { selectSupports } from "reducers/support";
+import {
+    selectAppCharacters,
+    selectAppSupports,
+    useAppSelector,
+} from "helpers/hooks";
 
 type Category = "Characters" | "Supports";
 
@@ -42,6 +44,7 @@ interface Data {
     id: number;
     name: string;
     title: string;
+    tag: string;
     category: Category;
 }
 
@@ -51,24 +54,28 @@ function Search() {
 
     const navigate = useNavigate();
 
-    const characters = [...useAppSelector(selectCharacters)].sort((a, b) =>
+    const characters = [...useAppSelector(selectAppCharacters)].sort((a, b) =>
         a.name.localeCompare(b.name)
     );
-    const supports = [...useAppSelector(selectSupports)].sort((a, b) =>
+    const supports = [...useAppSelector(selectAppSupports)].sort((a, b) =>
         a.name.localeCompare(b.name)
     );
+
+    const ranks = ["R", "SR", "SSR"];
 
     const data: Data[] = [
         ...characters.map((char) => ({
             id: char.id,
             name: char.name,
             title: char.title,
+            tag: char.outfit || "Original",
             category: "Characters" as Category,
         })),
         ...supports.map((support) => ({
             id: support.id,
             name: support.name,
             title: support.title,
+            tag: `${ranks[support.rarity - 3]} ${support.specialty}`,
             category: "Supports" as Category,
         })),
     ];
@@ -318,7 +325,7 @@ function Search() {
                                 />
                                 <Stack spacing={0.5}>
                                     <TextStyled noWrap>
-                                        {`[${option.title}] ${option.name}`}
+                                        {`${option.name} (${option.tag})`}
                                     </TextStyled>
                                     <TextStyled variant="subtitle2-styled">
                                         {option.category}
@@ -628,7 +635,7 @@ export default Search;
 function filterOptions(data: Data[], searchValue: string) {
     if (searchValue !== "") {
         return matchSorter(data, searchValue, {
-            keys: ["title", "name"],
+            keys: ["name", "title"],
             threshold: matchSorter.rankings.WORD_STARTS_WITH,
         });
     } else {

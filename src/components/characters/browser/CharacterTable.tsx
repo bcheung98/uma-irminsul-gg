@@ -58,7 +58,8 @@ function CharacterTable({ characters }: { characters: Character[] }) {
         pace: char.aptitude.strategy.pace,
         late: char.aptitude.strategy.late,
         end: char.aptitude.strategy.end,
-        releaseDate: char.release.global,
+        releaseDate: char.release.jp,
+        releaseDateGlobal: char.release.global,
     }));
 
     return (

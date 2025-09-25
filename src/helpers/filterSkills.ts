@@ -9,9 +9,7 @@ export function filterSkills(
     searchValue: string,
     sortSettings: BrowserSettings
 ) {
-    let skills = [...skillList].filter(
-        (skill) => skill.name.global && skill.description.global
-    );
+    let skills = [...skillList];
     if (filters.rarity.length > 0) {
         skills = skills.filter((skill) =>
             filters.rarity.includes(skill.rarity)
@@ -24,7 +22,9 @@ export function filterSkills(
     }
     if (searchValue !== "") {
         skills = skills.filter((skill) =>
-            skill.name.global.toLowerCase().includes(searchValue.toLowerCase())
+            (skill.name.global || skill.name.jp)
+                .toLocaleLowerCase()
+                .includes(searchValue.toLocaleLowerCase())
         );
     }
 
@@ -33,7 +33,9 @@ export function filterSkills(
     switch (sortSettings.sortBy) {
         case "name":
             skills = skills.sort((a, b) =>
-                a.name.global.localeCompare(b.name.global)
+                (a.name.global || a.name.jp).localeCompare(
+                    b.name.global || b.name.jp
+                )
             );
             if (reverse) {
                 skills = skills.reverse();
