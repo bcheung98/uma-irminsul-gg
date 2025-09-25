@@ -1,4 +1,4 @@
-import { Race, RaceSeries } from "types/race";
+import { Race, RaceSeries, Racetrack } from "types/race";
 
 export const races: Race[] = [
     {
@@ -5385,25 +5385,32 @@ export const races: Race[] = [
     },
 ];
 
-export const raceSeries: RaceSeries[] = [
-    {
+export const raceSeries: RaceSeries = {
+    triple_crown: {
         name: "Triple Crown",
         races: ["100501", "101001", "101501"],
     },
-    {
+    spring_triple_crown: {
         name: "Spring Triple Crown",
         races: ["100301", "100601", "101201|3"],
     },
-    {
+    autumn_triple_crown_same_year: {
         name: "Autumn Triple Crown",
         races: ["101601", "101901", "102301"],
     },
-    {
+    autumn_triple_crown_senior: {
         name: "Senior Autumn Triple Crown",
         races: ["101601|3", "101901|3", "102301|3"],
     },
-    {
+    triple_tiara: {
         name: "Triple Tiara",
         races: ["100401", "100901", "101401"],
     },
-];
+};
+
+export const raceConditions: Racetrack = {
+    1: "Firm",
+    2: "Good",
+    3: "Soft",
+    4: "Heavy",
+};

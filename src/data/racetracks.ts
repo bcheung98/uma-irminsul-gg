@@ -1,20 +1,20 @@
 import { Racetrack } from "types/race";
 
-export const racetracks: Racetrack[] = [
-    { id: 10001, name: "Sapporo" },
-    { id: 10002, name: "Hakodate" },
-    { id: 10003, name: "Niigata" },
-    { id: 10004, name: "Fukushima" },
-    { id: 10005, name: "Nakayama" },
-    { id: 10006, name: "Tokyo" },
-    { id: 10007, name: "Chukyo" },
-    { id: 10008, name: "Kyoto" },
-    { id: 10009, name: "Hanshin" },
-    { id: 10010, name: "Kokura" },
-    { id: 10101, name: "Oi" },
-    { id: 10103, name: "Kawasaki" },
-    { id: 10104, name: "Funabashi" },
-    { id: 10105, name: "Morioka" },
-    { id: 10201, name: "Longchamp" },
-    { id: 10202, name: "Santa Anita" },
-];
+export const racetracks: Racetrack = {
+    10001: "Sapporo",
+    10002: "Hakodate",
+    10003: "Niigata",
+    10004: "Fukushima",
+    10005: "Nakayama",
+    10006: "Tokyo",
+    10007: "Chukyo",
+    10008: "Kyoto",
+    10009: "Hanshin",
+    10010: "Kokura",
+    10101: "Oi",
+    10103: "Kawasaki",
+    10104: "Funabashi",
+    10105: "Morioka",
+    10201: "Longchamp",
+    10202: "Santa Anita",
+};
