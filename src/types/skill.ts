@@ -1,4 +1,5 @@
 import { Rarity } from "./_common";
+import { EventOutcome } from "./event";
 import { Version } from "./version";
 
 export interface SkillProps {
@@ -16,6 +17,7 @@ export interface Skill {
     activation: string;
     cost: number;
     conditions: SkillCondition[];
+    evo?: SkillEvo;
     tags: string[];
     versions?: (number | string)[];
     geneVersion: SkillInherited;
@@ -30,4 +32,9 @@ export interface SkillCondition {
     duration: string;
     precondition: string;
     condition: string;
+}
+
+export interface SkillEvo {
+    old: number;
+    evoConditions: EventOutcome[][];
 }
