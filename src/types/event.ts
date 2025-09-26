@@ -36,11 +36,7 @@ export interface TrainingEvent {
 }
 
 export interface TrainingEventExtraProps {
-    has_meaningless_choices?: boolean;
-    can_occur_repeatedly?: boolean;
-    repeatable_changes_values?: boolean;
-    scenario_link?: boolean;
-    alt_outcome?: boolean;
+    headers?: string[];
 }
 
 export interface EventOutcome {

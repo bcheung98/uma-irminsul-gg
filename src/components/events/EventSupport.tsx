@@ -30,8 +30,10 @@ function EventSupport({
     const showUnreleased = useAppSelector(selectUnreleasedContent);
     const loadedEvents = objectKeys(events);
 
-    let commonEvents: EventData | undefined;
-    let chainEvents: EventData | undefined;
+    let supportEvents: EventData | undefined;
+    let chainEvents: TrainingEvent[] | undefined = [];
+    let randomEvents: TrainingEvent[] | undefined = [];
+    let specialEvents: TrainingEvent[] | undefined = [];
 
     const isPalorGroup = ["Pal", "Group"].includes(support.specialty);
 
@@ -75,21 +77,54 @@ function EventSupport({
         ) : null;
     }
 
-    if (loadedEvents.includes("support-common")) {
-        commonEvents = events["support-common"].find(
-            (e) => e.id === support.charID
-        );
-    }
     if (isPalorGroup && loadedEvents.includes("support-pal")) {
-        commonEvents = events["support-pal"].find(
+        supportEvents = events["support-pal"].find(
             (e) => e.id === support.charID
         );
-        chainEvents = commonEvents;
+        if (supportEvents) {
+            chainEvents = supportEvents.palProps?.recEvents;
+            supportEvents.events.forEach((event, index) => {
+                const headers = [];
+                if (index === 0) {
+                    headers.push("first_training");
+                }
+                if (index === 1) {
+                    headers.push("after_training");
+                }
+                if (index === 3) {
+                    headers.push("after_finals_bond_maxed");
+                }
+                if (index === 4) {
+                    headers.push("after_finals_bond_not_maxed");
+                }
+                if (index === 5) {
+                    headers.push("new_year_dating");
+                }
+                const e = {
+                    ...event,
+                    props: { ...event.props, headers: headers },
+                };
+                if (index === 2 || index === 6) {
+                    randomEvents?.push(e);
+                } else {
+                    specialEvents?.push(e);
+                }
+            });
+            randomEvents = randomEvents.reverse();
+        }
     } else {
+        if (loadedEvents.includes("support-common")) {
+            supportEvents = events["support-common"].find(
+                (e) => e.id === support.charID
+            );
+            if (supportEvents) {
+                randomEvents = supportEvents.events;
+            }
+        }
         if (loadedEvents.includes(`support-${rarity}`)) {
             chainEvents = events[`support-${rarity}`].find(
                 (e) => e.id === support.id
-            );
+            )?.events;
         }
     }
 
@@ -101,38 +136,38 @@ function EventSupport({
 
     return (
         <Stack spacing={2}>
-            {chainEvents && chainEvents.events.length > 0 && (
+            {chainEvents && chainEvents.length > 0 && (
                 <>
                     <TextStyled sx={{ mb: "8px" }}>
                         {`${isPalorGroup ? "Recreation" : "Chain"} Events`}
                     </TextStyled>
                     <FlexBox sx={flexBoxStyle}>
-                        {isPalorGroup
-                            ? chainEvents.palProps?.recEvents.map(
-                                  (event, index) =>
-                                      renderEventInfo({
-                                          index,
-                                          event,
-                                          expand,
-                                          isChain: true,
-                                      })
-                              )
-                            : chainEvents.events.map((event, index) =>
-                                  renderEventInfo({
-                                      index,
-                                      event,
-                                      expand,
-                                      isChain: true,
-                                  })
-                              )}
+                        {chainEvents.map((event, index) =>
+                            renderEventInfo({
+                                index,
+                                event,
+                                expand,
+                                isChain: true,
+                            })
+                        )}
                     </FlexBox>
                 </>
             )}
-            {commonEvents && commonEvents.events.length > 0 && (
+            {randomEvents && randomEvents.length > 0 && (
                 <>
                     <TextStyled sx={{ mb: "8px" }}>Random Events</TextStyled>
                     <FlexBox sx={flexBoxStyle}>
-                        {commonEvents.events.map((event, index) =>
+                        {randomEvents.map((event, index) =>
+                            renderEventInfo({ index, event, expand })
+                        )}
+                    </FlexBox>
+                </>
+            )}
+            {specialEvents && specialEvents.length > 0 && (
+                <>
+                    <TextStyled sx={{ mb: "8px" }}>Special Events</TextStyled>
+                    <FlexBox sx={flexBoxStyle}>
+                        {specialEvents.map((event, index) =>
                             renderEventInfo({ index, event, expand })
                         )}
                     </FlexBox>

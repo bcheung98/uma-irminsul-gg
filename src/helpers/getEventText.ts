@@ -12,6 +12,7 @@ import { raceConditions } from "data/races";
 import { racetracks } from "data/racetracks";
 import { CharacterProfile } from "types/character";
 import { EventOutcome } from "types/event";
+import { scenarios } from "data/scenarios";
 
 export function getEventText({
     event,
@@ -106,7 +107,7 @@ export function getEventText({
         fans: `Fans ${value}`,
         success: "※ Success",
         fail: "※ Fail",
-        heal_status_one: "Heal a negative status effect",
+        heal_status: "Heal a negative status effect",
         heal_status_all: "Heal all negative status effects",
         motivation: `Mood ${value}`,
         last_trained_stat: `Last trained stat ${value}`,
@@ -165,6 +166,9 @@ export function getEventText({
         mood_max: `※ Mood ${mood} or worse`,
         mood_exact: `※ Mood ${mood}`,
         mood_or: `※ Mood ${mood1} or ${mood2}`,
+        scenario_link: `※ Scenario link: This event will grant higher rewards in the ${getScenario(
+            Number(data)
+        )} scenario.`,
         scenario_linked: `※ If ${charName} is scenario-linked:`,
         not_scenario_linked: "※ If not scenario-linked:",
         fans_minimum: `※ At least ${count} fans`,
@@ -542,6 +546,10 @@ function getTrackConditions(c = [1]) {
         .join("");
 }
 
+function getScenario(s = 1) {
+    return scenarios.find((scenario) => scenario.id === s)?.name || "";
+}
+
 function getOptionList(o = [1]) {
     return o
         .map((x, i) => (i < o.length - 1 ? `#${x}, ` : `or #${x}`))
@@ -577,7 +585,11 @@ export const trainingEventContents: { [key: string]: string } = {
     can_occur_repeatedly: "※ This event can occur multiple times.",
     repeatable_changes_values:
         "※ This event can occur multiple times, and the values will change depending on how many times it has occured.",
-    scenario_link:
-        "※ Scenario link: This event will grant higher rewards in the {{scenarioName}} scenario.",
-    alt_outcome: "Can randomly have a different outcome",
+    alt_outcome: "※ Can randomly have a different outcome",
+    first_training: "※ After first training",
+    after_training: "※ Randomly after training (repeatable)",
+    new_year_dating: "※ Dating before the first New Year's",
+    after_finals_bond_maxed: "※ After Finals (bond maxed)",
+    after_finals_bond_not_maxed: "※ After Finals (bond not maxed)",
+    training_failed: "※ Training together failed",
 };

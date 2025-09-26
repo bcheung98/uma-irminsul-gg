@@ -10,7 +10,7 @@ import { getOptionTag } from "helpers/getEventOptionTag";
 import { trainingEventContents } from "helpers/getEventText";
 
 // Type imports
-import { TrainingEvent, TrainingEventExtraProps } from "types/event";
+import { TrainingEvent } from "types/event";
 
 function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
     const theme = useTheme();
@@ -30,12 +30,11 @@ function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
     const hasConditions = conditions && conditions?.length > 0;
 
     const headers: string[] = [];
-    props &&
-        Object.keys(trainingEventContents).forEach((e) => {
-            if (props[e as keyof TrainingEventExtraProps]) {
-                headers.push(trainingEventContents[e]);
-            }
-        });
+    if (props?.headers) {
+        props.headers.forEach((header) =>
+            headers.push(trainingEventContents[header])
+        );
+    }
 
     return (
         <Box
@@ -49,11 +48,21 @@ function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
             <TextStyled
                 variant="body2-styled"
                 sx={{
-                    mb: hasConditions || headers.length > 0 ? "16px" : "4px",
+                    mb: hasConditions ? "16px" : "4px",
                 }}
             >
                 {name}
             </TextStyled>
+            {headers.length > 0 &&
+                headers.map((header, index) => (
+                    <TextStyled
+                        key={index}
+                        variant="body2-styled"
+                        sx={{ mb: "4px" }}
+                    >
+                        {header}
+                    </TextStyled>
+                ))}
             <Stack spacing={2}>
                 {hasConditions && (
                     <Box sx={{ color: theme.text.primary }}>
@@ -71,12 +80,6 @@ function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
                         </Box>
                     </Box>
                 )}
-                {headers.length > 0 &&
-                    headers.map((header, index) => (
-                        <TextStyled key={index} variant="body2-styled">
-                            {header}
-                        </TextStyled>
-                    ))}
                 <Box>
                     {hasConditions && (
                         <TextStyled variant="body2-styled" sx={{ mb: "4px" }}>
