@@ -39,6 +39,7 @@ interface InfoCardProps {
     };
     backgroundColor?: string;
     disableTooltip?: boolean;
+    disableInfoTooltip?: boolean;
     disableLink?: boolean;
     disableZoomOnHover?: boolean;
     loading?: boolean;
@@ -60,6 +61,7 @@ function InfoCard({
     infoSecondary,
     backgroundColor,
     disableTooltip = showName,
+    disableInfoTooltip = false,
     disableLink = false,
     disableZoomOnHover = variant === "material-card",
     loading = false,
@@ -316,7 +318,10 @@ function InfoCard({
                                     src={`stat_icons/${infoSecondary.specialty}`}
                                     alt={infoSecondary.specialty}
                                     style={infoIconStyle}
-                                    tooltip={infoSecondary.specialty}
+                                    tooltip={
+                                        !disableInfoTooltip &&
+                                        infoSecondary.specialty
+                                    }
                                 />
                             )}
                         </Stack>

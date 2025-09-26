@@ -61,6 +61,14 @@ function DeckSupportCard({ data, mini }: { data: DeckData; mini?: boolean }) {
                         title={support.title}
                         type="support"
                         rarity={support.rarity}
+                        info={{
+                            rank: matches_sm_up
+                                ? !mini
+                                    ? support.rarity
+                                    : undefined
+                                : undefined,
+                        }}
+                        infoSecondary={{ specialty: support.specialty }}
                         backgroundColor={theme.background(0, "dark")}
                         size={matches_sm_up ? (mini ? "64px" : "96px") : "64px"}
                         variant={
@@ -68,6 +76,7 @@ function DeckSupportCard({ data, mini }: { data: DeckData; mini?: boolean }) {
                         }
                         showName={false}
                         disableTooltip
+                        disableInfoTooltip
                         disableLink
                         disableZoomOnHover
                     />
