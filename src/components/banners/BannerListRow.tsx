@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid2";
 // Helper imports
 import { useAppSelector } from "helpers/hooks";
 import { selectServer } from "reducers/settings";
-import { createDateObject, isCurrentBanner } from "helpers/dates";
+import { createDateObject, DateObject, isCurrentBanner } from "helpers/dates";
 import { isTBA } from "helpers/utils";
 
 // Type imports
@@ -28,8 +28,16 @@ function BannerListRow({
 
     const region = useAppSelector(selectServer);
 
-    const start = createDateObject({ date: row.start, region: region });
-    const end = createDateObject({ date: row.end, region: region });
+    let start: DateObject;
+    let end: DateObject;
+
+    if (region === "NA") {
+        start = createDateObject({ date: row.start, region: region });
+        end = createDateObject({ date: row.end, region: region });
+    } else {
+        start = createDateObject({ date: row.startJP, region: region });
+        end = createDateObject({ date: row.endJP, region: region });
+    }
 
     const backgroundColor = isCurrentBanner(start.obj, end.obj)
         ? theme.palette.info.dark

@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 // Component imports
 import MainContentBox from "custom/MainContentBox";
 import Image from "custom/Image";
@@ -28,52 +30,54 @@ function CurrentBanners() {
 
     const characters = useAppSelector(selectCharacters);
     const supports = useAppSelector(selectSupports);
-    const ids = [...characters, ...supports].map((item) => item.id);
     const loading = [...characters, ...supports].length === 0;
 
     const characterBanners = useAppSelector(selectCharacterBanners);
     const supportBanners = useAppSelector(selectSupportBanners);
 
-    const filterCurrentBanner = (banner: Banner) =>
-        isCurrentBanner(
-            createDateObject({ date: banner.start, region: region }).obj,
-            createDateObject({ date: banner.end, region: region }).obj
+    const filterCurrentBanner = (banner: Banner) => {
+        let start: string;
+        let end: string;
+        if (region === "NA") {
+            start = banner.start;
+            end = banner.end;
+        } else {
+            start = banner.startJP;
+            end = banner.endJP;
+        }
+        return isCurrentBanner(
+            createDateObject({ date: start, region: region }).obj,
+            createDateObject({ date: end, region: region }).obj
         );
+    };
 
-    const currentCharacterBanners =
-        characterBanners.filter(filterCurrentBanner);
-    const currentSupportBanners = supportBanners.filter(filterCurrentBanner);
+    const currentCharacterBanners = useMemo(
+        () => characterBanners.filter(filterCurrentBanner),
+        [characterBanners, region]
+    );
+    const currentSupportBanners = useMemo(
+        () => supportBanners.filter(filterCurrentBanner),
+        [supportBanners, region]
+    );
 
     const activeBanners =
         [...currentCharacterBanners, ...currentSupportBanners].length > 0;
 
     const characterBannerData: BannerData[] = [];
-    currentCharacterBanners
-        .filter(
-            (banner) =>
-                banner.start !== "" &&
-                banner.rateUps.every((item) => ids.includes(item))
-        )
-        .forEach((banner) => {
-            const rateUps = banner.rateUps.map((id) =>
-                createBannerData(id, "character", characters, supports)
-            );
-            characterBannerData.push({ ...banner, rateUps: rateUps });
-        });
+    currentCharacterBanners.forEach((banner) => {
+        const rateUps = banner.rateUps.map((id) =>
+            createBannerData(id, "character", characters, supports)
+        );
+        characterBannerData.push({ ...banner, rateUps: rateUps });
+    });
 
     const supportBannerData: BannerData[] = [];
-    currentSupportBanners
-        .filter(
-            (banner) =>
-                banner.start !== "" &&
-                banner.rateUps.every((item) => ids.includes(item))
-        )
-        .forEach((banner) => {
-            const rateUps = banner.rateUps.map((id) =>
-                createBannerData(id, "support", characters, supports)
-            );
-            supportBannerData.push({ ...banner, rateUps: rateUps });
-        });
+    currentSupportBanners.forEach((banner) => {
+        const rateUps = banner.rateUps.map((id) =>
+            createBannerData(id, "support", characters, supports)
+        );
+        supportBannerData.push({ ...banner, rateUps: rateUps });
+    });
 
     const renderBanner = (banner: BannerData, type: BannerType) => {
         return (
@@ -100,7 +104,7 @@ function CurrentBanners() {
                 </Grid>
                 <Countdown
                     date={createDateObject({
-                        date: banner.end,
+                        date: region === "NA" ? banner.end : banner.endJP,
                         region: region,
                     })}
                 />
@@ -110,7 +114,7 @@ function CurrentBanners() {
 
     const bannerImage = (id: number) => (
         <Image
-            src={`banners/${id}`}
+            src={`banners/${region === "NA" ? "global" : "jp"}/${id}`}
             alt={`${id}`}
             style={{ width: "100%", height: "auto", maxWidth: "480px" }}
         />

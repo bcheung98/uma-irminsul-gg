@@ -29,6 +29,7 @@ import { useAppSelector } from "helpers/hooks";
 import { selectCharacters } from "reducers/character";
 import { selectSupports } from "reducers/support";
 import { selectCharacterBanners, selectSupportBanners } from "reducers/banner";
+import { selectUnreleasedContent } from "reducers/settings";
 import { createBannerData } from "helpers/createBannerData";
 import { sortBy } from "helpers/utils";
 
@@ -38,6 +39,8 @@ import { Banner, BannerData, BannerOption, BannerType } from "types/banner";
 function BannerList({ type }: { type: BannerType }) {
     const theme = useTheme();
 
+    const ranks = ["R", "SR", "SSR"];
+
     const banners =
         type === "character"
             ? useAppSelector(selectCharacterBanners)
@@ -45,6 +48,8 @@ function BannerList({ type }: { type: BannerType }) {
 
     const characters = useAppSelector(selectCharacters);
     const supports = useAppSelector(selectSupports);
+
+    const showUnreleased = useAppSelector(selectUnreleasedContent);
 
     const ids = [...characters, ...supports].map((item) => item.id);
 
@@ -76,25 +81,21 @@ function BannerList({ type }: { type: BannerType }) {
 
     function createBannerRows(banners: Banner[], searchValue: BannerOption[]) {
         let rowData: BannerData[] = [];
-        banners
-            .filter(
-                (banner) =>
-                    banner.start !== "" &&
-                    banner.rateUps.every((item) => ids.includes(item))
-            )
-            .forEach((banner) => {
-                const rateUps = banner.rateUps.map((id) =>
-                    createBannerData(id, type, characters, supports)
-                );
-                rowData.push({ ...banner, rateUps: rateUps });
-            });
+        banners.forEach((banner) => {
+            const rateUps = banner.rateUps.map((id) =>
+                createBannerData(id, type, characters, supports)
+            );
+            rowData.push({ ...banner, rateUps: rateUps });
+        });
+        if (!showUnreleased) {
+            rowData = rowData.filter((banner) => banner.start !== "");
+        }
         if (searchValue.length > 0) {
             rowData = rowData.filter((banner) => {
                 function filterFn(item: BannerOption) {
                     return [
-                        ...banner.rateUps.map((item) => item.name),
                         ...banner.rateUps.map((item) => item.title),
-                    ].includes(item.name);
+                    ].includes(item.title);
                 }
                 if (selected) {
                     return searchValue.every(filterFn);
@@ -110,22 +111,24 @@ function BannerList({ type }: { type: BannerType }) {
     }
 
     function createOptions(banners: Banner[]) {
-        const options = [
-            ...new Set(
-                banners
-                    .filter(
-                        (banner) =>
-                            banner.start !== "" &&
-                            banner.rateUps.every((item) => ids.includes(item))
-                    )
-                    .map((banner) => banner.rateUps)
-                    .flat()
-            ),
+        if (!showUnreleased) {
+            banners = banners.filter((banner) => banner.start !== "");
+        }
+        let options = [
+            ...new Set(banners.map((banner) => banner.rateUps).flat()),
         ]
             .map((id) => createBannerData(id, type, characters, supports))
             .sort((a, b) => sortBy(a.rarity, b.rarity) || sortBy(b.id, a.id));
         return options;
     }
+
+    const optionName = (option: BannerOption) => {
+        return type === "character"
+            ? `${option.name} (${option.outfit || "Original"})`
+            : `${option.name} (${ranks[option.rarity - 3]} ${
+                  option.specialty
+              })`;
+    };
 
     return (
         <>
@@ -134,7 +137,7 @@ function BannerList({ type }: { type: BannerType }) {
                 autoComplete
                 filterSelectedOptions
                 options={options}
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => optionName(option)}
                 filterOptions={(options, { inputValue }) =>
                     options.filter(
                         (option) =>
@@ -151,7 +154,7 @@ function BannerList({ type }: { type: BannerType }) {
                 }
                 value={values}
                 isOptionEqualToValue={(option, value) =>
-                    option.name === value.name
+                    option.title === value.title
                 }
                 onChange={(_: any, newValue: BannerOption[] | null) =>
                     setValue(newValue as BannerOption[])
@@ -225,7 +228,7 @@ function BannerList({ type }: { type: BannerType }) {
                                     }}
                                 />
                                 <TextStyled noWrap>
-                                    {`[${option.title}] ${option.name}`}
+                                    {optionName(option)}
                                 </TextStyled>
                             </Stack>
                         </Stack>
