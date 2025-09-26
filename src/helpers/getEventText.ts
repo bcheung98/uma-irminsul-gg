@@ -143,6 +143,7 @@ export function getEventText({
             multi: null,
             showCount: true,
         })}`,
+        event_count: `${value}`,
         event_trigger: `Event 「${value}」 will occur next turn`,
         track_hint: `Relevant track skill hint ${value}`,
         stat_not_disabled: `Stat that didn't have its facility disabled ${value}`,
