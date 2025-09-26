@@ -1,4 +1,5 @@
 // Component imports
+import EventOptions from "./EventOptions";
 import EventText from "./EventText";
 import { TextStyled } from "styled/StyledTypography";
 
@@ -6,7 +7,6 @@ import { TextStyled } from "styled/StyledTypography";
 import { useTheme, Box, Stack } from "@mui/material";
 
 // Helper imports
-import { getOptionTag } from "helpers/getEventOptionTag";
 import { trainingEventContents } from "helpers/getEventText";
 
 // Type imports
@@ -15,17 +15,7 @@ import { TrainingEvent } from "types/event";
 function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
     const theme = useTheme();
 
-    const { options, conditions, chances, props } = event;
-
-    const getRandomText = (index: number, idx: number) => {
-        if (chances) {
-            return idx === 0
-                ? `Randomly either (~${chances[index][idx]}%)`
-                : `or (~${chances[index][idx]}%)`;
-        } else {
-            return idx === 0 ? "Randomly either" : "or";
-        }
-    };
+    const { options, conditions, props } = event;
 
     const hasConditions = conditions && conditions?.length > 0;
 
@@ -88,58 +78,7 @@ function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
                     )}
                     <Stack spacing={1}>
                         {options.length > 0 ? (
-                            options.map((option, index) => (
-                                <Stack
-                                    spacing={1}
-                                    key={index}
-                                    sx={{
-                                        p: "8px",
-                                        borderRadius: "4px",
-                                        backgroundColor: theme.background(1),
-                                    }}
-                                >
-                                    {options.length > 1 && (
-                                        <TextStyled variant="body2-styled">
-                                            {getOptionTag(
-                                                index + 1,
-                                                options.length
-                                            )}
-                                        </TextStyled>
-                                    )}
-                                    <Stack spacing={1}>
-                                        {option.map((opt, idx) => (
-                                            <Box key={idx}>
-                                                {option.length > 1 && (
-                                                    <TextStyled
-                                                        variant="body2-styled"
-                                                        sx={{
-                                                            mb: "8px",
-                                                            color: theme.text
-                                                                .highlight,
-                                                        }}
-                                                    >
-                                                        {getRandomText(
-                                                            index,
-                                                            idx
-                                                        )}
-                                                    </TextStyled>
-                                                )}
-                                                <Stack>
-                                                    {opt.map((outcome, i) => (
-                                                        <Box key={i}>
-                                                            <EventText
-                                                                outcome={
-                                                                    outcome
-                                                                }
-                                                            />
-                                                        </Box>
-                                                    ))}
-                                                </Stack>
-                                            </Box>
-                                        ))}
-                                    </Stack>
-                                </Stack>
-                            ))
+                            <EventOptions event={event} options={options} />
                         ) : (
                             <Stack
                                 sx={{
@@ -152,6 +91,17 @@ function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
                                     Nothing happens
                                 </TextStyled>
                             </Stack>
+                        )}
+                        {props?.altOutcome && (
+                            <>
+                                <TextStyled variant="body2-styled">
+                                    ※ Alternate outcome
+                                </TextStyled>
+                                <EventOptions
+                                    event={event}
+                                    options={props.altOutcome}
+                                />
+                            </>
                         )}
                     </Stack>
                 </Box>

@@ -44,6 +44,7 @@ export interface TrainingEventExtraProps {
     headers?: string[];
     charName?: number;
     hasChoices?: boolean;
+    altOutcome?: EventOutcome[][][];
 }
 
 export interface EventOutcome {
