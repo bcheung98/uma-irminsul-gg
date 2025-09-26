@@ -14,6 +14,7 @@ import {
     Stack,
     StackProps,
     IconButton,
+    Card,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
@@ -67,16 +68,19 @@ function DeckSearch({
 
     let data: Character[] | Support[] | Scenario[];
 
+    const supportCharIDs = [...currentDeck.supports]
+        .slice(0, 6)
+        .map((support) => supports.find((supp) => supp.id === support))
+        .map((support) => support?.charID);
+
     if (type === "character") {
         data = characters
-            .filter((char) => char.id !== deck.character)
             .filter((char) =>
                 char.name.toLowerCase().includes(searchValue.toLowerCase())
             )
-            .sort((a, b) => sortBy(a.rarity, b.rarity) || sortBy(b.id, a.id));
+            .sort((a, b) => sortBy(b.id, a.id));
     } else if (type === "support") {
         data = supports
-            .filter((supp) => !deck.supports.includes(supp.id))
             .filter((supp) =>
                 supp.name.toLowerCase().includes(searchValue.toLowerCase())
             )
@@ -92,6 +96,43 @@ function DeckSearch({
             data = scenarios.filter((s) => s.global);
         }
     }
+
+    const isInvalidOption = (item: Character | Support | Scenario) => {
+        let message = "";
+        let invalid = false;
+        let color = theme.palette.error.main;
+        if ("skills" in item) {
+            if (item.id === deck.character) {
+                message = "Selected";
+            } else if (supportCharIDs.includes(item.charID)) {
+                message = "Duplicate support";
+                color = theme.palette.error.light;
+            }
+        }
+        if ("specialty" in item) {
+            if (
+                item.charID === Number(deck.character?.toString().slice(0, 4))
+            ) {
+                message = "Trainee";
+            } else if (deck.supports.slice(0, 6).includes(item.id)) {
+                message = "Selected";
+            } else if (
+                supportCharIDs.toSpliced(index, 1).includes(item.charID)
+            ) {
+                message = "Duplicate support";
+                color = theme.palette.error.light;
+            }
+        }
+        if ("global" in item) {
+            if (item.id === deck.scenario) {
+                message = "Selected";
+            }
+        }
+        if (message !== "") {
+            invalid = true;
+        }
+        return { message, invalid, color };
+    };
 
     const itemTag = (item: Character | Support | Scenario) => {
         let res = "";
@@ -145,23 +186,26 @@ function DeckSearch({
         handleClose();
     };
 
-    const stackParams: StackProps = {
-        spacing: 1,
-        direction: "row",
-        alignItems: "center",
-        sx: {
-            p: 1,
-            borderRadius: "4px",
-            backgroundColor: theme.background(0, "dark"),
-            "&:hover": {
-                backgroundColor: theme.background(0, "light"),
-                cursor: "pointer",
+    const stackParams = (invalid = false): StackProps => {
+        return {
+            spacing: 1,
+            direction: "row",
+            alignItems: "center",
+            sx: {
+                opacity: invalid ? 0.5 : 1,
+                p: 1,
+                borderRadius: "4px",
+                backgroundColor: theme.background(0, "dark"),
+                "&:hover": {
+                    backgroundColor: theme.background(0, "light"),
+                    cursor: invalid ? "not-allowed" : "pointer",
+                },
             },
-        },
+        };
     };
 
     const deleteOption = (
-        <Stack {...stackParams} onClick={() => handleClick(null, type)}>
+        <Stack {...stackParams()} onClick={() => handleClick(null, type)}>
             <HighlightOffIcon
                 sx={{
                     width: "48px",
@@ -212,25 +256,62 @@ function DeckSearch({
                     {type === "support" &&
                         currentDeck.supports[index] !== null &&
                         deleteOption}
-                    {data.map((item) => (
-                        <Stack
-                            key={item.id}
-                            {...stackParams}
-                            onClick={() => handleClick(item, type)}
-                        >
-                            <Image
-                                src={`${imgURL(type)}/${item.id}`}
-                                alt={`${item.id}`}
-                                style={{ width: "48px", height: "100%" }}
-                            />
-                            <Box>
-                                <TextStyled>{item.name}</TextStyled>
-                                <TextStyled variant="body2-styled">
-                                    {itemTag(item)}
-                                </TextStyled>
+                    {data.map((item) => {
+                        const { message, invalid, color } =
+                            isInvalidOption(item);
+                        return (
+                            <Box
+                                key={item.id}
+                                sx={{
+                                    position: "relative",
+                                    "&:hover": {
+                                        cursor: invalid
+                                            ? "not-allowed"
+                                            : "pointer",
+                                    },
+                                }}
+                                onClick={
+                                    !invalid
+                                        ? () => handleClick(item, type)
+                                        : undefined
+                                }
+                            >
+                                <Stack {...stackParams(invalid)}>
+                                    <Image
+                                        src={`${imgURL(type)}/${item.id}`}
+                                        alt={`${item.id}`}
+                                        style={{
+                                            width: "48px",
+                                            height: "100%",
+                                        }}
+                                    />
+                                    <Box>
+                                        <TextStyled>{item.name}</TextStyled>
+                                        <TextStyled variant="body2-styled">
+                                            {itemTag(item)}
+                                        </TextStyled>
+                                    </Box>
+                                </Stack>
+                                {invalid && (
+                                    <Card
+                                        sx={{
+                                            position: "absolute",
+                                            top: 0,
+                                            right: 0,
+                                            px: 1,
+                                            backgroundColor: color,
+                                            borderRadius: "4px",
+                                            userSelect: "none",
+                                        }}
+                                    >
+                                        <TextStyled variant="body2-styled">
+                                            {message}
+                                        </TextStyled>
+                                    </Card>
+                                )}
                             </Box>
-                        </Stack>
-                    ))}
+                        );
+                    })}
                 </Stack>
             </Box>
         </MainContentBox>

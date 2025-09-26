@@ -61,7 +61,9 @@ export const plannerSlice = createSlice({
         },
         copyDeck: (state, action: PayloadAction<number>) => {
             const name = state.decks[state.currentDeck].name;
-            state.decks[action.payload] = { ...state.decks[state.currentDeck] };
+            const newDeck = { ...state.decks[state.currentDeck] };
+            newDeck.supports[6] = -1;
+            state.decks[action.payload] = newDeck;
             state.decks[action.payload].name = `Copy of ${name}`;
         },
         resetDeck: (state, action: PayloadAction<number>) => {

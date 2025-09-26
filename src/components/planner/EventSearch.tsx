@@ -47,8 +47,19 @@ function EventSearch({
         setSearchValue(event.target.value);
     };
 
+    const supportCharIDs = [...deck.supports]
+        .slice(0, 6)
+        .map((support) => supports.find((supp) => supp.id === support))
+        .map((support) => support?.charID);
+
     let data: Support[] = supports
         .filter((supp) => !deck.supports.includes(supp.id))
+        .filter(
+            (supp) =>
+                supp.charID !== Number(deck.character?.toString().slice(0, 4))
+        )
+        .filter((supp) => !deck.supports.slice(0, 6).includes(supp.id))
+        .filter((supp) => !supportCharIDs.includes(supp.charID))
         .filter((supp) =>
             supp.name.toLowerCase().includes(searchValue.toLowerCase())
         )

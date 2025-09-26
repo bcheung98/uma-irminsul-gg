@@ -203,7 +203,9 @@ function EventViewer() {
     };
 
     useEffect(() => {
-        dispatch(addSupport({ index: 6, id: -1 }));
+        if (currentDeck.supports[6] !== -1) {
+            dispatch(addSupport({ index: 6, id: -1 }));
+        }
     }, []);
 
     return (
