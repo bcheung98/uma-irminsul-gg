@@ -4,7 +4,7 @@ import { TextStyled } from "styled/StyledTypography";
 import { FlexBox } from "styled/StyledBox";
 
 // MUI imports
-import { Stack } from "@mui/material";
+import { Stack, LinearProgress } from "@mui/material";
 
 // Helper imports
 import { objectKeys } from "helpers/utils";
@@ -77,54 +77,83 @@ function EventSupport({
         ) : null;
     }
 
-    if (isPalorGroup && loadedEvents.includes("support-pal")) {
-        supportEvents = events["support-pal"].find(
-            (e) => e.id === support.charID
-        );
-        if (supportEvents) {
-            chainEvents = supportEvents.palProps?.recEvents;
-            supportEvents.events.forEach((event, index) => {
-                const headers = [];
-                if (index === 0) {
-                    headers.push("first_training");
-                }
-                if (index === 1) {
-                    headers.push("after_training");
-                }
-                if (index === 3) {
-                    headers.push("after_finals_bond_maxed");
-                }
-                if (index === 4) {
-                    headers.push("after_finals_bond_not_maxed");
-                }
-                if (index === 5) {
-                    headers.push("new_year_dating");
-                }
-                const e = {
-                    ...event,
-                    props: { ...event.props, headers: headers },
-                };
-                if (index === 2 || index === 6) {
-                    randomEvents?.push(e);
-                } else {
-                    specialEvents?.push(e);
-                }
-            });
-            randomEvents = randomEvents.reverse();
+    function addHeadersPal(event: TrainingEvent, index: number) {
+        const headers = [];
+        if (index === 0) {
+            headers.push("first_training");
         }
-    } else {
-        if (loadedEvents.includes("support-common")) {
+        if (index === 1) {
+            headers.push("after_training");
+        }
+        if (index === 3) {
+            headers.push("after_finals_bond_maxed");
+        }
+        if (index === 4) {
+            headers.push("after_finals_bond_not_maxed");
+        }
+        if (index === 5) {
+            headers.push("new_year_dating");
+        }
+        return {
+            ...event,
+            props: { ...event.props, headers: headers },
+        };
+    }
+
+    if (loadedEvents.includes("support-common")) {
+        if (isPalorGroup) {
+            if (loadedEvents.includes("support-pal")) {
+                supportEvents = events["support-pal"].find(
+                    (e) => e.id === support.charID
+                );
+                if (supportEvents) {
+                    chainEvents = supportEvents.palProps?.recEvents;
+                    supportEvents.events.forEach((event, index) => {
+                        const e = addHeadersPal(event, index);
+                        if (index === 2 || index === 6) {
+                            randomEvents?.push(e);
+                        } else {
+                            specialEvents?.push(e);
+                        }
+                    });
+                    randomEvents = randomEvents.reverse();
+                }
+            }
+            if (loadedEvents.includes("support-group")) {
+                supportEvents = events["support-group"].find(
+                    (e) => e.id === support.id
+                );
+                if (supportEvents) {
+                    chainEvents = supportEvents.groupProps?.recEvents;
+                    supportEvents.groupProps?.charIDs.forEach((char) => {
+                        const charEvents = events["support-common"].find(
+                            (e) => e.id === char
+                        );
+                        if (charEvents) {
+                            randomEvents?.push(...charEvents.events);
+                        }
+                    });
+                    supportEvents.events.forEach((event) => {
+                        if (!event.props) {
+                            randomEvents?.push(event);
+                        } else {
+                            specialEvents?.push(event);
+                        }
+                    });
+                }
+            }
+        } else {
             supportEvents = events["support-common"].find(
                 (e) => e.id === support.charID
             );
             if (supportEvents) {
                 randomEvents = supportEvents.events;
             }
-        }
-        if (loadedEvents.includes(`support-${rarity}`)) {
-            chainEvents = events[`support-${rarity}`].find(
-                (e) => e.id === support.id
-            )?.events;
+            if (loadedEvents.includes(`support-${rarity}`)) {
+                chainEvents = events[`support-${rarity}`].find(
+                    (e) => e.id === support.id
+                )?.events;
+            }
         }
     }
 
@@ -134,7 +163,7 @@ function EventSupport({
         gap: "16px",
     };
 
-    return (
+    return supportEvents ? (
         <Stack spacing={2}>
             {chainEvents && chainEvents.length > 0 && (
                 <>
@@ -147,7 +176,7 @@ function EventSupport({
                                 index,
                                 event,
                                 expand,
-                                isChain: true,
+                                isChain: support.specialty !== "Group",
                             })
                         )}
                     </FlexBox>
@@ -174,6 +203,8 @@ function EventSupport({
                 </>
             )}
         </Stack>
+    ) : (
+        <LinearProgress color="info" />
     );
 }
 

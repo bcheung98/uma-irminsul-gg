@@ -11,10 +11,15 @@ export interface EventData {
     events: TrainingEvent[];
     props?: CharacterEventProps;
     palProps?: PalEventProps;
+    groupProps?: GroupEventProps;
 }
 
 export interface PalEventProps {
     recEvents: TrainingEvent[];
+}
+
+export interface GroupEventProps extends PalEventProps {
+    charIDs: number[];
 }
 
 export interface CharacterEventProps extends PalEventProps {
@@ -37,6 +42,7 @@ export interface TrainingEvent {
 
 export interface TrainingEventExtraProps {
     headers?: string[];
+    charName?: number;
 }
 
 export interface EventOutcome {

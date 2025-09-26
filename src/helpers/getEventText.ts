@@ -95,9 +95,9 @@ export function getEventText({
             showCount: true,
         })} ${value}`,
         skill_points: `Skill points ${value}`,
-        bond: `${getCharacter(data)} bond ${value}`,
+        bond: `${getCharacter(data) || "This card's "} bond ${value}`,
         this_card_bond: `This card bond ${value}`,
-        bond_low: `Bond of the support with the lowest bond (apart from this card) ${value}`,
+        bond_lowest: `Bond of the support with the lowest bond (apart from this card) ${value}`,
         bond_random: `Bond of ${getCharacter(
             data
         )} random support cards ${value}`,
@@ -169,7 +169,7 @@ export function getEventText({
         scenario_link: `※ Scenario link: This event will grant higher rewards in the ${getScenario(
             Number(data)
         )} scenario.`,
-        scenario_linked: `※ If ${charName} is scenario-linked:`,
+        scenario_linked: `※ If ${getCharacter(data)} is scenario-linked:`,
         not_scenario_linked: "※ If not scenario-linked:",
         fans_minimum: `※ At least ${count} fans`,
         fans_maximum: `※ Less than ${count} fans`,
@@ -185,9 +185,11 @@ export function getEventText({
             "※ You can only choose a name if the related character is scenario-linked.",
         wl_exact: `※ Wisdom Level ${value}`,
         wl_less: `※ Wisdom Level ${value} or less`,
-        wl_min_name: `※ ${charName}'s Wisdom Level is at least ${value}`,
+        wl_min_name: `※ ${getCharacter(
+            data
+        )}'s Wisdom Level is at least ${value}`,
         wl_combined: `※ Combined Wisdom Level of all Goddesses ${value} or more`,
-        ttl_gauge: `${charName}'s Instruction gauge ${value}`,
+        ttl_gauge: `${getCharacter(data)}'s Instruction gauge ${value}`,
         ttl_gauge_all: `All Instruction gauges ${value}`,
         ntsr: `Next turn Specialty Rate of all support cards ${value}`,
         larc_chara_choice:
@@ -226,7 +228,9 @@ export function getEventText({
             year
         )} ${countText({ count, single: "", multi: `$X times` })}`,
         win_streak_graded: `Get a win streak of ${count}+ graded races (G3, G2, G1)`,
-        win_all_g1_rival: `Win all G1 races in which ${charName} is also participating`,
+        win_all_g1_rival: `Win all G1 races in which ${getCharacter(
+            data
+        )} is also participating`,
         win_g1_cnt_class_distance: `In the ${getYear(
             year
         )}, win at least ${count} ${distanceList
@@ -588,7 +592,7 @@ export const trainingEventContents: { [key: string]: string } = {
     alt_outcome: "※ Can randomly have a different outcome",
     first_training: "※ After first training",
     after_training: "※ Randomly after training (repeatable)",
-    new_year_dating: "※ Dating before the first New Year's",
+    new_year_dating: "※ Recreation unlocked before the first New Year's",
     after_finals_bond_maxed: "※ After Finals (bond maxed)",
     after_finals_bond_not_maxed: "※ After Finals (bond not maxed)",
     training_failed: "※ Training together failed",

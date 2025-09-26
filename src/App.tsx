@@ -37,6 +37,7 @@ function App() {
         dispatch(fetchEvents({ type: "support-ssr" }));
         dispatch(fetchEvents({ type: "support-sr" }));
         dispatch(fetchEvents({ type: "support-pal" }));
+        dispatch(fetchEvents({ type: "support-group" }));
         dispatch(fetchEvents({ type: "character" }));
         dispatch(fetchEvents({ type: "character-outfit" }));
     }, []);
