@@ -426,10 +426,10 @@ export function getEventText({
             single: "once",
             multi: `at least ${count} times`,
         })}: ${getCharacterList(charList)}`,
-        mo_ev: `Trigger the 「${eventName}」 training event while having at least ${getMood(
-            mood
-        )} mood`,
-        ev: `Trigger the 「${eventName}」 training event`,
+        mo_ev: `Trigger the 「${
+            eventName || value
+        }」 training event while having at least ${getMood(mood)} mood`,
+        ev: `Trigger the 「${eventName || value}」 training event`,
         evn: `Trigger the 「${eventName}」 training event ${count} times`,
         ev_trc_t: `After the 「${eventName}」 event, train in the facility that wasn't locked ${countText(
             { count, single: "", multi: "times" }
