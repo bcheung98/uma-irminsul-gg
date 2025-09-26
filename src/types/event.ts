@@ -43,6 +43,7 @@ export interface TrainingEvent {
 export interface TrainingEventExtraProps {
     headers?: string[];
     charName?: number;
+    hasChoices?: boolean;
 }
 
 export interface EventOutcome {

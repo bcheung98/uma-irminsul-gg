@@ -12,12 +12,12 @@ export const scenarios: Scenario[] = [
         global: false,
     },
     {
-        id: 3,
+        id: 4,
         name: "Make a New Track",
         global: false,
     },
     {
-        id: 4,
+        id: 3,
         name: "Grand Live",
         global: false,
     },

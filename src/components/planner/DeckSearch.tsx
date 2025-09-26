@@ -28,6 +28,7 @@ import {
 } from "helpers/hooks";
 import { addCharacter, addScenario, addSupport } from "reducers/planner";
 import { selectCurrentDeck } from "reducers/planner";
+import { selectUnreleasedContent } from "reducers/settings";
 import { scenarios } from "data/scenarios";
 
 // Type imports
@@ -51,6 +52,8 @@ function DeckSearch({
     const matches_sm_up = useMediaQuery(theme.breakpoints.up("sm"));
 
     const dispatch = useAppDispatch();
+
+    const showUnreleased = useAppSelector(selectUnreleasedContent);
 
     const characters = [...useAppSelector(selectAppCharacters)];
     const supports = [...useAppSelector(selectAppSupports)];
@@ -84,7 +87,10 @@ function DeckSearch({
                     sortBy(b.id, a.id)
             );
     } else {
-        data = scenarios.filter((s) => s.global);
+        data = scenarios;
+        if (!showUnreleased) {
+            data = scenarios.filter((s) => s.global);
+        }
     }
 
     const itemTag = (item: Character | Support | Scenario) => {

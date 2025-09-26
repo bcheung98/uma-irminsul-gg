@@ -1,4 +1,5 @@
 import { races } from "data/races";
+import { getOrdinal } from "./getEventText";
 
 export function getRace(id: number | string) {
     if (id === "debut") {
@@ -18,13 +19,21 @@ export function getRaceName(id: string) {
     } else {
         let res = "";
         const [raceID, year] = id.split("|");
-        const race = races.find((race) => race.raceID === Number(raceID));
-        if (race) {
-            res = race.name;
-            if (year) {
-                res += ` (Year ${year})`;
+        if (raceID === "larc_rep") {
+            return `${getOrdinal(
+                Number(year)
+            )} L'Arc Representative Exhibition Race`;
+        } else if (["gur", "wbc", "swbc"].includes(raceID)) {
+            return raceID.toLocaleUpperCase();
+        } else {
+            const race = races.find((race) => race.raceID === Number(raceID));
+            if (race) {
+                res = race.name;
+                if (year) {
+                    res += ` (Year ${year})`;
+                }
             }
+            return res;
         }
-        return res;
     }
 }

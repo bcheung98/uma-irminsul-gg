@@ -172,8 +172,8 @@ export function getEventText({
         )} scenario.`,
         scenario_linked: `※ If ${getCharacter(data)} is scenario-linked:`,
         not_scenario_linked: "※ If not scenario-linked:",
-        fans_minimum: `※ At least ${count} fans`,
-        fans_maximum: `※ Less than ${count} fans`,
+        fans_minimum: `※ At least ${value?.toLocaleString()} fans`,
+        fans_maximum: `※ Less than ${value?.toLocaleString()} fans`,
         highest_facility:
             "※ The outcome depends on which training facility has the highest level (ties decided at random)",
         most_trained:
@@ -193,6 +193,9 @@ export function getEventText({
         ttl_gauge: `${getCharacter(data)}'s Instruction gauge ${value}`,
         ttl_gauge_all: `All Instruction gauges ${value}`,
         ntsr: `Next turn Specialty Rate of all support cards ${value}`,
+        app: `Aptitude Points ${value}`,
+        char: `※ ${getCharacter(data)}`,
+        char_h_dl: `${getCharacter(data)}`,
         larc_chara_choice:
             "※ Depending on your choice, a different 'Trust ＜From X＞' event will trigger later.",
         match_by_name:
@@ -431,27 +434,27 @@ export function getEventText({
             eventName || value
         }」 training event while having at least ${getMood(mood)} mood`,
         ev: `Trigger the 「${eventName || value}」 training event`,
-        evn: `Trigger the 「${eventName}」 training event ${count} times`,
-        ev_trc_t: `After the 「${eventName}」 event, train in the facility that wasn't locked ${countText(
+        evn: `Trigger the 「${eventName || value}」 training event ${count} times`,
+        ev_trc_t: `After the 「${eventName || value}」 event, train in the facility that wasn't locked ${countText(
             { count, single: "", multi: "times" }
         )}`,
-        p_ev_s: `Fulfill a promise to your fans in the 「${eventName}」 event`,
+        p_ev_s: `Fulfill a promise to your fans in the 「${eventName || value}」 event`,
         e_ev: `Trigger any training event that grants ${data} ${countText({
             count,
             single: "",
             multi: `$X times`,
         })}`,
-        ev_ac_on: `In the 「${eventName}」 training event, get the ${
+        ev_ac_on: `In the 「${eventName || value}」 training event, get the ${
             eventOutcomes[eventOutcome]
         } outcome after selecting one of the following choices: ${getOptionList(
             eventOptions
         )}`,
-        ev_ac_on_nooutcome: `In the 「${eventName}」 training event, select one of the following choices: ${getOptionList(
+        ev_ac_on_nooutcome: `In the 「${eventName || value}」 training event, select one of the following choices: ${getOptionList(
             eventOptions
         )}`,
-        ev_cn_on: `In the 「${eventName}」 training event, get the ${eventOutcomes[eventOutcome]} outcome after selecting choice #${eventOption}`,
-        ev_cn_on_nochoice: `In the 「${eventName}」 training event, get the ${eventOutcomes[eventOutcome]} outcome`,
-        ev_cn_on_nooutcome: `In the 「${eventName}」 training event, select choice #${eventOption}`,
+        ev_cn_on: `In the 「${eventName || value}」 training event, get the ${eventOutcomes[eventOutcome]} outcome after selecting choice #${eventOption}`,
+        ev_cn_on_nochoice: `In the 「${eventName || value}」 training event, get the ${eventOutcomes[eventOutcome]} outcome`,
+        ev_cn_on_nooutcome: `In the 「${eventName || value}」 training event, select choice #${eventOption}`,
         no_fail_training: "Don't fail a single training during the run",
         scen_uaf_wf: "Win the U.A.F. Showdown",
         scen_uaf_wa: "Win all the U.A.F. tournaments",
