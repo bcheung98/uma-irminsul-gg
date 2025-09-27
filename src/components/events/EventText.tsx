@@ -24,11 +24,11 @@ import { EventOutcome } from "types/event";
 function EventText({
     outcome,
     prefix = "",
-    charID,
+    charID = 1001,
 }: {
     outcome: EventOutcome;
     prefix?: string;
-    charID: number | string;
+    charID?: number | string;
 }) {
     const theme = useTheme();
 
