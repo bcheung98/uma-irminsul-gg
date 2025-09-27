@@ -1,6 +1,5 @@
 // Component imports
 import EventOptions from "./EventOptions";
-import EventText from "./EventText";
 import { TextStyled } from "styled/StyledTypography";
 
 // MUI imports
@@ -11,6 +10,7 @@ import { trainingEventContents } from "helpers/getEventText";
 
 // Type imports
 import { TrainingEvent } from "types/event";
+import EventConditions from "./EventConditions";
 
 function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
     const theme = useTheme();
@@ -43,33 +43,9 @@ function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
             >
                 {name}
             </TextStyled>
-            {headers.length > 0 &&
-                headers.map((header, index) => (
-                    <TextStyled
-                        key={index}
-                        variant="body2-styled"
-                        sx={{ mb: "4px" }}
-                    >
-                        {header}
-                    </TextStyled>
-                ))}
+            {headers.length > 0 && <EventHeaders headers={headers} />}
             <Stack spacing={2}>
-                {hasConditions && (
-                    <Box sx={{ color: theme.text.primary }}>
-                        <TextStyled variant="body2-styled">
-                            Conditions:
-                        </TextStyled>
-                        <Box>
-                            <ul>
-                                {conditions.map((con, index) => (
-                                    <li key={index}>
-                                        <EventText outcome={con} />
-                                    </li>
-                                ))}
-                            </ul>
-                        </Box>
-                    </Box>
-                )}
+                {hasConditions && <EventConditions conditions={conditions} />}
                 <Box>
                     {hasConditions && (
                         <TextStyled variant="body2-styled" sx={{ mb: "4px" }}>
@@ -111,3 +87,11 @@ function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
 }
 
 export default EventPopup;
+
+function EventHeaders({ headers }: { headers: string[] }) {
+    return headers.map((header, index) => (
+        <TextStyled key={index} variant="body2-styled" sx={{ mb: "4px" }}>
+            {header}
+        </TextStyled>
+    ));
+}
