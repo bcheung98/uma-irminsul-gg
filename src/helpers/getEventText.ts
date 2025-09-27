@@ -155,8 +155,12 @@ export function getEventText({
         brian_tryhard:
             "Increased difficulty and rewards of future training goals",
         branch_future: `※ Will affect the outcome of the ${eventNumber} event`,
-        branch_previous: `※ Can only happen if you chose the ${eventOption} option during the ${eventNumber} event`,
-        branch_previous2: `※ If you chose the ${eventOption} option during both previous two chain events`,
+        branch_previous: `※ Can only happen if you chose the ${getOrdinal(
+            eventOption
+        )} option during the ${getOrdinal(eventNumber)} event`,
+        branch_previous2: `※ If you chose the ${getOrdinal(
+            eventOption
+        )} option during both previous two chain events`,
         other_cases: "※ In other cases",
         result_good: "※ Good result",
         result_average: "※ Average result",
