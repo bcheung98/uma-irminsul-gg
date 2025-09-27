@@ -30,6 +30,7 @@ import {
 import { addCharacter, addScenario, addSupport } from "reducers/planner";
 import { selectCurrentDeck } from "reducers/planner";
 import { selectUnreleasedContent } from "reducers/settings";
+import { selectSupports } from "reducers/support";
 import { scenarios } from "data/scenarios";
 
 // Type imports
@@ -58,6 +59,7 @@ function DeckSearch({
 
     const characters = [...useAppSelector(selectAppCharacters)];
     const supports = [...useAppSelector(selectAppSupports)];
+    const supportsJP = [...useAppSelector(selectSupports)];
 
     const currentDeck = useAppSelector(selectCurrentDeck);
 
@@ -70,7 +72,7 @@ function DeckSearch({
 
     const supportCharIDs = [...currentDeck.supports]
         .slice(0, 6)
-        .map((support) => supports.find((supp) => supp.id === support))
+        .map((support) => supportsJP.find((supp) => supp.id === support))
         .map((support) => support?.charID);
 
     if (type === "character") {
@@ -104,9 +106,6 @@ function DeckSearch({
         if ("skills" in item) {
             if (item.id === deck.character) {
                 message = "Selected";
-            } else if (supportCharIDs.includes(item.charID)) {
-                message = "Duplicate support";
-                color = theme.palette.error.light;
             }
         }
         if ("specialty" in item) {
@@ -165,7 +164,11 @@ function DeckSearch({
     ) => {
         if (type === "character") {
             if (item) {
+                const charIndex = supportCharIDs.findIndex(
+                    (char) => char === (item as Character).charID
+                );
                 dispatch(addCharacter(item.id));
+                dispatch(addSupport({ index: charIndex, id: null }));
             } else {
                 dispatch(addCharacter(null));
             }
