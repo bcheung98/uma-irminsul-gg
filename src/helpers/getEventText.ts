@@ -17,9 +17,11 @@ import { scenarios } from "data/scenarios";
 export function getEventText({
     event,
     characters,
+    charID,
 }: {
     event: EventOutcome;
     characters: CharacterProfile[];
+    charID: number | string;
 }) {
     const { tag, value, count, data, props = {} } = event;
 
@@ -95,7 +97,7 @@ export function getEventText({
             showCount: true,
         })} ${value}`,
         skill_points: `Skill points ${value}`,
-        bond: `${getCharacter(data) || "This card's "} bond ${value}`,
+        bond: `${getCharacter(data || charID)} bond ${value}`,
         this_card_bond: `This card bond ${value}`,
         bond_lowest: `Bond of the support with the lowest bond (apart from this card) ${value}`,
         bond_random: `Bond of ${getCharacter(
@@ -434,11 +436,19 @@ export function getEventText({
             eventName || value
         }」 training event while having at least ${getMood(mood)} mood`,
         ev: `Trigger the 「${eventName || value}」 training event`,
-        evn: `Trigger the 「${eventName || value}」 training event ${count} times`,
-        ev_trc_t: `After the 「${eventName || value}」 event, train in the facility that wasn't locked ${countText(
-            { count, single: "", multi: "times" }
-        )}`,
-        p_ev_s: `Fulfill a promise to your fans in the 「${eventName || value}」 event`,
+        evn: `Trigger the 「${
+            eventName || value
+        }」 training event ${count} times`,
+        ev_trc_t: `After the 「${
+            eventName || value
+        }」 event, train in the facility that wasn't locked ${countText({
+            count,
+            single: "",
+            multi: "times",
+        })}`,
+        p_ev_s: `Fulfill a promise to your fans in the 「${
+            eventName || value
+        }」 event`,
         e_ev: `Trigger any training event that grants ${data} ${countText({
             count,
             single: "",
@@ -449,12 +459,20 @@ export function getEventText({
         } outcome after selecting one of the following choices: ${getOptionList(
             eventOptions
         )}`,
-        ev_ac_on_nooutcome: `In the 「${eventName || value}」 training event, select one of the following choices: ${getOptionList(
+        ev_ac_on_nooutcome: `In the 「${
+            eventName || value
+        }」 training event, select one of the following choices: ${getOptionList(
             eventOptions
         )}`,
-        ev_cn_on: `In the 「${eventName || value}」 training event, get the ${eventOutcomes[eventOutcome]} outcome after selecting choice #${eventOption}`,
-        ev_cn_on_nochoice: `In the 「${eventName || value}」 training event, get the ${eventOutcomes[eventOutcome]} outcome`,
-        ev_cn_on_nooutcome: `In the 「${eventName || value}」 training event, select choice #${eventOption}`,
+        ev_cn_on: `In the 「${eventName || value}」 training event, get the ${
+            eventOutcomes[eventOutcome]
+        } outcome after selecting choice #${eventOption}`,
+        ev_cn_on_nochoice: `In the 「${
+            eventName || value
+        }」 training event, get the ${eventOutcomes[eventOutcome]} outcome`,
+        ev_cn_on_nooutcome: `In the 「${
+            eventName || value
+        }」 training event, select choice #${eventOption}`,
         no_fail_training: "Don't fail a single training during the run",
         scen_uaf_wf: "Win the U.A.F. Showdown",
         scen_uaf_wa: "Win all the U.A.F. tournaments",

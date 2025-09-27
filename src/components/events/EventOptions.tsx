@@ -14,9 +14,11 @@ import { TrainingEvent, EventOutcome } from "types/event";
 function EventOptions({
     event,
     options,
+    charID,
 }: {
     event: TrainingEvent;
     options: EventOutcome[][][];
+    charID: number | string;
 }) {
     const theme = useTheme();
 
@@ -64,7 +66,10 @@ function EventOptions({
                         <Stack>
                             {opt.map((outcome, i) => (
                                 <Box key={i}>
-                                    <EventText outcome={outcome} />
+                                    <EventText
+                                        outcome={outcome}
+                                        charID={charID}
+                                    />
                                 </Box>
                             ))}
                         </Stack>

@@ -24,9 +24,11 @@ import { EventOutcome } from "types/event";
 function EventText({
     outcome,
     prefix = "",
+    charID,
 }: {
     outcome: EventOutcome;
     prefix?: string;
+    charID: number | string;
 }) {
     const theme = useTheme();
 
@@ -175,12 +177,12 @@ function EventText({
                 return SkillTextRandom({ eventHints: props?.eventHints });
             case "conditions":
                 return props?.conditions?.map((con) => (
-                    <EventText outcome={con} prefix="※" />
+                    <EventText outcome={con} prefix="※" charID={charID} />
                 ));
             default:
                 return (
                     <span style={{ color: textColor }}>
-                        {getEventText({ event: outcome, characters })}
+                        {getEventText({ event: outcome, characters, charID })}
                     </span>
                 );
         }

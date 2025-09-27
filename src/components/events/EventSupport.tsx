@@ -73,6 +73,11 @@ function EventSupport({
                 isChain={isChain}
                 index={index}
                 expand={expand}
+                charID={
+                    support.specialty === "Group"
+                        ? support.name
+                        : support.charID
+                }
             />
         ) : null;
     }

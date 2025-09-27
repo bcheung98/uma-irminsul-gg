@@ -12,7 +12,15 @@ import { trainingEventContents } from "helpers/getEventText";
 // Type imports
 import { TrainingEvent } from "types/event";
 
-function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
+function EventPopup({
+    name,
+    event,
+    charID,
+}: {
+    name: string;
+    event: TrainingEvent;
+    charID: number | string;
+}) {
     const theme = useTheme();
 
     const { options, conditions, props } = event;
@@ -54,7 +62,11 @@ function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
                     )}
                     <Stack spacing={1}>
                         {options.length > 0 ? (
-                            <EventOptions event={event} options={options} />
+                            <EventOptions
+                                event={event}
+                                options={options}
+                                charID={charID}
+                            />
                         ) : (
                             <Stack
                                 sx={{
@@ -76,6 +88,7 @@ function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
                                 <EventOptions
                                     event={event}
                                     options={props.altOutcome}
+                                    charID={charID}
                                 />
                             </>
                         )}

@@ -21,11 +21,13 @@ function EventInfo({
     isChain = false,
     index = 1,
     expand = false,
+    charID,
 }: {
     event: TrainingEvent;
     isChain?: boolean;
     index?: number;
     expand?: boolean;
+    charID: number | string;
 }) {
     const theme = useTheme();
 
@@ -61,7 +63,9 @@ function EventInfo({
     };
     const open = Boolean(anchorEl);
 
-    const renderEventPopup = <EventPopup name={name} event={event} />;
+    const renderEventPopup = (
+        <EventPopup name={name} event={event} charID={charID} />
+    );
 
     return expanded ? (
         <Card>{renderEventPopup}</Card>

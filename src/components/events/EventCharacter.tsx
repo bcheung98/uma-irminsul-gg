@@ -63,7 +63,12 @@ function EventCharacter({
         const e = { ...event };
         e.options = getOptions(event);
         return showEvent(event) ? (
-            <EventInfo key={index} event={e} expand={expand} />
+            <EventInfo
+                key={index}
+                event={e}
+                expand={expand}
+                charID={character.charID}
+            />
         ) : null;
     }
 
