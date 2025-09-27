@@ -1,4 +1,5 @@
 // Component imports
+import EventConditions from "./EventConditions";
 import EventOptions from "./EventOptions";
 import { TextStyled } from "styled/StyledTypography";
 
@@ -10,7 +11,6 @@ import { trainingEventContents } from "helpers/getEventText";
 
 // Type imports
 import { TrainingEvent } from "types/event";
-import EventConditions from "./EventConditions";
 
 function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
     const theme = useTheme();
@@ -31,7 +31,7 @@ function EventPopup({ name, event }: { name: string; event: TrainingEvent }) {
             sx={{
                 p: "8px",
                 minWidth: "150px",
-                maxWidth: "400px",
+                maxWidth: "300px",
                 backgroundColor: theme.background(0, "light"),
             }}
         >
