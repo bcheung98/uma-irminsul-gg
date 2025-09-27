@@ -211,7 +211,7 @@ function EventViewer() {
     return (
         <>
             <MainContentBox
-                title="Training Event Viewer"
+                title="Training Events"
                 actions={<EventSettings />}
                 contentProps={{ padding: settings.showAll ? 2 : 0 }}
             >
@@ -305,8 +305,7 @@ function EventViewer() {
                 ) : (
                     <Box sx={{ p: 2 }}>
                         <TextStyled>
-                            Select a Trainee and complete your Support Card deck
-                            to begin
+                            Select a trainee and six supports to begin
                         </TextStyled>
                     </Box>
                 )}

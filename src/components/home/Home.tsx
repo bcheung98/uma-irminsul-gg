@@ -6,7 +6,7 @@ import { TextStyled } from "styled/StyledTypography";
 import { useTheme, Card, Stack } from "@mui/material";
 
 function Home() {
-    document.title = `Umamusume: Pretty Derby - Irminsul.GG`;
+    document.title = `Umamusume - Irminsul.GG`;
 
     const theme = useTheme();
 
@@ -19,12 +19,8 @@ function Home() {
                 </TextStyled>
                 <br />
                 <TextStyled>
-                    Note that this site will be a WIP for a while, and things
-                    might be broken.
-                </TextStyled>
-                <TextStyled>
-                    If you find a bug or have any feedback, join the Discord to
-                    let me know about it!
+                    NEW: JP server data has been added! You can switch between
+                    the Global and JP server in the settings.
                 </TextStyled>
             </Card>
             <CurrentBanners />
