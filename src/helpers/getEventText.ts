@@ -168,7 +168,7 @@ export function getEventText({
         wins_exact: `※ ${count} wins`,
         mood: `Mood ${value}`,
         mood_good: "※ Mood Good or better",
-        mood_not_good: "※ Mood Normal or worse",
+        mood_bad: "※ Mood Normal or worse",
         mood_min: `※ Mood ${mood} or better`,
         mood_max: `※ Mood ${mood} or worse`,
         mood_exact: `※ Mood ${mood}`,
