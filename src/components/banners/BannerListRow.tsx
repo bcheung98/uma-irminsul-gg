@@ -68,6 +68,7 @@ function BannerListRow({
                         name={item.name}
                         title={item.title}
                         outfit={item.outfit}
+                        rarity={item.rarity}
                         infoSecondary={{ specialty: item.specialty }}
                         disableLink={isTBA(item.name)}
                         disableZoomOnHover={isTBA(item.name)}

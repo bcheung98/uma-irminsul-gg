@@ -93,6 +93,7 @@ function CurrentBanners() {
                             name={item.name}
                             title={item.title}
                             outfit={item.outfit}
+                            rarity={item.rarity}
                             infoSecondary={{
                                 specialty: item.specialty,
                             }}

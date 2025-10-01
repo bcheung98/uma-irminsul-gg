@@ -196,9 +196,7 @@ function InfoCard({
     const tooltip =
         type === "character"
             ? `${name} (${outfit})`
-            : `${name} (${ranks[(info?.rank || 3) - 3]} ${
-                  infoSecondary?.specialty
-              })`;
+            : `${name} (${ranks[rarity - 3]} ${infoSecondary?.specialty})`;
 
     const cardImage = (
         <Image
