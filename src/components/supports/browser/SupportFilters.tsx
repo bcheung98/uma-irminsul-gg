@@ -46,7 +46,7 @@ function SupportFilters({ handleClose }: { handleClose: (arg0: any) => void }) {
             value: filters.rarity,
             onChange: (_: BaseSyntheticEvent, newValues: Rarity[]) =>
                 dispatch(setRarity(newValues)),
-            buttons: rarities.slice(1, -2).map((rarity) => ({
+            buttons: rarities.slice(0, -2).map((rarity) => ({
                 value: rarity,
                 icon: (
                     <Image
