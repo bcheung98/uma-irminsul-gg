@@ -272,7 +272,7 @@ function InfoCard({
                                 <CardText subtitle>
                                     {showName && type === "character"
                                         ? `(${outfit})`
-                                        : `[${title}]`}
+                                        : title && `[${title}]`}
                                 </CardText>
                                 <CardText>{showName && name}</CardText>
                             </Box>
