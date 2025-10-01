@@ -158,7 +158,7 @@ function EventText({
                 return RaceSeries({ tag });
             case "race_change":
                 return Race({
-                    race: value?.toString(),
+                    race: value?.toString() || data?.toString(),
                     text: `Objective race changed to`,
                 });
             case "race_cancelled":

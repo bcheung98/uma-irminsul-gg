@@ -256,7 +256,7 @@ export function getEventText({
             month
         )}`,
         date_before_finals: "Triggers before the Finals start",
-        fans_before_finals: `Have at least ${value} fans before the finals`,
+        fans_before_finals: `Have at least ${value?.toLocaleString()} fans before the finals`,
         dist_wins_branch: `The rewards will depend on the amount of ${getDistance(
             distance
         )} wins`,
