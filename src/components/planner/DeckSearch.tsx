@@ -133,6 +133,15 @@ function DeckSearch({
         return { message, invalid, color };
     };
 
+    const itemName = (item: Character | Support | Scenario) => {
+        if ("skills" in item || "specialty" in item) {
+            return item.name;
+        }
+        if ("global" in item) {
+            return showUnreleased ? item.nameJP : item.name;
+        }
+    };
+
     const itemTag = (item: Character | Support | Scenario) => {
         let res = "";
         if ("skills" in item) {
@@ -289,7 +298,9 @@ function DeckSearch({
                                         }}
                                     />
                                     <Box>
-                                        <TextStyled>{item.name}</TextStyled>
+                                        <TextStyled>
+                                            {itemName(item)}
+                                        </TextStyled>
                                         <TextStyled variant="body2-styled">
                                             {itemTag(item)}
                                         </TextStyled>

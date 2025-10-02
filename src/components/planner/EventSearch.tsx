@@ -20,9 +20,12 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 // Helper imports
 import { sortBy } from "helpers/utils";
-import { useAppDispatch, useAppSelector } from "helpers/hooks";
+import {
+    selectAppSupports,
+    useAppDispatch,
+    useAppSelector,
+} from "helpers/hooks";
 import { addSupport } from "reducers/planner";
-import { selectSupports } from "reducers/support";
 
 // Type imports
 import { Deck } from "types/planner";
@@ -40,7 +43,7 @@ function EventSearch({
 
     const dispatch = useAppDispatch();
 
-    const supports = [...useAppSelector(selectSupports)];
+    const supports = [...useAppSelector(selectAppSupports)];
 
     const [searchValue, setSearchValue] = useState("");
     const handleInputChange = (event: BaseSyntheticEvent) => {

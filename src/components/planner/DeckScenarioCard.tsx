@@ -8,6 +8,8 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 // Helper imports
 import { scenarios } from "data/scenarios";
+import { useAppSelector } from "helpers/hooks";
+import { selectUnreleasedContent } from "reducers/settings";
 
 // Type imports
 import { DeckData } from "types/planner";
@@ -15,7 +17,14 @@ import { DeckData } from "types/planner";
 function DeckScenarioCard({ data }: { data: DeckData }) {
     const theme = useTheme();
 
+    const showUnreleased = useAppSelector(selectUnreleasedContent);
+
     const scenario = scenarios.find((s) => s.id === data);
+
+    let scenarioName = "Scenario";
+    if (scenario) {
+        scenarioName = showUnreleased ? scenario.nameJP : scenario.name;
+    }
 
     const cardStyles: SxProps = {
         width: "96px",
@@ -65,7 +74,7 @@ function DeckScenarioCard({ data }: { data: DeckData }) {
                     },
                 }}
             >
-                {scenario ? scenario.name : "Scenario"}
+                {scenarioName}
             </TextStyled>
         </Stack>
     );
