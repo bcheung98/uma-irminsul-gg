@@ -106,7 +106,7 @@ export function SkillText({ event }: { event: EventOutcome }) {
     if (skill) {
         res = (
             <>
-                {`Obtain the `}
+                {`Obtain `}
                 <span
                     onClick={handleClickOpen}
                     style={{
@@ -117,7 +117,6 @@ export function SkillText({ event }: { event: EventOutcome }) {
                 >
                     {skill.name.global || skill.name.jp}
                 </span>
-                {` skill`}
                 <Dialog
                     open={open}
                     onClose={handleClose}
