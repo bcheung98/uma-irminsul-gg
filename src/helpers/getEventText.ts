@@ -109,7 +109,7 @@ export function getEventText({
         fans: `Fans ${value}`,
         success: "※ Success",
         fail: "※ Fail",
-        heal_status: "Heal a negative status effect",
+        heal_status_one: "Heal a negative status effect",
         heal_status_all: "Heal all negative status effects",
         motivation: `Mood ${value}`,
         last_trained_stat: `Last trained stat ${value}`,

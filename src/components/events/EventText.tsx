@@ -59,7 +59,12 @@ function EventText({
             case "obtain_status":
                 return StatusEffect({
                     effectID: data,
-                    text: "Obtain <> status",
+                    text: "Obtain",
+                });
+            case "heal_status":
+                return StatusEffect({
+                    effectID: data,
+                    text: "Heal",
                 });
             case "cond":
                 return StatusEffect({ effectID: data, text: "Get the" });

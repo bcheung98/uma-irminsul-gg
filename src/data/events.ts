@@ -7,116 +7,6 @@ export const eventsCommon = ({
 }): TrainingEvent[] => {
     return [
         {
-            name: "Get Well Soon!",
-            nameJP: "お大事に！",
-            options: [
-                [
-                    [
-                        {
-                            tag: "mood",
-                            value: "-1",
-                        },
-                        {
-                            tag: "last_trained_stat",
-                            value: "-5",
-                        },
-                        {
-                            tag: "obtain_status",
-                            data: 6,
-                            random: true,
-                        },
-                    ],
-                ],
-                [
-                    [
-                        {
-                            tag: "mood",
-                            value: "-1",
-                        },
-                        {
-                            tag: "last_trained_stat",
-                            value: "-10",
-                        },
-                        {
-                            tag: "obtain_status",
-                            data: 6,
-                            random: true,
-                        },
-                    ],
-                    [
-                        {
-                            tag: "obtain_status",
-                            data: 10,
-                        },
-                    ],
-                ],
-            ],
-        },
-        {
-            name: "Don't Overdo It!",
-            nameJP: "無茶は厳禁！",
-            options: [
-                [
-                    [
-                        {
-                            tag: "energy",
-                            value: "+10",
-                        },
-                        {
-                            tag: "mood",
-                            value: "-2",
-                        },
-                        {
-                            tag: "last_trained_stat",
-                            value: "-10",
-                        },
-                        {
-                            tag: "random_stats",
-                            value: "-10",
-                            count: 2,
-                        },
-                        {
-                            tag: "obtain_status",
-                            data: 6,
-                            random: true,
-                        },
-                    ],
-                ],
-                [
-                    [
-                        {
-                            tag: "mood",
-                            value: "-3",
-                        },
-                        {
-                            tag: "last_trained_stat",
-                            value: "-10",
-                        },
-                        {
-                            tag: "random_stats",
-                            value: "-10",
-                            count: 2,
-                        },
-                        {
-                            tag: "obtain_status",
-                            data: 6,
-                            random: true,
-                        },
-                    ],
-                    [
-                        {
-                            tag: "energy",
-                            value: "+10",
-                        },
-                        {
-                            tag: "obtain_status",
-                            data: 10,
-                        },
-                    ],
-                ],
-            ],
-        },
-        {
             name: "Dance Lesson",
             nameJP: "ダンスレッスン",
             options: [
@@ -250,6 +140,116 @@ export const eventsCommon = ({
                         {
                             tag: "guts",
                             value: "+10",
+                        },
+                    ],
+                ],
+            ],
+        },
+        {
+            name: "Get Well Soon!",
+            nameJP: "お大事に！",
+            options: [
+                [
+                    [
+                        {
+                            tag: "mood",
+                            value: "-1",
+                        },
+                        {
+                            tag: "last_trained_stat",
+                            value: "-5",
+                        },
+                        {
+                            tag: "obtain_status",
+                            data: 6,
+                            random: true,
+                        },
+                    ],
+                ],
+                [
+                    [
+                        {
+                            tag: "mood",
+                            value: "-1",
+                        },
+                        {
+                            tag: "last_trained_stat",
+                            value: "-10",
+                        },
+                        {
+                            tag: "obtain_status",
+                            data: 6,
+                            random: true,
+                        },
+                    ],
+                    [
+                        {
+                            tag: "obtain_status",
+                            data: 10,
+                        },
+                    ],
+                ],
+            ],
+        },
+        {
+            name: "Don't Overdo It!",
+            nameJP: "無茶は厳禁！",
+            options: [
+                [
+                    [
+                        {
+                            tag: "energy",
+                            value: "+10",
+                        },
+                        {
+                            tag: "mood",
+                            value: "-2",
+                        },
+                        {
+                            tag: "last_trained_stat",
+                            value: "-10",
+                        },
+                        {
+                            tag: "random_stats",
+                            value: "-10",
+                            count: 2,
+                        },
+                        {
+                            tag: "obtain_status",
+                            data: 6,
+                            random: true,
+                        },
+                    ],
+                ],
+                [
+                    [
+                        {
+                            tag: "mood",
+                            value: "-3",
+                        },
+                        {
+                            tag: "last_trained_stat",
+                            value: "-10",
+                        },
+                        {
+                            tag: "random_stats",
+                            value: "-10",
+                            count: 2,
+                        },
+                        {
+                            tag: "obtain_status",
+                            data: 6,
+                            random: true,
+                        },
+                    ],
+                    [
+                        {
+                            tag: "energy",
+                            value: "+10",
+                        },
+                        {
+                            tag: "obtain_status",
+                            data: 10,
                         },
                     ],
                 ],
