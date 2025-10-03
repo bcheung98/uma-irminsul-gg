@@ -67,7 +67,7 @@ export function SkillHint({
                 >
                     {skill.name.global || skill.name.jp}
                 </span>
-                {isHint ? ` hint ${value}` : ` skill`}
+                {isHint && ` hint ${value}`}
                 <Dialog
                     open={open}
                     onClose={handleClose}
