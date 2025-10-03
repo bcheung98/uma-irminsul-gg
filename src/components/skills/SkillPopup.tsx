@@ -28,10 +28,12 @@ import {
 } from "helpers/hooks";
 import { selectUnreleasedContent } from "reducers/settings";
 import { getSkillRarityColor } from "helpers/skillRarity";
+import { scenarios } from "data/scenarios";
 
 // Type imports
 import { Skill } from "types/skill";
 import { Rarity, Specialty } from "types/_common";
+import { Scenario } from "types/scenario";
 
 function SkillPopup({
     skill,
@@ -72,7 +74,7 @@ function SkillPopup({
 
     const ranks = ["R", "SR", "SSR"];
 
-    const renderImage = ({
+    function renderImage({
         type,
         id,
         name,
@@ -80,7 +82,7 @@ function SkillPopup({
         rank,
         specialty,
         outfit = "Original",
-    }: RenderImageProps) => {
+    }: RenderImageProps) {
         const tooltip =
             type === "character"
                 ? `${name} (${outfit || "Original"})`
@@ -103,7 +105,20 @@ function SkillPopup({
                 />
             </RouterLink>
         );
-    };
+    }
+
+    function renderImageScenario(scenario: Scenario) {
+        return (
+            <Image
+                src={`scenarios/${scenario.id}`}
+                alt={`${scenario.name}`}
+                style={{
+                    width: matches_md_up ? "48px" : "40px",
+                }}
+                tooltip={showUnreleased ? scenario.nameJP : scenario.name}
+            />
+        );
+    }
 
     const characterSources = characters.filter((char) =>
         [
@@ -128,11 +143,24 @@ function SkillPopup({
         .filter((supp) => supp.skillEvents.includes(id))
         .sort((a, b) => sortBy(a.rarity, b.rarity) || sortBy(b.id, a.id));
 
+    let scenarioSources: Scenario[] = [];
+
+    scenarioSources = scenarios.filter((s) => {
+        if (skill.scenarioEvents) {
+            if (showUnreleased) {
+                return skill.scenarioEvents.includes(s.id);
+            } else {
+                return skill.scenarioEvents.includes(s.id) && s.global;
+            }
+        }
+    });
+
     const sources = [
         characterSources,
         characterEventSources,
         supportSources,
         supportEventSources,
+        scenarioSources,
     ].flat();
 
     return (
@@ -302,6 +330,23 @@ function SkillPopup({
                                                 rank: supp.rarity,
                                                 specialty: supp.specialty,
                                             })}
+                                        </Box>
+                                    ))}
+                                </Grid>
+                            </Box>
+                        )}
+                        {scenarioSources.length > 0 && (
+                            <Box>
+                                <TextStyled
+                                    variant="body2-styled"
+                                    sx={{ mb: "4px" }}
+                                >
+                                    Scenario Events:
+                                </TextStyled>
+                                <Grid container spacing={1}>
+                                    {scenarioSources.map((scenario, index) => (
+                                        <Box key={index}>
+                                            {renderImageScenario(scenario)}
                                         </Box>
                                     ))}
                                 </Grid>

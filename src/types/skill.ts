@@ -19,6 +19,7 @@ export interface Skill {
     conditions: SkillCondition[];
     evo?: SkillEvo;
     tags: string[];
+    scenarioEvents?: number[];
     versions?: (number | string)[];
     geneVersion: SkillInherited;
 }
