@@ -62,10 +62,14 @@ function EventText({
                     text: "Obtain",
                 });
             case "heal_status":
-                return StatusEffect({
-                    effectID: data,
-                    text: "Heal",
-                });
+                if (data) {
+                    return StatusEffect({
+                        effectID: data,
+                        text: "Heal",
+                    });
+                } else {
+                    return "Heal a negative status effect";
+                }
             case "cond":
                 return StatusEffect({ effectID: data, text: "Get the" });
             case "cond_e":

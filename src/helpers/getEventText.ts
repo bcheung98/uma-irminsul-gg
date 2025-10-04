@@ -169,9 +169,9 @@ export function getEventText({
         mood: `Mood ${value}`,
         mood_good: "※ Mood Good or better",
         mood_bad: "※ Mood Normal or worse",
-        mood_min: `※ Mood ${mood} or better`,
-        mood_max: `※ Mood ${mood} or worse`,
-        mood_exact: `※ Mood ${mood}`,
+        mood_min: `※ Mood ${getMood(mood)} or better`,
+        mood_max: `※ Mood ${getMood(mood)} or worse`,
+        mood_exact: `※ Mood ${getMood(mood)}`,
         mood_or: `※ Mood ${mood1} or ${mood2}`,
         scenario_link: `※ Scenario link: This event will grant higher rewards in the ${getScenario(
             Number(data)
@@ -219,7 +219,9 @@ export function getEventText({
             single: "any G1 race",
             multi: `$X G1 races`,
         })}`,
-        win_g1_track: `Win a G1 race on the ${trackName} racetrack ${countText({
+        win_g1_track: `Win a G1 race on the ${
+            racetracks[Number(trackName)]
+        } racetrack ${countText({
             count,
             single: "",
             multi: `$X times`,
@@ -260,7 +262,9 @@ export function getEventText({
         dist_wins_branch: `The rewards will depend on the amount of ${getDistance(
             distance
         )} wins`,
-        racetrack_wins_branch: `The rewards will depend on the amount of ${trackName} racetrack wins`,
+        racetrack_wins_branch: `The rewards will depend on the amount of ${
+            racetracks[Number(value)]
+        } racetrack wins`,
         "3_crown_route": "Select the Triple Crown route",
         mile_route: "Select the Mile route",
         win_connect_live: "Finish your Fan Promise from the previous event",
@@ -408,7 +412,9 @@ export function getEventText({
         })} in one of these track conditions: ${getTrackConditions(
             trackConds
         )}`,
-        rt_race_w: `Win any race on the ${trackName} racetrack ${countText({
+        rt_race_w: `Win any race on the ${
+            racetracks[Number(trackName)]
+        } racetrack ${countText({
             count,
             single: "",
             multi: `$X times`,
