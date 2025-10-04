@@ -123,8 +123,7 @@ function EventSupport({
                     });
                     randomEvents = randomEvents.reverse();
                 }
-            }
-            if (loadedEvents.includes("support-group")) {
+            } else if (loadedEvents.includes("support-group")) {
                 supportEvents = events["support-group"].find(
                     (e) => e.id === support.id
                 );
