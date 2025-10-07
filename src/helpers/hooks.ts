@@ -2,6 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { listenerMiddleware } from "rtk/middleware";
 import type { RootState, AppDispatch } from "rtk/store";
+import { isUnreleasedContent } from "./utils";
 
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
@@ -19,8 +20,8 @@ export const selectAppCharacters = createSelector(
     (state) => {
         let characters = [...state.characters.characters];
         if (!state.settings.unreleasedContent) {
-            characters = characters.filter(
-                (char) => char.release.global !== ""
+            characters = characters.filter((char) =>
+                isUnreleasedContent(char.release)
             );
         }
         return characters;
@@ -32,7 +33,9 @@ export const selectAppSupports = createSelector(
     (state) => {
         let supports = state.support.support;
         if (!state.settings.unreleasedContent) {
-            supports = supports.filter((supp) => supp.release.global !== "");
+            supports = supports.filter((supp) =>
+                isUnreleasedContent(supp.release)
+            );
         }
         return supports;
     }

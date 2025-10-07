@@ -1,5 +1,6 @@
 import { Shade } from "types/theme";
 import { Version } from "types/version";
+import { createDateObject } from "./dates";
 
 export function range(len: number): number[];
 export function range(start: number, stop: number, step?: number): number[];
@@ -56,8 +57,13 @@ export function isTBA(str: string) {
     return str === "TBA" || str === "To be announced";
 }
 
-export function isUnreleasedContent(version: Version) {
-    return version.global !== "";
+export function isUnreleasedContent(release: Version) {
+    if (release.global === "") {
+        return false;
+    }
+    const today = new Date();
+    const releaseDate = createDateObject({ date: release.global }).obj;
+    return releaseDate < today;
 }
 
 interface GetThemeBackgroundColorsProps {
