@@ -72,6 +72,7 @@ export interface CharacterProfile {
     birthday: string;
     height: number;
     sizes: [number, number, number];
+    colors: [string, string];
     voiceActors: {
         jp: string;
     };
