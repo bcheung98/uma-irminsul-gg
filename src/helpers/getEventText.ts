@@ -66,7 +66,6 @@ export function getEventText({
 
     charName = getCharacter(event.props?.charName);
     gradeList = event.props?.gradeList || [1, 2];
-    trackName = racetracks[Number(trackName)] || "";
     let mood1 = 3;
     let mood2 = 3;
     if (mood && mood > 10) {
@@ -75,6 +74,8 @@ export function getEventText({
             .split("")
             .map((i) => Number(i));
     }
+
+    console.log(trackName)
 
     const textMap: { [key: string]: string } = {
         // Event Rewards
