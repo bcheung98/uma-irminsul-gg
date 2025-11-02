@@ -75,8 +75,6 @@ export function getEventText({
             .map((i) => Number(i));
     }
 
-    console.log(trackName)
-
     const textMap: { [key: string]: string } = {
         // Event Rewards
         speed: `Speed ${value}`,
