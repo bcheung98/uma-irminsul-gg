@@ -11,7 +11,7 @@ export const scenarios: Scenario[] = [
         id: 2,
         name: "Unity Cup",
         nameJP: "Aoharu Hai",
-        global: false,
+        global: true,
     },
     {
         id: 4,
