@@ -7,7 +7,7 @@ import { FlexBox } from "styled/StyledBox";
 import { Stack, LinearProgress } from "@mui/material";
 
 // Helper imports
-import { objectKeys } from "helpers/utils";
+import { isUnreleasedContent, objectKeys } from "helpers/utils";
 import { useAppSelector } from "helpers/hooks";
 import { selectEvents } from "reducers/event";
 import { selectUnreleasedContent } from "reducers/settings";
@@ -40,6 +40,12 @@ function EventSupport({
     const getOptions = (event: TrainingEvent) => {
         if (support.release.global === "" || showUnreleased) {
             return event.optionsJP || event.options;
+        } else if (
+            !isUnreleasedContent(support.release) &&
+            event.name === "" &&
+            event.optionsJP
+        ) {
+            return event.optionsJP;
         } else {
             return event.options;
         }
@@ -47,6 +53,8 @@ function EventSupport({
 
     const showEvent = (event: TrainingEvent) => {
         if (support.release.global === "" || showUnreleased) {
+            return true;
+        } else if (!isUnreleasedContent(support.release)) {
             return true;
         } else {
             return event.name !== "";
