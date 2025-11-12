@@ -115,7 +115,10 @@ function EventSupport({
 
     if (loadedEvents.includes("support-common")) {
         if (isPalorGroup) {
-            if (loadedEvents.includes("support-pal")) {
+            if (
+                support.specialty === "Pal" &&
+                loadedEvents.includes("support-pal")
+            ) {
                 supportEvents = events["support-pal"].find(
                     (e) => e.id === support.charID
                 );
@@ -131,7 +134,10 @@ function EventSupport({
                     });
                     randomEvents = randomEvents.reverse();
                 }
-            } else if (loadedEvents.includes("support-group")) {
+            } else if (
+                support.specialty === "Group" &&
+                loadedEvents.includes("support-group")
+            ) {
                 supportEvents = events["support-group"].find(
                     (e) => e.id === support.id
                 );
