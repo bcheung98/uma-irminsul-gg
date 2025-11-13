@@ -18,7 +18,7 @@ function EventConditions({ conditions }: { conditions: EventRewards[] }) {
                 <ul>
                     {conditions.map((con, index) => (
                         <li key={index}>
-                            <EventText outcome={con} />
+                            <EventText outcome={con} charID={0} />
                         </li>
                     ))}
                 </ul>

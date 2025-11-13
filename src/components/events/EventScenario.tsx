@@ -36,7 +36,9 @@ function EventScenario({
         event: Event;
         expand: boolean;
     }) {
-        return <EventInfo key={index} event={event} expand={expand} />;
+        return (
+            <EventInfo key={index} event={event} expand={expand} charID={0} />
+        );
     }
 
     scenarioEvents = events["scenario"].find((s) => s.id === scenario.id);

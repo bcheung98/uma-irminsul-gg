@@ -38,7 +38,7 @@ function SkillEvoConditions({ tag }: { tag: number }) {
                         <Box key={index} sx={{ p: 1 }}>
                             {condition.map((con, i) => (
                                 <Box key={i}>
-                                    <EventText outcome={con} />
+                                    <EventText outcome={con} charID={0} />
                                     {i < condition.length - 1 && (
                                         <TextStyled
                                             variant="body2-styled"
