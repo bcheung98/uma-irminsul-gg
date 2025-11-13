@@ -46,6 +46,10 @@ function Image({
             .join("_")}${ext}`;
     }
 
+    if (!fallbackSrc.startsWith("https")) {
+        fallbackSrc = `https://assets.irminsul.gg/uma/${fallbackSrc}.png`;
+    }
+
     const imgStyle = combineStyles(defaultImageStyle, style as CSSProperties);
 
     const handleHover = (direction: "enter" | "leave") => {
@@ -61,7 +65,7 @@ function Image({
                 loading={loading}
                 style={imgStyle}
                 onError={(event: SyntheticEvent<HTMLImageElement, Event>) => {
-                    event.currentTarget.src = `https://assets.irminsul.gg/uma/${fallbackSrc}.png`;
+                    event.currentTarget.src = fallbackSrc;
                     onerror = null;
                 }}
                 onClick={onClick}

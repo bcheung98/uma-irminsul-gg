@@ -18,7 +18,7 @@ import { selectCharacters } from "reducers/character";
 import { selectSupports } from "reducers/support";
 import { selectCharacterBanners, selectSupportBanners } from "reducers/banner";
 import { selectServer } from "reducers/settings";
-import { createDateObject, isCurrentBanner } from "helpers/dates";
+import { createDateObject, isCurrentBanner, Region } from "helpers/dates";
 import { createBannerData } from "helpers/createBannerData";
 import { isTBA } from "helpers/utils";
 
@@ -113,14 +113,6 @@ function CurrentBanners() {
         );
     };
 
-    const bannerImage = (id: number) => (
-        <Image
-            src={`banners/${region === "NA" ? "global" : "jp"}/${id}`}
-            alt={`${id}`}
-            style={{ width: "100%", height: "auto", maxWidth: "480px" }}
-        />
-    );
-
     return (
         <MainContentBox
             title="Current Banners"
@@ -142,10 +134,10 @@ function CurrentBanners() {
                             <TextStyled variant="h6-styled">
                                 Character Banner
                             </TextStyled>
-                            <Stack spacing={1}>
+                            <Stack spacing={2}>
                                 {characterBannerData.map((banner, index) => (
                                     <Box key={index}>
-                                        {bannerImage(banner.id)}
+                                        {bannerImage(banner.id, region)}
                                         {renderBanner(banner, "character")}
                                     </Box>
                                 ))}
@@ -160,10 +152,10 @@ function CurrentBanners() {
                             <TextStyled variant="h6-styled">
                                 Support Card Banner
                             </TextStyled>
-                            <Stack spacing={1}>
+                            <Stack spacing={2}>
                                 {supportBannerData.map((banner, index) => (
                                     <Box key={index}>
-                                        {bannerImage(banner.id)}
+                                        {bannerImage(banner.id, region)}
                                         {renderBanner(banner, "support")}
                                     </Box>
                                 ))}
@@ -197,3 +189,18 @@ function CurrentBanners() {
 }
 
 export default CurrentBanners;
+
+export function bannerImage(id: number, region: Region) {
+    const fallbackSrc =
+        region === "NA"
+            ? `https://gametora.com/images/umamusume/en/gacha/img_bnr_gacha_${id}.png`
+            : `https://gametora.com/images/umamusume/gacha/img_bnr_gacha_${id}.png`;
+    return (
+        <Image
+            src={`banne/${region === "NA" ? "global" : "jp"}/${id}`}
+            alt={`${id}`}
+            style={{ width: "auto", height: "100%", maxHeight: "160px" }}
+            fallbackSrc={fallbackSrc}
+        />
+    );
+}
