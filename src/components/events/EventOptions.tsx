@@ -1,38 +1,24 @@
 // Component imports
-import EventText from "./EventText";
 import { TextStyled } from "styled/StyledTypography";
 
 // MUI imports
-import { useTheme, Box, Stack } from "@mui/material";
+import { useTheme, Stack } from "@mui/material";
 
 // Helper imports
 import { getOptionTag } from "helpers/getEventOptionTag";
 
 // Type imports
-import { TrainingEvent, EventOutcome } from "types/event";
+import type { EventOptions } from "types/event";
+import EventRewards from "./EventRewards";
 
 function EventOptions({
-    event,
     options,
     charID,
 }: {
-    event: TrainingEvent;
-    options: EventOutcome[][][];
+    options: EventOptions[];
     charID: number | string;
 }) {
     const theme = useTheme();
-
-    const { chances } = event;
-
-    const getRandomText = (index: number, idx: number) => {
-        if (chances) {
-            return idx === 0
-                ? `Randomly either (~${chances[index][idx]}%)`
-                : `or (~${chances[index][idx]}%)`;
-        } else {
-            return idx === 0 ? "Randomly either" : "or";
-        }
-    };
 
     return options.map((option, index) => (
         <Stack
@@ -50,31 +36,11 @@ function EventOptions({
                 </TextStyled>
             )}
             <Stack spacing={1}>
-                {option.map((opt, idx) => (
-                    <Box key={idx}>
-                        {option.length > 1 && (
-                            <TextStyled
-                                variant="body2-styled"
-                                sx={{
-                                    mb: "8px",
-                                    color: theme.text.highlight,
-                                }}
-                            >
-                                {getRandomText(index, idx)}
-                            </TextStyled>
-                        )}
-                        <Stack>
-                            {opt.map((outcome, i) => (
-                                <Box key={i}>
-                                    <EventText
-                                        outcome={outcome}
-                                        charID={charID}
-                                    />
-                                </Box>
-                            ))}
-                        </Stack>
-                    </Box>
-                ))}
+                <EventRewards
+                    charID={charID}
+                    rewards={option.rewards}
+                    chances={option.chances}
+                />
             </Stack>
         </Stack>
     ));

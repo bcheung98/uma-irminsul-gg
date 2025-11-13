@@ -7,13 +7,11 @@ import { FlexBox } from "styled/StyledBox";
 import { Stack } from "@mui/material";
 
 // Helper imports
-import { objectKeys } from "helpers/utils";
 import { useAppSelector } from "helpers/hooks";
 import { selectEvents } from "reducers/event";
-import { selectUnreleasedContent } from "reducers/settings";
 
 // Type imports
-import { EventData, TrainingEvent } from "types/event";
+import { Event, ScenarioEvents } from "types/event";
 import { Scenario } from "types/scenario";
 
 function EventScenario({
@@ -24,28 +22,10 @@ function EventScenario({
     expand?: boolean;
 }) {
     const events = useAppSelector(selectEvents);
-    const showUnreleased = useAppSelector(selectUnreleasedContent);
-    const loadedEvents = objectKeys(events);
 
-    let scenarioEvents: EventData | undefined;
-    let eventsWithChoices: TrainingEvent[] = [];
-    let otherEvents: TrainingEvent[] = [];
-
-    const getOptions = (event: TrainingEvent) => {
-        if (showUnreleased || !scenario.global) {
-            return event.optionsJP || event.options;
-        } else {
-            return event.options;
-        }
-    };
-
-    const showEvent = (event: TrainingEvent) => {
-        if (showUnreleased || !scenario.global) {
-            return true;
-        } else {
-            return event.name !== "";
-        }
-    };
+    let scenarioEvents: ScenarioEvents | undefined;
+    let eventsWithChoices: Event[] | undefined = [];
+    let otherEvents: Event[] | undefined = [];
 
     function renderEventInfo({
         index,
@@ -53,28 +33,16 @@ function EventScenario({
         expand,
     }: {
         index: number;
-        event: TrainingEvent;
+        event: Event;
         expand: boolean;
     }) {
-        const e = { ...event };
-        e.options = getOptions(event);
-        return showEvent(event) ? (
-            <EventInfo key={index} event={e} expand={expand} />
-        ) : null;
+        return <EventInfo key={index} event={event} expand={expand} />;
     }
 
-    if (loadedEvents.includes("scenario")) {
-        scenarioEvents = events["scenario"].find((s) => s.id === scenario.id);
-        if (scenarioEvents) {
-            eventsWithChoices = scenarioEvents.events.filter(
-                (event) =>
-                    getOptions(event).length > 1 || event.props?.hasChoices
-            );
-            otherEvents = scenarioEvents.events.filter(
-                (event) =>
-                    getOptions(event).length === 1 && !event.props?.hasChoices
-            );
-        }
+    scenarioEvents = events["scenario"].find((s) => s.id === scenario.id);
+    if (scenarioEvents) {
+        eventsWithChoices = scenarioEvents.events.scenario;
+        otherEvents = scenarioEvents.events.random;
     }
 
     const flexBoxStyle = {

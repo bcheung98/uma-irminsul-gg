@@ -7,15 +7,13 @@ import { FlexBox } from "styled/StyledBox";
 import { Stack, LinearProgress } from "@mui/material";
 
 // Helper imports
-import { isUnreleasedContent, objectKeys } from "helpers/utils";
 import { useAppSelector } from "helpers/hooks";
 import { selectEvents } from "reducers/event";
-import { selectUnreleasedContent } from "reducers/settings";
 import { eventMisc, eventsCommon, eventSlowMetabolism } from "data/events";
 
 // Type imports
 import { Character } from "types/character";
-import { EventData, TrainingEvent } from "types/event";
+import { CharacterEvents, Event } from "types/event";
 
 function EventCharacter({
     character,
@@ -24,43 +22,14 @@ function EventCharacter({
     character: Character;
     expand?: boolean;
 }) {
-    const events = useAppSelector(selectEvents);
-    const showUnreleased = useAppSelector(selectUnreleasedContent);
-    const loadedEvents = objectKeys(events);
+    const eventData = useAppSelector(selectEvents);
 
-    let characterEvents: EventData | undefined;
-    let outfitEvents: TrainingEvent[] | undefined = [];
-    let eventsWithChoices: TrainingEvent[] = [];
-    let recEvents: TrainingEvent[] | undefined = [];
-    let secretEvents: TrainingEvent[] | undefined = [];
-    let otherEvents: TrainingEvent[] = [];
-
-    const getOptions = (event: TrainingEvent) => {
-        if (character.release.global === "" || showUnreleased) {
-            return event.optionsJP || event.options;
-        } else if (
-            !isUnreleasedContent(character.release) &&
-            event.name === "" &&
-            event.optionsJP
-        ) {
-            return event.optionsJP;
-        } else {
-            return event.options;
-        }
-    };
-
-    const showEvent = (event: TrainingEvent) => {
-        if (character.release.global === "" || showUnreleased) {
-            return true;
-        } else if (
-            !isUnreleasedContent(character.release) &&
-            event.name === ""
-        ) {
-            return true;
-        } else {
-            return event.name !== "";
-        }
-    };
+    let characterEvents: CharacterEvents | undefined;
+    let outfitEvents: Event[] | undefined = [];
+    let eventsWithChoices: Event[] | undefined = [];
+    let recEvents: Event[] | undefined = [];
+    let secretEvents: Event[] | undefined = [];
+    let otherEvents: Event[] = [];
 
     function renderEventInfo({
         index,
@@ -68,50 +37,50 @@ function EventCharacter({
         expand,
     }: {
         index: number;
-        event: TrainingEvent;
+        event: Event;
         expand: boolean;
     }) {
-        const e = { ...event };
-        e.options = getOptions(event);
-        return showEvent(event) ? (
+        return (
             <EventInfo
                 key={index}
-                event={e}
+                event={event}
                 expand={expand}
                 charID={character.charID}
             />
-        ) : null;
-    }
-
-    if (loadedEvents.includes("character")) {
-        characterEvents = events["character"].find(
-            (char) => char.id === character.charID
         );
-        if (characterEvents) {
-            eventsWithChoices = characterEvents.events.filter(
-                (event) => getOptions(event).length > 1
-            );
-            eventsWithChoices.push(
-                eventSlowMetabolism({ props: characterEvents.props })
-            );
-            recEvents = characterEvents.props?.recEvents;
-            secretEvents = characterEvents.props?.secretEvents.filter(
-                (event) => getOptions(event).length > 0
-            );
-            eventMisc({ props: characterEvents.props }).map((event) =>
-                otherEvents.push(event)
-            );
-            characterEvents.events
-                .filter((event) => getOptions(event).length == 1)
-                .map((event) => otherEvents.push(event));
-        }
     }
 
-    if (loadedEvents.includes("character-outfit")) {
-        outfitEvents = events["character-outfit"].find(
-            (char) => char.id === character.id
-        )?.events;
+    characterEvents = eventData["character"].find(
+        (event) => event.id === character.charID
+    );
+    if (characterEvents) {
+        eventsWithChoices = characterEvents.events.character?.filter(
+            (event) => event.options.length > 1 || event.forceHasChoices
+        );
+        eventsWithChoices?.push(
+            eventSlowMetabolism({ props: characterEvents.props })
+        );
+        recEvents = characterEvents.events.recreation;
+        secretEvents = characterEvents.events.secret;
+        eventMisc({ props: characterEvents.props }).forEach((event) =>
+            otherEvents.push(event)
+        );
+        characterEvents.events.character
+            ?.filter((event) => {
+                if (
+                    event.forceHasChoices !== undefined &&
+                    !event.forceHasChoices
+                ) {
+                    return true;
+                }
+                return event.options.length == 1;
+            })
+            .forEach((event) => otherEvents.push(event));
     }
+
+    outfitEvents = eventData["character-outfit"].find(
+        (char) => char.id === character.id
+    )?.events.outfit;
 
     const flexBoxStyle = {
         flexWrap: "wrap",

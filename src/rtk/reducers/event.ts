@@ -9,7 +9,16 @@ export interface EventState {
 
 const initialState: EventState = {
     status: "idle",
-    events: {},
+    events: {
+        scenario: [],
+        "support-common": [],
+        "support-ssr": [],
+        "support-sr": [],
+        "support-pal": [],
+        "support-group": [],
+        character: [],
+        "character-outfit": [],
+    },
 };
 
 export const eventSlice = createSlice({

@@ -7,14 +7,12 @@ import { FlexBox } from "styled/StyledBox";
 import { Stack, LinearProgress } from "@mui/material";
 
 // Helper imports
-import { isUnreleasedContent, objectKeys } from "helpers/utils";
 import { useAppSelector } from "helpers/hooks";
 import { selectEvents } from "reducers/event";
-import { selectUnreleasedContent } from "reducers/settings";
 
 // Type imports
 import { Support } from "types/support";
-import { EventData, TrainingEvent } from "types/event";
+import { SupportEvents, Event, PalGroupEvents } from "types/event";
 
 function EventSupport({
     support,
@@ -27,39 +25,13 @@ function EventSupport({
     const rarity = ranks[support.rarity - 3];
 
     const events = useAppSelector(selectEvents);
-    const showUnreleased = useAppSelector(selectUnreleasedContent);
-    const loadedEvents = objectKeys(events);
 
-    let supportEvents: EventData | undefined;
-    let chainEvents: TrainingEvent[] | undefined = [];
-    let randomEvents: TrainingEvent[] | undefined = [];
-    let specialEvents: TrainingEvent[] | undefined = [];
+    let supportEvents: SupportEvents | PalGroupEvents | undefined;
+    let chainEvents: Event[] | undefined = [];
+    let randomEvents: Event[] | undefined = [];
+    let specialEvents: Event[] | undefined = [];
 
     const isPalorGroup = ["Pal", "Group"].includes(support.specialty);
-
-    const getOptions = (event: TrainingEvent) => {
-        if (support.release.global === "" || showUnreleased) {
-            return event.optionsJP || event.options;
-        } else if (
-            !isUnreleasedContent(support.release) &&
-            event.name === "" &&
-            event.optionsJP
-        ) {
-            return event.optionsJP;
-        } else {
-            return event.options;
-        }
-    };
-
-    const showEvent = (event: TrainingEvent) => {
-        if (support.release.global === "" || showUnreleased) {
-            return true;
-        } else if (!isUnreleasedContent(support.release)) {
-            return true;
-        } else {
-            return event.name !== "";
-        }
-    };
 
     function renderEventInfo({
         index,
@@ -68,16 +40,14 @@ function EventSupport({
         expand,
     }: {
         index: number;
-        event: TrainingEvent;
+        event: Event;
         isChain?: boolean;
         expand: boolean;
     }) {
-        const e = { ...event };
-        e.options = getOptions(event);
-        return showEvent(event) ? (
+        return (
             <EventInfo
                 key={index}
-                event={e}
+                event={event}
                 isChain={isChain}
                 index={index}
                 expand={expand}
@@ -87,10 +57,10 @@ function EventSupport({
                         : support.charID
                 }
             />
-        ) : null;
+        );
     }
 
-    function addHeadersPal(event: TrainingEvent, index: number) {
+    function addHeadersPal(event: Event, index: number) {
         const headers = [];
         if (index === 0) {
             headers.push("first_training");
@@ -98,80 +68,54 @@ function EventSupport({
         if (index === 1) {
             headers.push("after_training");
         }
-        if (index === 3) {
+        if (index === 2) {
             headers.push("after_finals_bond_maxed");
         }
-        if (index === 4) {
+        if (index === 3) {
             headers.push("after_finals_bond_not_maxed");
         }
-        if (index === 5) {
+        if (index === 4) {
             headers.push("new_year_dating");
         }
         return {
             ...event,
-            props: { ...event.props, headers: headers },
+            headers: headers,
         };
     }
 
-    if (loadedEvents.includes("support-common")) {
-        if (isPalorGroup) {
-            if (
-                support.specialty === "Pal" &&
-                loadedEvents.includes("support-pal")
-            ) {
-                supportEvents = events["support-pal"].find(
-                    (e) => e.id === support.charID
-                );
-                if (supportEvents) {
-                    chainEvents = supportEvents.palProps?.recEvents;
-                    supportEvents.events.forEach((event, index) => {
-                        const e = addHeadersPal(event, index);
-                        if (index === 2 || index === 6) {
-                            randomEvents?.push(e);
-                        } else {
-                            specialEvents?.push(e);
-                        }
-                    });
-                    randomEvents = randomEvents.reverse();
-                }
-            } else if (
-                support.specialty === "Group" &&
-                loadedEvents.includes("support-group")
-            ) {
-                supportEvents = events["support-group"].find(
-                    (e) => e.id === support.id
-                );
-                if (supportEvents) {
-                    chainEvents = supportEvents.groupProps?.recEvents;
-                    supportEvents.groupProps?.charIDs.forEach((char) => {
-                        const charEvents = events["support-common"].find(
-                            (e) => e.id === char
-                        );
-                        if (charEvents) {
-                            randomEvents?.push(...charEvents.events);
-                        }
-                    });
-                    supportEvents.events.forEach((event) => {
-                        if (!event.props) {
-                            randomEvents?.push(event);
-                        } else {
-                            specialEvents?.push(event);
-                        }
-                    });
-                }
-            }
-        } else {
-            supportEvents = events["support-common"].find(
+    if (isPalorGroup) {
+        if (support.specialty === "Pal") {
+            supportEvents = events["support-pal"].find(
                 (e) => e.id === support.charID
             );
             if (supportEvents) {
-                randomEvents = supportEvents.events;
+                chainEvents = supportEvents.events.recreation;
+                randomEvents = supportEvents.events.random;
+                specialEvents = supportEvents.events.special?.map(
+                    (event, index) => addHeadersPal(event, index)
+                );
             }
-            if (loadedEvents.includes(`support-${rarity}`)) {
-                chainEvents = events[`support-${rarity}`].find(
-                    (e) => e.id === support.id
-                )?.events;
+        } else if (support.specialty === "Group") {
+            supportEvents = events["support-group"].find(
+                (e) => e.id === support.id
+            );
+            if (supportEvents) {
+                chainEvents = supportEvents.events.recreation;
+                randomEvents = supportEvents.events.random;
+                specialEvents = supportEvents.events.special;
             }
+        }
+    } else {
+        supportEvents = events["support-common"].find(
+            (e) => e.id === support.charID
+        );
+        if (supportEvents) {
+            randomEvents = supportEvents.events.common;
+        }
+        if (rarity !== "r") {
+            chainEvents = events[`support-${rarity}`].find(
+                (e) => e.id === support.id
+            )?.events.chain;
         }
     }
 

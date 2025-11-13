@@ -6,9 +6,9 @@ import { TextStyled } from "styled/StyledTypography";
 import { useTheme, Box } from "@mui/material";
 
 // Type imports
-import { EventOutcome } from "types/event";
+import type { EventRewards } from "types/event";
 
-function EventConditions({ conditions }: { conditions: EventOutcome[] }) {
+function EventConditions({ conditions }: { conditions: EventRewards[] }) {
     const theme = useTheme();
 
     return (

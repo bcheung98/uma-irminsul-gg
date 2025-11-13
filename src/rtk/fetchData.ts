@@ -3,7 +3,7 @@ import { Character, CharacterProfile } from "types/character";
 import { Skill } from "types/skill";
 import { Support } from "types/support";
 import { Banner } from "types/banner";
-import { EventData } from "types/event";
+import { Events, EventTypes } from "types/event";
 
 export type LoadingStatus = "idle" | "pending" | "success" | "error";
 
@@ -73,8 +73,8 @@ export const fetchSupportBanners = createAsyncThunk(
 
 export const fetchEvents = createAsyncThunk(
     "GET/events",
-    async (params: { type: string; port?: number }): Promise<EventData[]> => {
-        let url: string = `https://api.irminsul.gg/uma/events-${params.type}.json`;
+    async (params: { type: EventTypes; port?: number }): Promise<Events[]> => {
+        let url: string = `https://api.irminsul.gg/uma/events/${params.type}.json`;
         if (params.port) {
             // URL for localhost development
             url = `http://localhost:${params.port}/events-${params.type}`;

@@ -6,7 +6,6 @@ import {
     RaceMulti,
     RaceSeries,
     SkillText,
-    SkillTextRandom,
 } from "./EventTextRender";
 import { TextStyled } from "styled/StyledTypography";
 
@@ -19,14 +18,14 @@ import { selectCharacterProfiles } from "reducers/characterProfiles";
 import { getEventText, getOrdinal, getStrategy } from "helpers/getEventText";
 
 // Type imports
-import { EventOutcome } from "types/event";
+import { EventRewards } from "types/event";
 
 function EventText({
     outcome,
     prefix = "",
     charID = 1001,
 }: {
-    outcome: EventOutcome;
+    outcome: EventRewards;
     prefix?: string;
     charID?: number | string;
 }) {
@@ -78,12 +77,12 @@ function EventText({
                     text: "Have the <> status effect at the end of training",
                     count,
                 });
-            case "cond_healed":
+            case "status_healed":
                 return StatusEffect({
                     effectID: data,
                     text: "※ <> was healed",
                 });
-            case "cond_not_healed":
+            case "status_not_healed":
                 return StatusEffect({
                     effectID: data,
                     text: "※ <> was not healed",
@@ -182,8 +181,6 @@ function EventText({
                 });
             case "skill":
                 return SkillText({ event: outcome });
-            case "skill_random":
-                return SkillTextRandom({ eventHints: props?.eventHints });
             case "conditions":
                 return props?.conditions?.map((con) => (
                     <EventText outcome={con} prefix="※" charID={charID} />

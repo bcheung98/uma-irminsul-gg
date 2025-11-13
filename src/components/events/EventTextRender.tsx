@@ -16,7 +16,7 @@ import { raceSeries } from "data/races";
 import { statusEffects } from "data/statusEffects";
 
 // Type imports
-import { EventOutcome, EventSubHint, EventSubOutcome } from "types/event";
+import { EventRewards } from "types/event";
 
 export function TextHighlight({
     children,
@@ -35,7 +35,7 @@ export function SkillHint({
     event,
     isHint,
 }: {
-    event: EventSubOutcome;
+    event: EventRewards;
     isHint: boolean;
 }) {
     const theme = useTheme();
@@ -87,7 +87,7 @@ export function SkillHint({
     return hint;
 }
 
-export function SkillText({ event }: { event: EventOutcome }) {
+export function SkillText({ event }: { event: EventRewards }) {
     const theme = useTheme();
 
     const [open, setOpen] = useState(false);
@@ -134,28 +134,6 @@ export function SkillText({ event }: { event: EventOutcome }) {
         );
     }
     return res;
-}
-
-export function SkillTextRandom({ eventHints }: { eventHints?: EventSubHint }) {
-    if (eventHints) {
-        const hints = eventHints.map((hint) =>
-            SkillHint({ event: hint, isHint: true })
-        );
-        return (
-            <>
-                {hints.map((hint, index) => (
-                    <span key={index}>
-                        {hint}
-                        {index < hints.length - 1 && (
-                            <TextHighlight>{` or `}</TextHighlight>
-                        )}
-                    </span>
-                ))}
-            </>
-        );
-    } else {
-        return <></>;
-    }
 }
 
 export function StatusEffect({

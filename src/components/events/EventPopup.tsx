@@ -7,10 +7,10 @@ import { TextStyled } from "styled/StyledTypography";
 import { useTheme, Box, Stack } from "@mui/material";
 
 // Helper imports
-import { trainingEventContents } from "helpers/getEventText";
+import { getScenarioLink, trainingEventContents } from "helpers/getEventText";
 
 // Type imports
-import { TrainingEvent } from "types/event";
+import { Event } from "types/event";
 
 function EventPopup({
     name,
@@ -18,18 +18,18 @@ function EventPopup({
     charID,
 }: {
     name: string;
-    event: TrainingEvent;
+    event: Event;
     charID: number | string;
 }) {
     const theme = useTheme();
 
-    const { options, conditions, props } = event;
+    const { options, conditions, altOutcome, scenarioLink } = event;
 
     const hasConditions = conditions && conditions?.length > 0;
 
     const headers: string[] = [];
-    if (props?.headers) {
-        props.headers.forEach((header) =>
+    if (event.headers) {
+        event.headers.forEach((header) =>
             headers.push(trainingEventContents[header])
         );
     }
@@ -62,11 +62,7 @@ function EventPopup({
                     )}
                     <Stack spacing={1}>
                         {options.length > 0 ? (
-                            <EventOptions
-                                event={event}
-                                options={options}
-                                charID={charID}
-                            />
+                            <EventOptions options={options} charID={charID} />
                         ) : (
                             <Stack
                                 sx={{
@@ -80,17 +76,21 @@ function EventPopup({
                                 </TextStyled>
                             </Stack>
                         )}
-                        {props?.altOutcome && (
+                        {altOutcome && (
                             <>
                                 <TextStyled variant="body2-styled">
                                     ※ Alternate outcome
                                 </TextStyled>
                                 <EventOptions
-                                    event={event}
-                                    options={props.altOutcome}
+                                    options={altOutcome}
                                     charID={charID}
                                 />
                             </>
+                        )}
+                        {scenarioLink && (
+                            <TextStyled variant="body2-styled">
+                                {getScenarioLink(scenarioLink)}
+                            </TextStyled>
                         )}
                     </Stack>
                 </Box>

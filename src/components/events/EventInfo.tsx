@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router";
 
 // Component imports
 import EventPopup from "components/events/EventPopup";
@@ -14,7 +15,7 @@ import { selectSettings } from "reducers/planner";
 import { selectUnreleasedContent } from "reducers/settings";
 
 // Type imports
-import { TrainingEvent } from "types/event";
+import { Event } from "types/event";
 
 function EventInfo({
     event,
@@ -23,13 +24,15 @@ function EventInfo({
     expand = false,
     charID = 1001,
 }: {
-    event: TrainingEvent;
+    event: Event;
     isChain?: boolean;
     index?: number;
     expand?: boolean;
     charID?: number | string;
 }) {
     const theme = useTheme();
+
+    const location = useLocation().pathname;
 
     const showUnreleased = useAppSelector(selectUnreleasedContent);
 
@@ -63,12 +66,19 @@ function EventInfo({
     };
     const open = Boolean(anchorEl);
 
-    const renderEventPopup = (
-        <EventPopup name={name} event={event} charID={charID} />
-    );
+    const renderEventPopup = () => {
+        let e = event;
+        if (event.altOptions) {
+            const cardID = location.split("-").slice(-1)[0];
+            e =
+                event.altOptions.find((e) => e.cardID?.toString() === cardID) ||
+                event;
+        }
+        return <EventPopup name={name} event={e} charID={charID} />;
+    };
 
     return expanded ? (
-        <Card>{renderEventPopup}</Card>
+        <Card>{renderEventPopup()}</Card>
     ) : (
         <>
             <Card
@@ -98,7 +108,7 @@ function EventInfo({
                     horizontal: "center",
                 }}
             >
-                {renderEventPopup}
+                {renderEventPopup()}
             </Popover>
         </>
     );

@@ -1,53 +1,66 @@
-export interface EventProps {
-    event: TrainingEvent[];
+export interface Events {
+    id: number;
+    events: EventData;
+    props?: EventPropData;
 }
 
+export type EventTypes = keyof EventList;
+
 export interface EventList {
-    [key: string]: EventData[];
+    scenario: ScenarioEvents[];
+    "support-common": SupportEvents[];
+    "support-ssr": SupportEvents[];
+    "support-sr": SupportEvents[];
+    "support-pal": PalGroupEvents[];
+    "support-group": PalGroupEvents[];
+    character: CharacterEvents[];
+    "character-outfit": CharacterEvents[];
+}
+
+export interface EventPropData {
+    dance: [string, string];
+    newYear: string;
+    masterTrainer: string;
+    miscEventNames: { en: string; jp: string }[];
 }
 
 export interface EventData {
-    id: number;
-    events: TrainingEvent[];
-    props?: CharacterEventProps;
-    palProps?: PalEventProps;
-    groupProps?: GroupEventProps;
+    character?: Event[];
+    recreation?: Event[];
+    secret?: Event[];
+    outfit?: Event[];
+    common?: Event[];
+    chain?: Event[];
+    special?: Event[];
+    random?: Event[];
+    scenario?: Event[];
 }
 
-export interface PalEventProps {
-    recEvents: TrainingEvent[];
-}
-
-export interface GroupEventProps extends PalEventProps {
-    charIDs: number[];
-}
-
-export interface CharacterEventProps extends PalEventProps {
-    dance: [string, string];
-    year: string;
-    master: string;
-    miscEventNames: { en: string; jp: string }[];
-    secretEvents: TrainingEvent[];
-}
-
-export interface TrainingEvent {
+export interface Event {
+    id?: number;
     name: string;
     nameJP: string;
-    options: EventOutcome[][][];
-    optionsJP?: EventOutcome[][][];
-    chances?: number[][];
-    conditions?: EventOutcome[];
-    props?: TrainingEventExtraProps;
-}
-
-export interface TrainingEventExtraProps {
+    options: EventOptions[];
+    conditions?: EventRewards[];
     headers?: string[];
-    charName?: number;
-    hasChoices?: boolean;
-    altOutcome?: EventOutcome[][][];
+    relevantChar?: number;
+    didNotExist?: string;
+    otherVersions?: Event[];
+    version?: string;
+    altOutcome?: EventOptions[];
+    altOptions?: Event[];
+    forceHasChoices?: boolean;
+    scenarioLink?: number;
+    cardID?: number;
 }
 
-export interface EventOutcome {
+export interface EventOptions {
+    optionName?: string;
+    rewards: EventRewards[];
+    chances?: number[];
+}
+
+export interface EventRewards {
     tag: string;
     value?: string | number | (string | number)[] | null;
     count?: number | number[];
@@ -55,6 +68,35 @@ export interface EventOutcome {
     props?: EventExtraProps;
     random?: boolean;
 }
+
+export type EventValue = string | number;
+export type EventDataValue = EventValue | EventValue[];
+
+export interface CharacterEvents extends Events {
+    events: CharacterEventData;
+}
+export type CharacterEventData = Pick<
+    EventData,
+    "character" | "recreation" | "secret" | "outfit"
+>;
+
+export interface SupportEvents extends Events {
+    events: SupportEventData;
+}
+export type SupportEventData = Pick<EventData, "common" | "chain">;
+
+export interface PalGroupEvents extends Events {
+    events: PalGroupEventData;
+}
+export type PalGroupEventData = Pick<
+    EventData,
+    "special" | "random" | "recreation"
+>;
+
+export interface ScenarioEvents extends Events {
+    events: ScenarioEventData;
+}
+export type ScenarioEventData = Pick<EventData, "scenario" | "random">;
 
 export interface EventExtraProps {
     year?: number;
@@ -86,11 +128,8 @@ export interface EventExtraProps {
     eventOutcome?: number;
     charName?: number | string;
     charList?: number[];
-    eventHints?: EventSubHint;
-    conditions?: EventOutcome[];
+    conditions?: EventRewards[];
 }
-export type EventSubOutcome = Pick<EventOutcome, "value" | "data">;
-export type EventSubHint = Required<EventSubOutcome>[];
 
 export interface StatusEffect {
     id: number;

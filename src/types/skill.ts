@@ -1,5 +1,5 @@
 import { Rarity } from "./_common";
-import { EventOutcome } from "./event";
+import { EventRewards } from "./event";
 import { Version } from "./version";
 
 export interface SkillProps {
@@ -37,5 +37,5 @@ export interface SkillCondition {
 
 export interface SkillEvo {
     old: number;
-    evoConditions: EventOutcome[][];
+    evoConditions: EventRewards[][];
 }

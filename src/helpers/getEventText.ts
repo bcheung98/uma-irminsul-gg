@@ -11,7 +11,7 @@ import {
 import { raceConditions } from "data/races";
 import { racetracks } from "data/racetracks";
 import { CharacterProfile } from "types/character";
-import { EventOutcome } from "types/event";
+import { EventRewards } from "types/event";
 import { scenarios } from "data/scenarios";
 
 export function getEventText({
@@ -19,7 +19,7 @@ export function getEventText({
     characters,
     charID,
 }: {
-    event: EventOutcome;
+    event: EventRewards;
     characters: CharacterProfile[];
     charID: number | string;
 }) {
@@ -489,6 +489,7 @@ export function getEventText({
         // Others
         ft: "After first training",
         at: "Randomly after training (repeatable)",
+        ds: "Recreation enabled",
         ny: "Dating before the first New Year's",
         fs: "After Finals (bond maxed)",
         ff: "After Finals (bond not maxed)",
@@ -593,6 +594,12 @@ function getOptionList(o = [1]) {
 
 export function getOrdinal(n = 1) {
     return ordinals[n];
+}
+
+export function getScenarioLink(id = 1) {
+    return `※ Scenario link: This event will grant higher rewards in the ${getScenario(
+        id
+    )} scenario.`;
 }
 
 const years = ["Debut", "Classic", "Senior"];
