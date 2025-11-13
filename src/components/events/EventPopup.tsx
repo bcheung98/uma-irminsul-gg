@@ -7,6 +7,8 @@ import { TextStyled } from "styled/StyledTypography";
 import { useTheme, Box, Stack } from "@mui/material";
 
 // Helper imports
+import { useAppSelector } from "helpers/hooks";
+import { selectCharacterProfiles } from "reducers/characterProfiles";
 import { getScenarioLink, trainingEventContents } from "helpers/getEventText";
 
 // Type imports
@@ -23,7 +25,8 @@ function EventPopup({
 }) {
     const theme = useTheme();
 
-    const { options, conditions, altOutcome, scenarioLink } = event;
+    const { options, conditions, altOutcome, scenarioLink, relevantChar } =
+        event;
 
     const hasConditions = conditions && conditions?.length > 0;
 
@@ -32,6 +35,12 @@ function EventPopup({
         event.headers.forEach((header) =>
             headers.push(trainingEventContents[header])
         );
+    }
+    if (relevantChar) {
+        const character = useAppSelector(selectCharacterProfiles).find(
+            (character) => character.id === relevantChar
+        );
+        headers.push(`※ ${character?.name}` || "");
     }
 
     return (

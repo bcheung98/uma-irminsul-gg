@@ -35,7 +35,11 @@ function EventRewards(props: EventRewardsProps) {
                         </TextStyled>
                     )}
                     {outcome.map((reward, index) => (
-                        <EventText key={index} outcome={reward} />
+                        <EventText
+                            key={index}
+                            outcome={reward}
+                            charID={props.charID}
+                        />
                     ))}
                 </Stack>
             ))}

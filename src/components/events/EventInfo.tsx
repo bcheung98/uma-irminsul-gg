@@ -22,13 +22,13 @@ function EventInfo({
     isChain = false,
     index = 1,
     expand = false,
-    charID = 1001,
+    charID,
 }: {
     event: Event;
     isChain?: boolean;
     index?: number;
     expand?: boolean;
-    charID?: number | string;
+    charID: number | string;
 }) {
     const theme = useTheme();
 
