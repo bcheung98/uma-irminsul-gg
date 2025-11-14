@@ -238,7 +238,7 @@ export function getEventText({
         win_g1_year: `Win at least one G1 race during ${getYear(
             year
         )} ${countText({ count, single: "", multi: `$X times` })}`,
-        win_streak_graded: `Get a win streak of ${count}+ graded races (G3, G2, G1)`,
+        win_streak_graded: `Get a win streak of ${value}+ graded races (G3, G2, G1)`,
         win_all_g1_rival: `Win all G1 races in which ${getCharacter(
             data
         )} is also participating`,
