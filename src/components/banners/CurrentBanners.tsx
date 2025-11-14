@@ -197,7 +197,7 @@ export function bannerImage(id: number, region: Region) {
             : `https://gametora.com/images/umamusume/gacha/img_bnr_gacha_${id}.png`;
     return (
         <Image
-            src={`banne/${region === "NA" ? "global" : "jp"}/${id}`}
+            src={`banners/${region === "NA" ? "global" : "jp"}/${id}`}
             alt={`${id}`}
             style={{ width: "auto", height: "100%", maxHeight: "160px" }}
             fallbackSrc={fallbackSrc}
