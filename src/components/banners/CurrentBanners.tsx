@@ -113,6 +113,21 @@ function CurrentBanners() {
         );
     };
 
+    function bannerImage(id: number, region: Region) {
+        const fallbackSrc =
+            region === "NA"
+                ? `https://gametora.com/images/umamusume/en/gacha/img_bnr_gacha_${id}.png`
+                : `https://gametora.com/images/umamusume/gacha/img_bnr_gacha_${id}.png`;
+        return (
+            <Image
+                src={`banners/${region === "NA" ? "global" : "jp"}/${id}`}
+                alt={`${id}`}
+                style={{ width: "100%", height: "auto", maxWidth: "360px" }}
+                fallbackSrc={fallbackSrc}
+            />
+        );
+    }
+
     return (
         <MainContentBox
             title="Current Banners"
@@ -189,18 +204,3 @@ function CurrentBanners() {
 }
 
 export default CurrentBanners;
-
-export function bannerImage(id: number, region: Region) {
-    const fallbackSrc =
-        region === "NA"
-            ? `https://gametora.com/images/umamusume/en/gacha/img_bnr_gacha_${id}.png`
-            : `https://gametora.com/images/umamusume/gacha/img_bnr_gacha_${id}.png`;
-    return (
-        <Image
-            src={`banners/${region === "NA" ? "global" : "jp"}/${id}`}
-            alt={`${id}`}
-            style={{ width: "auto", height: "100%", maxHeight: "160px" }}
-            fallbackSrc={fallbackSrc}
-        />
-    );
-}
