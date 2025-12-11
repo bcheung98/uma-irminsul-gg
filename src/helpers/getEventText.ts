@@ -261,7 +261,7 @@ export function getEventText({
         date_before_finals: "Triggers before the Finals start",
         fans_before_finals: `Have at least ${value?.toLocaleString()} fans before the finals`,
         dist_wins_branch: `The rewards will depend on the amount of ${getDistance(
-            distance
+            Number(value)
         )} wins`,
         racetrack_wins_branch: `The rewards will depend on the amount of ${
             racetracks[Number(value)]
