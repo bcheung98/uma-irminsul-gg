@@ -153,7 +153,9 @@ export function getEventText({
         aptitude_points: `Aptitude Points ${value}`,
         brian_tryhard:
             "Increased difficulty and rewards of future training goals",
-        branch_future: `※ Will affect the outcome of the ${eventNumber} event`,
+        branch_future: `※ Will affect the outcome of the ${getOrdinal(
+            eventNumber
+        )} event`,
         branch_previous: `※ Can only happen if you chose the ${getOrdinal(
             eventOption
         )} option during the ${getOrdinal(eventNumber)} event`,
