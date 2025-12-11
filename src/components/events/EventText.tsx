@@ -70,10 +70,13 @@ function EventText({
                     return "Heal a negative status effect";
                 }
             case "cond":
-                return StatusEffect({ effectID: data, text: "Get the" });
+                return StatusEffect({
+                    effectID: props?.statusEffect,
+                    text: "Get the",
+                });
             case "cond_e":
                 return StatusEffect({
-                    effectID: data,
+                    effectID: props?.statusEffect,
                     text: "Have the <> status effect at the end of training",
                     count,
                 });
